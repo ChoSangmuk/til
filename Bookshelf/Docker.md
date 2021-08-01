@@ -2,7 +2,7 @@
 
 ## Docker란?
 도커는 **컨테이너 기반의 오픈소스 가상화 플랫폼**입니다.  
-<img src="./Image/docker-container.png" width="300" height="300"> 
+<img src="./Image/Docker/container.png" width="300" height="300"> 
 
 **컨테이너(Container)**  
 리눅스 컨테이너는 단일 리눅스 호스트에 격리된 리눅스 시스템을 여러개 실행하는 운영체제(OS) 수준의 가상화 기술로,  
@@ -15,17 +15,17 @@ control groups과 namespace를 이용한 LXC가 있었고 FreeBSD에선 Jail, 
 
 ## 가상화 개념
 **호스트 가상화**  
-<img src="./Image/docker-host-virtualization.png" width="200" height="200">  
+<img src="./Image/Docker/host-virtualization.png" width="200" height="200">  
 호스트가상화는 Base가 되는 Host OS위에 Guest OS가 구동되는 방식으로, 가상의 하드웨어를 에뮬레이팅하기 때문에 호스트 운영체제에 크게 제약사항이 없이 구동 가능하지만,  
 OS위에 OS가 얹히는 방식이기 때문에 오버헤드가 크고 느리기 때문에 운영환경에서 사용하기 부적합합니다.  
 
 **하이퍼바이저 가상화**  
-<img src="./Image/docker-hypervisor-virtualization.png" width="200" height="200">  
+<img src="./Image/Docker/hypervisor-virtualization.png" width="200" height="200">  
 하이퍼가상화는 Host OS없이 하드웨어에 하이퍼바이저를 설치하여 사용하는 방식입니다. 전가상화와 반가상화 방식이 존재하며, 차이는 OS - 하이퍼바이저 - 하드웨어간 명령 방식으로 볼 수 있습니다.  
 별도의 Host OS가 없기 때문에 오버헤드가 적고, 하드웨어를 직접 제어하기 때문에 효율적으로 리소스를 사용할 수 있지만, 자체적으로 머신에 대한 관리 기능이 없기 때문에 관리를 위한 컴퓨터나 콘솔이 필요합니다.  
 
 **컨테이너 가상화**  
-<img src="./Image/docker-container-virtualization.png" width="200" height="200">  
+<img src="./Image/Docker/container-virtualization.png" width="200" height="200">  
 호스트 OS위에 컨테이너관리 소프트웨어를 설치하여, 논리적으로 컨테이너를 나누어 사용합니다.  
 컨테이너는 어플리케이션 동작을 위한 라이브러리와 어플리케이션등으로 구성되기때문에 이를 각각 개별 서버처럼 사용가능합니다.  
 
@@ -102,17 +102,17 @@ docker commit -m "java, node install" awesome_mcclintock basic:0.1
 
 ## 연습
 1. 도커 실행 확인 및 버젼 확인, 이미지/컨테이너 목록 확인  
-<img src="./Image/docker-practice-01.jpg">  
+<img src="./Image/Docker/practice-01.jpg">  
 
 - 도커는 서버와 클라이언트를 구분하여 실행됨  
 
 2. 우분투 실행  
-<img src="./Image/docker-practice-02.jpg">  
+<img src="./Image/Docker/practice-02.jpg">  
 
 - 저장된 이미지가 없었기 때문에 공식 이미지를 다운로드(Pull)받음, 실행 후 별도의 명령을 입력하지 않았기 때문에 바로 종료  
 
 3. 우분투 입력모드 실행  
-<img src="./Image/docker-practice-03.jpg">  
+<img src="./Image/Docker/practice-03.jpg">  
 
 - 실행 중인 컨테이너 없음  
   - -it 터미널 입력을 위한 옵션, bin/bash 실행  
@@ -120,13 +120,13 @@ docker commit -m "java, node install" awesome_mcclintock basic:0.1
   - 컨테이너 목록 확인 시 종료된 컨테이너 1개 확인  
 
 4. Mysql 실행  
-<img src="./Image/docker-practice-04.jpg"> 
+<img src="./Image/Docker/practice-04.jpg"> 
 
 - -d 백그라운드 모드, -p 포트 연결, -e 실행 옵션, --name 컨테이너 이름  
   - 실행 컨테이너 목록에 Up으로 표현됨  
 
 5. 실행중인 Mysql 접근  
-<img src="./Image/docker-practice-05.jpg"> 
+<img src="./Image/Docker/practice-05.jpg"> 
 
 - 컨테이너 명령어 실행하기 (exec)
 

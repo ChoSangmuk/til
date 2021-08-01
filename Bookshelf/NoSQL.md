@@ -8,13 +8,13 @@
 
 모든 데이터를 2차원의 테이블 형태로 표현하고, 데이타 간의 상관관계에서 개체간의 관계를 표현하는데 초점  
 
-<img src="./Image/nosql-rdbms.png" width="500" height="250">  
+<img src="./Image/NoSQL/rdbms.png" width="500" height="250">  
 
 DB-Engines Ranking - Trend Popularity  
-<img src="./Image/nosql-db-engines-ranking.png" width="500" height="250">  
+<img src="./Image/NoSQL/db-engines-ranking.png" width="500" height="250">  
 
 ## NoSQL, 왜 필요할까?
-<img src="./Image/nosql-sql-vs-nosql.png" width="500" height="250">  
+<img src="./Image/NoSQL/sql-vs-nosql.png" width="500" height="250">  
 
 2000년대에 들어서면서 인터넷 서비스(SNS)등이 보편적으로 사용 되면서 특정 고객 혹은 기업이 아닌 전 세계의 불특정 다수의 사람들을 대상으로 하는 형태의 서비스가 발전  
 이는 기존의 기업 시스템에서 볼 수 없었던 대규모 데이터를 생산되며, 기존 기업 데이터에 비해 매우 단순한 형태  
@@ -44,7 +44,7 @@ RDBMS의 복잡도와 용량 한계를 극복하기 위한 목적으로 등장�
 분산형 구조를 통해 데이터를 여러 대의 서버에 분산해 저장하고,  
 분산 시에 데이터를 상호 복제해 특정 서버에 장애가 발생했을 때에도 데이터 유실이나 서비스 중지가 없는 형태의 구조다.  
 
-<img src="./Image/nosql-cap.png">  
+<img src="./Image/NoSQL/cap.png">  
 
 - Consistency : **일관성**을 뜻합니다. 모든 클라이언트들은 항상 같은 데이터를 볼 수 있어야 합니다. 한 데이터를 동시에 두 클라이언트가 바라봤을 때 그 데이터가 항상 같아야만 만족합니다
 - Availability : **가용성**을 뜻합니다. 각 클라이언트는 항상 데이터를 읽고 쓸 수 있어야만 합니다. 어떤 상황이던 간에 (장애가 발생해도) 정상적으로 데이터를 읽고 쓸 수 있어야 만족합니다.
@@ -52,7 +52,7 @@ RDBMS의 복잡도와 용량 한계를 극복하기 위한 목적으로 등장�
 
 ## NoSQL의 분류
 1. Key/Value Database : Redis(인메모리), Oracle Coherence 등  
-<img src="./Image/nosql-key-value.png" width="300" height="150" >  
+<img src="./Image/NoSQL/key-value.png" width="300" height="150" >  
 
 - 흔히 알고있는 Map의 구조로, 유일성을 가지는 Key 값을 통해 데이터를 구분  
 - 메모리를 저장소로 쓰는 경우, 아주 빠른 get과 put을 지원  
