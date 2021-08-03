@@ -1,0 +1,11 @@
+{
+  "name": "@chosangmuk/npm-practice",
+  "version": "0.0.3",
+  "description": "practice npm publish, use",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "chosangmuk",
+  "license": "ISC"
+}
