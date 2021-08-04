@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@chosangmuk/npm-practice": "0.0.10"
+    "@chosangmuk/npm-test": "0.0.2"
   }
 }

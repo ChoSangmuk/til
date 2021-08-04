@@ -1,6 +1,6 @@
 {
-  "name": "@chosangmuk/npm-practice",
-  "version": "0.0.10",
+  "name": "@chosangmuk/npm-test",
+  "version": "0.0.2",
   "description": "practice npm publish, use",
   "main": "index.js",
   "scripts": {
@@ -14,5 +14,6 @@
     "cli-de": "./cli-de.js"
   },
   "author": "chosangmuk",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {}
 }
