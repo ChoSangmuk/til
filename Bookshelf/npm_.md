@@ -1,8 +1,8 @@
-# NPM
+# npm
 
-- [생활코딩 홈페이지(NPM)](https://opentutorials.org/module/4044)
+- [생활코딩 홈페이지(npm)](https://opentutorials.org/module/4044)
   - [Youtube divide](https://www.youtube.com/playlist?list=PLuHgQVnccGMCwEXgZ-dep4SJlGEuYip-6)
-- [생활코딩 홈페이지(NPM Package)](https://opentutorials.org/module/4571)
+- [생활코딩 홈페이지(npm Package)](https://opentutorials.org/module/4571)
   - [Youtube divide](https://www.youtube.com/playlist?list=PLuHgQVnccGMB4krR04ug5nEXJ3sAEOWDL)
 
 ## npm 이란?
@@ -10,7 +10,7 @@
 - Package? 완성된 프로그램, Library와 같은 소프트웨어를 의미 
   - 다른 Package의 부품(Library, Module)
   - 독립된 하나의 애플리케이션, 프로그램(Package 자체가 완제품)
-- NPM은 CLI 특히 Node.js에서 앱스토어와 같은 역할
+- npm은 CLI 특히 Node.js에서 앱스토어와 같은 역할
   - 명령어를 통해 컴퓨터를 제어하는 것을 CLI(Command Line Interface)라고함
 
 ## npm 설치
@@ -58,7 +58,7 @@ npm uninstll package_name
 
 ## npm Package 생성 및 배포
 1. provider 폴더 생성, npm init 을 통해 Node.js패키지 임을 명시, Package를 만들기 위한 기본 정보 설정
-    - 입력을 마치면 [package.json](PracticeSource/NPM/provider/package.json)이 생성되고, 입력한 내용이 저장됨
+    - 입력을 마치면 [package.json](PracticeSource/npm/provider/package.json)이 생성되고, 입력한 내용이 저장됨
 ```sh
 # provider/Shell
 mkdir provider
@@ -67,7 +67,7 @@ npm init
   package name: (npm) ## Package의 이름, @(스코프)는 범위를 정의할 때 사용
   entry point: (index.js) ## 해당 패키지의 시작점
 ```
-2. entry point(시작 파일 - [index.js](PracticeSource/NPM/provider/index.js))에 제공할 기능을 작성
+2. entry point(시작 파일 - [index.js](PracticeSource/npm/provider/index.js))에 제공할 기능을 작성
     - Package를 사용할 수 있게 export 해줌
     - Package를 require 했을 때 export 값이 전달됨
 3. 작성된 provider Package를 npm registry에 등록하기
@@ -85,6 +85,10 @@ npm publish --access public
 ## private(유료)으로도 Package를 업로드 가능
 ## 수정 업로드(버전) 업데이트의 경우, npm publish만 입력
 ```
+4. 독립된 프로젝트로 작동 가능하게끔 [cli.js](PracticeSource/npm/provider/cli.js) 작성
+    - 실행 시, 입력 값을 사용하기위해 process.argv 를 사용
+    - cli.js에 #!/usr/bin/env node 를 작성하여 node 실행 파일임을 알림
+5. [package.json](PracticeSource/npm/provider/package.json)에 bin 이라는 속성에 실행될 명령어를 작성
 
 ## npm Package 사용하기
 1. consumer 폴더 생성, npm init 을 통해 Node.js패키지 임을 명시, Package를 만들기 위한 기본 정보 설정
@@ -98,15 +102,15 @@ npm init -y
 2. 앞서 작성한 Package(@chosangmuk/npm-practice) 설치
     - 해당 작업 완료 시, consumer에 node_modules 폴더가 생성
     - node_modules에 provider Package의 내용이 생성됨
-    - [package.json](PracticeSource/NPM/consumer/package.json)에 dependencies가 추가됨
+    - [package.json](PracticeSource/npm/consumer/package.json)에 dependencies가 추가됨
 ```sh
 # consumer/Shell
 npm install @chosangmuk/npm-practice
 ```
-3. consumer의 임의의 파일([index.js](PracticeSource/NPM/consumer/index.js))에서 require하여 사용
+3. consumer의 임의의 파일([index.js](PracticeSource/npm/consumer/index.js))에서 require하여 사용
 4. provider package의 버젼이 수정(업데이트) 되는 경우
     - consumer에서 outdated 를 사용하여 최신 버젼 정보 확인
-    - consumer의 [package.json](PracticeSource/NPM/consumer/package.json)에서 버전 정보 변경 후, npm update
+    - consumer의 [package.json](PracticeSource/npm/consumer/package.json)에서 버전 정보 변경 후, npm update
     - 특수 문자를 사용하여 package를 자동 업데이트 할 수도 있음
 ```sh
 # consumer/Shell
@@ -117,6 +121,10 @@ Package                   Current  Wanted  Latest  Location
 
 npm update 
 ```
+5. 독립된 프로그램 package 실행시키기
+    - Local 환경(폴더 내)에 설치
+    - Global 환경(모든 폴더)에 설치
+    - npx를 이용하여 1회만 설치, 실행 우선순위 Local > Global > npx
 
 ## Reference
 - 도움이 될만한 사전지식

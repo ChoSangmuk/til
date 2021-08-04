@@ -1,10 +1,17 @@
 {
   "name": "@chosangmuk/npm-practice",
-  "version": "0.0.3",
+  "version": "0.0.10",
   "description": "practice npm publish, use",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "cli": "./cli.js",
+    "cli-ko": "./cli-ko.js",
+    "cli-en": "./cli-en.js",
+    "cli-fr": "./cli-fr.js",
+    "cli-de": "./cli-de.js"
   },
   "author": "chosangmuk",
   "license": "ISC"
