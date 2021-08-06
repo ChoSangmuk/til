@@ -1,0 +1,81 @@
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.0/redux.min.js"></script>
+</head>
+
+<body>
+  <style>
+    .container {
+      border: 5px solid black;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    body {
+      margin: 1rem;
+    }
+  </style>
+  <h1>With redux</h1>
+  <div id="red"></div>
+  <div id="blue"></div>
+  <div id="green"></div>
+
+  <script>
+    function reducer(state, action) {
+      console.log(state, action);
+      if (state === undefined) return { color: 'yellow' }
+      var newState;
+      if (action.type === 'CHANGE_COLOR') newState = Object.assign({}, state, { color: 'red' });
+      return newState;
+    }
+    var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+    // 실행할 때마다 State의 color 값을 가지고 와서 화면에 그려줌
+    function red() {
+      var state = store.getState();
+      document.querySelector('#red').innerHTML = `
+        <div class="container" id="component_red" style="background-color:${state.color}">
+            <h1>red</h1>
+            <input type="button" value="fire" onclick="
+              store.dispatch({type:'CHANGE_COLOR', color:'red'});
+            ">
+        </div>
+    `;
+    }
+    function blue() {
+      var state = store.getState();
+      document.querySelector('#blue').innerHTML = `
+        <div class="container" id="component_blue" style="background-color:${state.color}">
+            <h1>blue</h1>
+            <input type="button" value="fire" onclick="
+              store.dispatch({type:'CHANGE_COLOR', color:'blue'});
+            ">
+        </div>
+    `;
+    }
+    function green() {
+      var state = store.getState();
+      document.querySelector('#green').innerHTML = `
+        <div class="container" id="component_green" style="background-color:${state.color}">
+            <h1>green</h1>
+            <input type="button" value="fire" onclick="
+              store.dispatch({type:'CHANGE_COLOR', color:'green'});
+            ">
+        </div>
+    `;
+    }
+
+    // Render 함수를 Subscribe 함수에 등록
+    store.subscribe(red);
+    store.subscribe(blue);
+    store.subscribe(green);
+
+    // 최초 실행
+    red();
+    blue();
+    green();
+  </script>
+</body>
+
+</html>

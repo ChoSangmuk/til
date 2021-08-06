@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.1.0/redux.min.js"></script>
+</head>
+
+<body>
+  <div id="subject"></div>
+  <div id="TOC"></div>
+  <div id="control"></div>
+  <div id="content"></div>
+  <script>
+    function reducer(state, action) {
+      if (state === undefined) {
+        return {
+          mode: "welcome",
+          max_id: 2,
+          selected_id: null,
+          contents: [
+            { id: 1, title: "HTML", desc: "html is ..." },
+            { id: 2, title: "CSS", desc: "css is ..." }
+          ]
+        };
+      }
+      var newState = {};
+      if (action.type === 'SELECT') {
+        newState = Object.assign({}, state, { mode: "read", selected_id: action.id });
+      } else if (action.type === 'CREATE') {
+        var newMaxId = state.max_id + 1;
+        newState = Object.assign({}, state, {
+          mode: "read",
+          max_id: newMaxId,
+          selected_id: newMaxId,
+          contents: state.contents.concat({ id: newMaxId, title: action.title, desc: action.desc })
+        });
+      } else if (action.type === 'DELETE') {
+        var newContents = state.contents.concat();
+        for (var i = 0; i < state.contents.length; i++) {
+          if (state.contents[i].id === state.selected_id) {
+            newContents.splice(i, 1);
+            break;
+          }
+        }
+        newState = Object.assign({}, state, {
+          mode: "welcome",
+          contents: newContents
+        });
+      } else if (action.type === 'CHANGE_MODE') {
+        newState = Object.assign({}, state, { mode: action.mode });
+      }
+
+      console.log(state, action, newState);
+      return newState;
+    }
+    var store = Redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+    function subject() {
+      document.querySelector('#subject').innerHTML = `
+        <header>
+          <h1>WEB</h1>
+          Hello, WEB!
+        </header>
+      `
+    }
+    function TOC() {
+      var state = store.getState();
+      var litags = ``;
+      state.contents.map(value => {
+        litags += `
+          <li>
+            <a href='/${value.id}' onclick="
+              event.preventDefault();
+              var action = {type:'SELECT', id:${value.id}};
+              store.dispatch(action);
+            ">${value.title}</a>
+          </li>
+        `
+      })
+      document.querySelector('#TOC').innerHTML = `<nav> <ol> ${litags} </ol> </nav>`
+    }
+    function control() {
+      document.querySelector('#control').innerHTML = `
+        <ul>
+          <li><a href='/create' onclick="
+            event.preventDefault();
+            store.dispatch({ type:'CHANGE_MODE', mode:"create" });
+          ">Create</a></li>
+          <li><input type="button" onclick="
+            store.dispatch({ type:'DELETE' });
+          " value="Delete" /></li>
+        </ul>
+      `
+    }
+    function article() {
+      var state = store.getState();
+      if (state.mode === "create") {
+        document.querySelector('#content').innerHTML = `
+          <article>
+            <form onsubmit="
+              event.preventDefault();
+              store.dispatch({ type: 'CREATE', title: this.title.value, desc: this.desc.value });
+            ">
+              <p><input type="text" name="title" placeholder="title" /></p>
+              <p><input type="text" name="desc" placeholder="description" /></p>
+              <p><input type="submit"></p>
+            </form>
+          </article>
+        `
+      } else if (state.mode === "read") {
+        var aTitle, aDesc;
+        for (var i = 0; i < state.contents.length; i++) {
+          if (state.contents[i].id === state.selected_id) {
+            aTitle = state.contents[i].title;
+            aDesc = state.contents[i].desc;
+            break;
+          }
+        }
+
+        document.querySelector('#content').innerHTML = `
+          <article>
+            <h2>${aTitle}</h2>
+            ${aDesc}
+          </article>
+        `
+      } else if (state.mode === "welcome") {
+        document.querySelector('#content').innerHTML = `
+          <article>
+            <h2>Welcome</h2>
+            Hello, Redux!
+          </article>
+        `
+      }
+    }
+
+    store.subscribe(article);
+    store.subscribe(TOC);
+
+    subject();
+    TOC();
+    control();
+    article();
+  </script>
+</body>
+
+</html>
