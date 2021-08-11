@@ -3,6 +3,7 @@
 - [인프런(생활코딩 - JavaScript Immutability)](https://www.inflearn.com/course/javascript-immutability/dashboard)
 - [생활코딩 홈페이지](https://opentutorials.org/module/4075)
 - [Youtube divide](https://www.youtube.com/playlist?list=PLuHgQVnccGMBxNK38TqfBWk-QpEI7UkY8)
+- [강사 github](https://github.com/egoing/js-immutability-tutorial-example)
 
 ## 1. 수업 소개
 - [WEB2 JavaScript](https://opentutorials.org/module/3180) 수업 참고

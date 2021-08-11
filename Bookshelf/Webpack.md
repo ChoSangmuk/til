@@ -21,7 +21,38 @@
   - Webpack, Browserify, Parcel 등이 이에 속함
 
 ## 2. 웹팩이전의 세계와 모듈의 개념
+- JS로 HTML의 화면을 그려주는 간단한 예제 작성, module의 유무에 따른 차이 비교
+- 파일 시스템으로는 실행이 불가능하니 VS Code Live Server 플러그인 이용
+- withoutModule
+  - [index.html](PracticeSource/Webpack/withoutModule/index.html), [hello.js](PracticeSource/Webpack/withoutModule/source/hello.js), [world.js](PracticeSource/Webpack/withoutModule/source/world.js)
+  - 서로 같은 이름의 변수를 사용하기 때문에 의도치 않는 결과가 생성될 가능성이 있음
+- withModule
+  - [index.html](PracticeSource/Webpack/withModule/index.html), [hello.js](PracticeSource/Webpack/withModule/source/hello.js), [world.js](PracticeSource/Webpack/withModule/source/world.js)
+  - 모듈을 사용하고 싶은 script 태그의 type을 module로 설정
+  - 전통적인 script 호출 방법 대신 script 태그 내부에서 **import A from 'path'** 키워드 사용
+  - 호출 대상이 되는 script 파일에서는 **export** 키워드로 외부에서 사용될 변수, 함수를 정의
+  - module은 비교적 최신 기능이기 때문에 브라우저간 호환성 문제가 있으며, module이 많아질수록 더 많은 자원과 시간을 요구함
+- 이러한 요구와 문제를 해결하기위해 **Bundler**라는 도구가 생겨남
+
 ## 3. 웹팩의 도입
+- Webpack 도입 시, refactoring 효과를 기대할 수 있음
+- refactoring : 구동되는 방법은 그대로 유지하며, 내부의 코드를 더 효율적으로 바꾸는 과정
+- [앞서 작성한 코드](PracticeSource/Webpack/withModule/index.html)의 기능은 유지, 구형 브라우저에서 사용 가능하고 여러 개의 파일을 하나의 파일로 제공(Bundling)하는 것을 원함
+- Webpack을 사용하기 위해 프로젝트를 Node.js Package로 설정하고 Webpack 설치
+```sh
+# Shell
+npm init -y # Node.js Package로 설정
+npm install -D webpack webpack-cli # webpack 설치
+```
+- 소스코드 수정 [index.html](PracticeSource/Webpack/startWebpack/index.html), [index.js](PracticeSource/Webpack/startWebpack/source/index.js), [hello.js](PracticeSource/Webpack/startWebpack/source/hello.js), [world.js](PracticeSource/Webpack/startWebpack/source/world.js)
+- Application의 entry(기입, 시작) file은 index.js
+- Webpack을 사용하여 index.js을 Bundling. 이때, index.js에서 사용하는 하위 파일도 포함됨
+- Bundling이 결과를 public이라는 폴더에 저장
+```sh
+# Shell
+npx webpack --entry ./source/index.js --target ./public/index_bundle.js
+```
+
 ## 4. 설정파일 도입
 ## 5. 모드의 도입
 ## 6. 로더의 도입

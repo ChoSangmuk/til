@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+</head>
+
+<body>
+  <h1>With Module</h1>
+  <div id='root'> </div>
+  <script type="module">
+    import hello_word from './source/hello.js';
+    import world_word from './source/world.js';
+    document.querySelector('#root').innerHTML = hello_word + " " + world_word;
+  </script>
+</body>
+
+</html>
