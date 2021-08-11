@@ -47,10 +47,10 @@ npm install -D webpack webpack-cli # webpack 설치
 - 소스코드 수정 [index.html](PracticeSource/Webpack/startWebpack/index.html), [index.js](PracticeSource/Webpack/startWebpack/source/index.js), [hello.js](PracticeSource/Webpack/startWebpack/source/hello.js), [world.js](PracticeSource/Webpack/startWebpack/source/world.js)
 - Application의 entry(기입, 시작) file은 index.js
 - Webpack을 사용하여 index.js을 Bundling. 이때, index.js에서 사용하는 하위 파일도 포함됨
-- Bundling이 결과를 public이라는 폴더에 저장
+- Bundling 결과를 public 폴더에 index_bundle.js로 저장
 ```sh
 # Shell
-npx webpack --entry ./source/index.js --target ./public/index_bundle.js
+npx webpack --mode production --entry ./source/index.js --output-path ./public --output-filename index_bundle.js
 ```
 
 ## 4. 설정파일 도입
