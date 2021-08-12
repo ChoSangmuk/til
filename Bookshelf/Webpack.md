@@ -11,7 +11,7 @@
 
 <br>![concept](Image/Webpack/concept.png)<br>
 
-- Webpack 
+- [Webpack](https://webpack.js.org/) 
   - 브라우저에서 웹 페이지를 동적으로 제어하는 기술인 **JavaScript를 더 잘다루기 위한 기술**
   - Webpack을 이용하여 하나의 JavaScript 파일에 JS, CSS, 이미지와 같은 여러 모듈들을 모을 수 있고, 필요하다면 다시 분리할 수 있음
 - 웹에 요구사항이 점점 더 다양하고 복잡해짐에 따라 점점 더 많은 파일이 필요, 이로 인해 서버와의 통신이 여러번 반복되며 자원이 낭비됨
@@ -47,13 +47,45 @@ npm install -D webpack webpack-cli # webpack 설치
 - 소스코드 수정 [index.html](PracticeSource/Webpack/startWebpack/index.html), [index.js](PracticeSource/Webpack/startWebpack/source/index.js), [hello.js](PracticeSource/Webpack/startWebpack/source/hello.js), [world.js](PracticeSource/Webpack/startWebpack/source/world.js)
 - Application의 entry(기입, 시작) file은 index.js
 - Webpack을 사용하여 index.js을 Bundling. 이때, index.js에서 사용하는 하위 파일도 포함됨
-- Bundling 결과를 public 폴더에 index_bundle.js로 저장
+- Bundling 결과를 public 폴더에 [index_bundle.js](PracticeSource/Webpack/startWebpack/public/index_bundle.js)로 저장
 ```sh
 # Shell
 npx webpack --mode production --entry ./source/index.js --output-path ./public --output-filename index_bundle.js
 ```
 
 ## 4. 설정파일 도입
+- Webpack으로 Bundling 진행 시 사용되는 명령어는 프로젝트가 커질수록 별도의 관리가 필요
+- 가독성과 재사용성을 증가시킬 방법으로 설정 파일(webpack.config.js)을 만들고, 해당 파일에 Webpack 실행 명령어를 정리
+- [공식 홈페이지의 config 안내](https://webpack.js.org/configuration/)를 통해 필요한 설정 정보를 확인
+  - __dirname는 현재 파일의 경로를 알려주는 Node.js/path 변수
+```js
+const path = require('path');
+
+module.exports = {
+  mode: "production", // "production" | "development" | "none"
+  // Chosen mode tells webpack to use its built-in optimizations accordingly.
+  entry: "./source/index.js", // string | object | array
+  // defaults to ./src
+  // Here the application starts executing
+  // and webpack starts bundling
+  output: {
+    // options related to how webpack emits results
+    path: path.resolve(__dirname, "public"), // string (default)
+    // the target directory for all output files
+    // must be an absolute path (use the Node.js path module)
+    filename: "index_bundle.js" // string (default)
+    // the filename template for entry chunks
+  }
+}
+```
+- 설정 파일을 바탕으로 Webpack Bundling 진행
+- config 파일 명으로 default 값(webpack.config.js)을 사용했다면 옵션을 주지 않아도됨
+```sh
+# Shell
+npx webpack --config webpack.config.js
+npx webpack 
+```
+
 ## 5. 모드의 도입
 ## 6. 로더의 도입
 ## 7. output 설정
