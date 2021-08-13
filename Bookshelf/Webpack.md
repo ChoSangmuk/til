@@ -56,7 +56,7 @@ npx webpack --mode production --entry ./source/index.js --output-path ./public -
 ## 4. 설정파일 도입
 - Webpack으로 Bundling 진행 시 사용되는 명령어는 프로젝트가 커질수록 별도의 관리가 필요
 - 가독성과 재사용성을 증가시킬 방법으로 설정 파일(webpack.config.js)을 만들고, 해당 파일에 Webpack 실행 명령어를 정리
-- [공식 홈페이지의 config 안내](https://webpack.js.org/configuration/)를 통해 필요한 설정 정보를 확인
+- [공식 홈페이지의 config 문서](https://webpack.js.org/configuration/)를 통해 필요한 설정 정보를 확인
   - __dirname는 현재 파일의 경로를 알려주는 Node.js/path 변수
 ```js
 const path = require('path');
@@ -87,6 +87,12 @@ npx webpack
 ```
 
 ## 5. 모드의 도입
+- Webpack은 굉장히 많은 설정을 가지기 때문에 기본적인 설정값을 가짐
+- mode 옵션은 기본 설정값 중 하나이며, 기본값은 production로 설정됨
+- none, development, production 값을 가질 수 있음
+- 자세한 내용은 [공식 홈페이지의 mode 문서](https://webpack.js.org/configuration/mode/#root)를 통해 필요한 설정 정보를 확인
+- 시스템 환경 변수와 조건문을 통해 webpack.config.js 내부에서 설정을 변경하는 것도 가능
+
 ## 6. 로더의 도입
 ## 7. output 설정
 ## 8. 플러그인의 도입
