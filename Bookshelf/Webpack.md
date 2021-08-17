@@ -62,7 +62,7 @@ npx webpack --mode production --entry ./source/index.js --output-path ./public -
 const path = require('path');
 
 module.exports = {
-  mode: "production", // "production" | "development" | "none"
+  mode: "development", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
   entry: "./source/index.js", // string | object | array
   // defaults to ./src
@@ -94,6 +94,46 @@ npx webpack
 - 시스템 환경 변수와 조건문을 통해 webpack.config.js 내부에서 설정을 변경하는 것도 가능
 
 ## 6. 로더의 도입
+- 기존의 HTML에서 CSS를 사용하고 싶다면 link Tag를 통해 해당 파일을 불러옴
+- CSS도 Webpack에서 제공하는 Loader(style-loader, css-loader)를 통해 Bundling이 가능
+  - 자세한 내용은 [공식 홈페이지 Asset Management 문서](https://webpack.kr/guides/asset-management/) 참고
+- CSS를 Bundling 해주는 Loader를 설치
+```sh
+# Shell
+npm install --save-dev style-loader css-loader
+```
+- webpack.config.js 수정 
+  - module, test의 정규표현식에 해당하는 자원은 use에 작성된 loader를 **역순으로 통과** 시킴
+  - css-loader가 CSS파일을 JavaScript의 형태로 Bundling해서 Webpack으로 가져옴 
+```js
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  mode: "development",
+  entry: "./source/index.js",
+  output: {/* */},
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+}
+```
+- Bundling된 CSS를 사용할 때는 entry 파일에서 해당 CSS를 import
+  - style-loader가 JavaScript의 형태로 주입된 CSS를 자동으로 head tag 안에 style 태그로 주입해줌
+```js
+// index.js
+import hello_word from './hello';
+import world_word from './world';
+import css from './style.css';
+document.querySelector('#root').innerHTML = hello_word + " " + world_word;
+```
+- [공식 홈페이지 Loaders 문서](https://webpack.kr/loaders/)에서 제공하는 Loader를 한번 훑어보고 필요할때 사용
+
 ## 7. output 설정
 ## 8. 플러그인의 도입
 ## 9. 선물
