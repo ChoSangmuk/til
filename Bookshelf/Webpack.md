@@ -24,10 +24,10 @@
 - JS로 HTML의 화면을 그려주는 간단한 예제 작성, module의 유무에 따른 차이 비교
 - 파일 시스템으로는 실행이 불가능하니 VS Code Live Server 플러그인 이용
 - withoutModule
-  - [index.html](PracticeSource/Webpack/withoutModule/index.html), [hello.js](PracticeSource/Webpack/withoutModule/source/hello.js), [world.js](PracticeSource/Webpack/withoutModule/source/world.js)
+  - [index.html](PracticeSource/Webpack/withoutModule/index.html), [hello.js](PracticeSource/Webpack/withoutModule/src/hello.js), [world.js](PracticeSource/Webpack/withoutModule/src/world.js)
   - 서로 같은 이름의 변수를 사용하기 때문에 의도치 않는 결과가 생성될 가능성이 있음
 - withModule
-  - [index.html](PracticeSource/Webpack/withModule/index.html), [hello.js](PracticeSource/Webpack/withModule/source/hello.js), [world.js](PracticeSource/Webpack/withModule/source/world.js)
+  - [index.html](PracticeSource/Webpack/withModule/index.html), [hello.js](PracticeSource/Webpack/withModule/src/hello.js), [world.js](PracticeSource/Webpack/withModule/src/world.js)
   - 모듈을 사용하고 싶은 script 태그의 type을 module로 설정
   - 전통적인 script 호출 방법 대신 script 태그 내부에서 **import A from 'path'** 키워드 사용
   - 호출 대상이 되는 script 파일에서는 **export** 키워드로 외부에서 사용될 변수, 함수를 정의
@@ -44,13 +44,13 @@
 npm init -y # Node.js Package로 설정
 npm install --save-dev webpack webpack-cli # webpack 설치
 ```
-- 소스코드 수정 [index.html](PracticeSource/Webpack/startWebpack/index.html), [index.js](PracticeSource/Webpack/startWebpack/source/index.js), [hello.js](PracticeSource/Webpack/startWebpack/source/hello.js), [world.js](PracticeSource/Webpack/startWebpack/source/world.js)
+- 소스코드 수정 [index.html](PracticeSource/Webpack/startWebpack/index.html), [index.js](PracticeSource/Webpack/startWebpack/src/index.js), [hello.js](PracticeSource/Webpack/startWebpack/src/hello.js), [world.js](PracticeSource/Webpack/startWebpack/src/world.js)
 - Application의 entry(기입, 시작) file은 index.js
 - Webpack을 사용하여 index.js을 Bundling. 이때, index.js에서 사용하는 하위 파일도 포함됨
 - Bundling 결과를 public 폴더에 [index_bundle.js](PracticeSource/Webpack/startWebpack/public/index_bundle.js)로 저장
 ```sh
 # Shell
-npx webpack --mode development --entry ./source/index.js --output-path ./public --output-filename index_bundle.js
+npx webpack --mode development --entry ./src/index.js --output-path ./public --output-filename index_bundle.js
 ```
 
 ## 4. 설정파일 도입
@@ -65,7 +65,7 @@ const path = require('path');
 module.exports = {
   mode: "development", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: "./source/index.js", // string | object | array
+  entry: "./src/index.js", // string | object | array
   // defaults to ./src
   // Here the application starts executing
   // and webpack starts bundling
@@ -111,7 +111,7 @@ const path = require('path');
 
 module.exports = {
   mode: "development",
-  entry: "./source/index.js",
+  entry: "./src/index.js",
   output: {/* */},
   module: {
     rules: [
@@ -136,31 +136,68 @@ document.querySelector('#root').innerHTML = hello_word + " " + world_word;
 - [공식 홈페이지 Loaders 문서](https://webpack.kr/loaders/) 참고
 
 ## 7. output 설정
-- 각각의 페이지(index.html, about.html)에서 서로 다른 Bundle을 사용하는 경우의 Bundling 설정
-- webpack.config.js의 entry 속성을 객체 형태{}로 변경, entry 파일 경로에 이름을 지정
+- 각각의 페이지([index.html](PracticeSource/Webpack/startWebpack/index.html), [about.html](PracticeSource/Webpack/startWebpack/about.html))에서 서로 다른 Bundle을 사용하는 경우의 Bundling 설정
+- [webpack.config.js](PracticeSource/Webpack/startWebpack/webpack.config.js)의 entry 속성을 객체 형태{}로 변경, entry 파일 경로에 이름을 지정
 - entry 속성에 정의된 파일을 전부 Bundling, filename에 \[name\]을 사용하면 entry에 설정한 이름으로 Bundling됨
   - 결과물 : public/index_bundle.js, public/about_bundle.js
-```js
-// webpack.config.js
-const path = require('path');
-
-module.exports = {
-  mode: "development",
-  entry: {
-    index: "./source/index.js", 
-    about: "./source/about.js"
-  },
-  output: {
-    path: path.resolve(__dirname, "public"),
-    filename: "[name]_bundle.js"
-  },
-  module: {/* */},
-}
-```
 - [공식 홈페이지 Output 문서](https://webpack.kr/configuration/output/) 참고
 
 ## 8. 플러그인의 도입
+- Webpack은 2가지 형태의 확장 기능이 있음
+- Loader
+  - Module로 결과물(Bundle)을 만들어가는 과정에서 사용
+  - 동작 형태가 정해짐
+- Plugin
+  - 생성된 결과물를 변형하는데 사용
+  - 복합적이고 자유롭게 동작
+  - Plugin 마다 사용법이 제각각
+- [공식 홈페이지 Plugin 문서](https://webpack.kr/plugins/) 참고
+  - [HtmlWebpackPlugin](https://webpack.kr/plugins/html-webpack-plugin/) 연습
+```sh
+# Shell
+npm install --save-dev html-webpack-plugin
+```
+- 앞서 작성한 HTML 파일([index.html](PracticeSource/Webpack/startWebpack/index.html), [about.html](PracticeSource/Webpack/startWebpack/about.html))은 의존성을 가지고 있는 Bundle을 직접 삽입해서 사용
+- HTML파일 자동 생성 혹은 템플릿으로 최종 결과물을 만들고 싶다면 해당 Plugin 사용
+- HTML파일을 자원으로서 다루게끔 src 폴더로 이동하고 직접 삽입한 Bundle을 삭제,
+  - [index.html](PracticeSource/Webpack/usingPlugin/src/index.html), [about.html](PracticeSource/Webpack/usingPlugin/about.html)
+- 해당 HTML을 템플릿으로 Webpack으로 Bundling 했을때 public 폴더에 최종적으로 완성된 HTML 생성
+- [webpack.config.js](PracticeSource/Webpack/usingPlugin/webpack.config.js)에 Plugin을 load(require)하고 실행
+  - plugins 배열 속성에 Plugin 입력 
+  - 플러그인 객체 생성자에 객체 인자를 입력
+
 ## 9. 선물
+- Assets을 수정할 때 마다 수동으로 Bundling하는 것은 비효율적
+- 실행 옵션 중, --watch 옵션을 사용하면 Assets이 수정될 때 마다 자동으로 Bundling 해줌
+```sh
+# Shell
+$ npx webpack -h
+## ...
+Options:
+  -c, --config <value...>                Provide path to a webpack configuration file e.g. ./webpack.config.js.
+  --config-name <value...>               Name of the configuration to use.
+  -m, --merge                            Merge two or more configurations using 'webpack-merge'.
+  --env <value...>                       Environment passed to the configuration when it is a function.
+  --node-env <value>                     Sets process.env.NODE_ENV to the specified value.
+  --progress [value]                     Print compilation progress during build.
+  -j, --json [value]                     Prints result as JSON or store it in a file.
+  -d, --devtool <value>                  Determine src maps to use.
+  --no-devtool                           Do not generate src maps.
+  --entry <value...>                     The entry point(s) of your application e.g. ./src/main.js.
+  --mode <value>                         Defines the mode to pass to webpack.
+  --name <value>                         Name of the configuration. Used when loading multiple configurations.
+  -o, --output-path <value>              Output location of the file generated by webpack e.g. ./dist/.
+  --stats [value]                        It instructs webpack on how to treat the stats e.g. verbose.
+  --no-stats                             Disable stats output.
+  -t, --target <value...>                Sets the build target e.g. node.
+  --no-target                            Negative 'target' option.
+  -w, --watch                            Watch for files changes.
+  --no-watch                             Do not watch for file changes.
+  --watch-options-stdin                  Stop watching when stdin stream has ended.
+  --no-watch-options-stdin               Do not stop watching when stdin stream has ended.
+## ...
+```
+
 ## 10. npm 패키지 사용
 ## 11. 수업을 마치며
 ## Reference
