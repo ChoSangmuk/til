@@ -3,7 +3,10 @@ const path = require('path');
 module.exports = {
   mode: "development", // "production" | "development" | "none"
   // Chosen mode tells webpack to use its built-in optimizations accordingly.
-  entry: "./source/index.js", // string | object | array
+  entry: {
+    index: "./source/index.js", // string | object | array
+    about: "./source/about.js"
+  },
   // defaults to ./src
   // Here the application starts executing
   // and webpack starts bundling
@@ -12,7 +15,7 @@ module.exports = {
     path: path.resolve(__dirname, "public"), // string (default)
     // the target directory for all output files
     // must be an absolute path (use the Node.js path module)
-    filename: "index_bundle.js" // string (default)
+    filename: "[name]_bundle.js", // string (default)
     // the filename template for entry chunks
   },
   module: {
