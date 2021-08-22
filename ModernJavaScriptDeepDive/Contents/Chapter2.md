@@ -3,7 +3,7 @@
 ## 2.1 자바스크립트의 탄생
 1995년 Netscape Communications는 **웹 페이지의 보조적인 기능을 위해 브라우저에서 동작하는 경량 프로그래밍 언어** 도입을 결정하였고, 이때 브렌던 아이크(Brendan Eich)에 의해 개발된 언어가 **자바스크립트(JavaScript)** 다. 자바스크립트는 1996년 3월 Netscape Navigator 2에 탑재되었고 모카(Mocha), 라이브스크립트(LiveScript)를 거쳐 자바스크립트(JavaScript)라는 이름으로 최종 명명되었다.
 
-<img src="../Image/netscape-navigator-2.png" width="650" height="100%"><br> - Netscape Navigator 2
+<img src="../Image/Chapter2/netscape-navigator-2.png" width="650" height="100%"><br> - Netscape Navigator 2
 
 <br>
 
@@ -35,41 +35,41 @@
 <br>
 
 ### 2.3.1 Ajax
-<img src="../Image/ajax.png" width="200" height="100%"><br>
+<img src="../Image/Chapter2/ajax.png" width="200" height="100%"><br>
 1999년, 자바스크립트를 이용해 서버와 클라이언트(브라우저)가 비동기 방식으로 데이터를 교환할 수 있는 통신 기능인 Ajax(Asynchronous JavaScript and XML)가 등장했다.<br>
 이전의 브라우저는 완성된 HTML 파일을 서버로부터 전달받아 렌더링했는데, 사소한 화면 변경에도 서버로부터 새로운 HTML 파일을 전달받아 다시 랜더링했기 때문에 성능면에서 불리하였다. Ajax의 등장 이후 서버로부터 전체 HTML 파일이 아닌 필요한 데이터만 전달받아 변경이 필요한 부분만 랜더링하는 방식이 가능해졌다. 이로 인해 웹 브라우저에서도 빠른 성능과 부드러운 화면 전환이 가능해졌다.
 
 <br>
 
 ### 2.3.2 jQuery
-<img src="../Image/jquery.png" width="250" height="100%"><br>
+<img src="../Image/Chapter2/jquery.png" width="250" height="100%"><br>
 2006년, jQuery의 등장으로 다소 번거롭고 논란이 있던 DOM(Document Object Model)을 더욱 쉽게 제어할 수 있게 되었고 크로스 브라우징 이슈도 어느 정도 해결되었다. 
 
 <br>
 
 ### 2.3.3 V8 자바스크립트 엔진
-<img src="../Image/v8.png" width="100" height="100%"><br>
+<img src="../Image/Chapter2/v8.png" width="100" height="100%"><br>
 자바스크립트를 이용하여 웹 어플리케이션을 만드는 것이 가능함을 확인하자 빠르게 동작하는 자바스크립트 엔진의 필요성이 대두 되었다.<br>
 2008년, 구글의 V8 자바스크립트 엔진은 이러한 요구에 부합하는 빠른 성능을 보여주었고, 웹 서버에서 수행되던 로직들이 대거 클라이언트(브라우저)로 이동하면서 웹 개발 영역에서 Front-end 영역이 주목받게 되는 계기가 되었다. 
 
 <br>
 
 ### 2.3.4 Node.js
-<img src="../Image/nodejs.svg" width="250" height="100%"><br>
+<img src="../Image/Chapter2/nodejs.svg" width="250" height="100%"><br>
 2009년, 라이언 달(Ryan Dahl)이 발표한 Node.js는 구글의 V8 자바스크립트 엔진을 이용하여 브라우저 이외의 환경에서도 동작할 수 있도록 독립시킨 **자바스크립트 실행(런타임)환경**이다.<br>
 다양한 플랫폼(크로스 플랫폼)에 적용 가능하지만 주로 서버 사이드 애플리케이션에 사용되며, 이에 필요한 모듈, 파일 시스템, HTTP, 빌트인 API를 제공한다. 또한, 비동기 I/O를 지원하며 단일 스레드 이벤트 루프 기반으로 동작함으로써 요청처리 성능이 좋고 I/O가 빈번하게 발생하는 SPA에 적합하다.
 
 <br>
 
 ### 2.3.5 SPA(Single Page Application) 프레임워크
-<img src="../Image/spa.png" width="250" height="100%"><br>
+<img src="../Image/Chapter2/spa.png" width="250" height="100%"><br>
 모던 웹 애플리케이션은 데스크탑 애플리케이션과 비교해도 손색없는 성능과 사용자 경험을 제공하는 것이 필수가 됨에 따라 개발 규모와 복잡도가 상승하였는데, 많은 라이브러리와 개발 패턴이 등장했지만 유연성과 확장성을 만족시키기에는 부족하였다.<br>
 이러한 요구에 발맞춰 CBD(Component Based Development)방법론을 기반으로 하는 SPA(Single Page Application) 프레임워크/라이브러리(Angular, React, Vue 등)가 대중화 되었다. 
 
 <br>
 
 ## 2.4 자바스크립트와 ECMAScript
-ECMAScrippt는 자바스크립트 표준 사양인 ECMA-262를 말하며, 프로그래밍 언어의 값, 타입, 객체와 프로퍼티, 함수 등 핵심 문법을 규정한다. 각 브라우저 제조사는 ECMAScript 사양을 따르는 자바스크립트 엔진을 구현한다.<br>
+ECMAScript는 자바스크립트 표준 사양인 ECMA-262를 말하며, 프로그래밍 언어의 값, 타입, 객체와 프로퍼티, 함수 등 핵심 문법을 규정한다. 각 브라우저 제조사는 ECMAScript 사양을 따르는 자바스크립트 엔진을 구현한다.<br>
 **자바스크립트는 일반적으로 언어의 기본 뼈대를 ECMAScript로 하여 브라우저가 별도로 지원하는 클라이언트 사이드 Web API(DOM, BOM 등)를 아우르는 상위 호환의 개념**이며, 클라리어언트 사이드 Web API는 ECMAScript와 별도로 W3C에서 별도 사양으로 관리하고 있다.
 
 <br>

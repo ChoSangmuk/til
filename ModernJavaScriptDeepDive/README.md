@@ -7,9 +7,9 @@
 <br><br>
 
 ## **목차**
-### [01장: 프로그래밍](Chapter/Chapter1.md)
-### [02장: 자바스크립트란?](Chapter/Chapter2.md)
-### 03장: 자바스크립트 개발 환경과 실행 방법
+### [01장: 프로그래밍](Contents/Chapter1.md)
+### [02장: 자바스크립트란?](Contents/Chapter2.md)
+### [03장: 자바스크립트 개발 환경과 실행 방법](Contents/Chapter3.md)
 ### 04장: 변수
 ### 05장: 표현식과 문
 ### 06장: 데이터 타입
