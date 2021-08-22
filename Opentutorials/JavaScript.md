@@ -4,4 +4,4 @@
 - [생활코딩 홈페이지](https://opentutorials.org/module/3180)
 - [Youtube divide](https://www.youtube.com/playlist?list=PLuHgQVnccGMBB348PWRN0fREzYcYgFybf)
 
-<img src="./Image/JavaScriptOpentutorials/summary.png" width="75%" height="75%">
+<img src="./Image/JavaScript/summary.png" width="75%" height="75%">

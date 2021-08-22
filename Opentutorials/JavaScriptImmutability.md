@@ -7,7 +7,7 @@
 
 ## 1. 수업 소개
 - [WEB2 JavaScript](https://opentutorials.org/module/3180) 수업 참고
-  - [학습 내용 정리](./JavaScriptOpentutorials.md)
+  - [학습 내용 정리](./JavaScript.md)
 - [WEB2 Node.js](https://opentutorials.org/course/3332) 수업 참고
 ```js
 mutate - 변화

@@ -12,7 +12,7 @@
 ## 오리엔테이션
 ### 1. 수업 소개
 - [WEB2 JavaScript](https://opentutorials.org/module/3180) 수업 참고
-  - [학습 내용 정리](./JavaScriptOpentutorials.md)
+  - [학습 내용 정리](./JavaScript.md)
 - [JavaScript Immutability](https://opentutorials.org/module/4075) 수업 참고
   - [학습 내용 정리](./JavaScriptImmutability.md)
 - 웹 애플리케이션은 (데이터의) 상태에 따라 화면의 UI구성이 변경되어야함
