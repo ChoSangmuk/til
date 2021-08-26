@@ -19,7 +19,7 @@
 |ES2|1998|ISO/IEC 16262 국제 표준과 동일한 규격을 적용|
 |ES3|1999|Regular Expression, try ... catch|
 |ES5|2009|HTML5와 함께 출현한 표준안, JSON, strict mode<br>Accessors Property, Property Attribute 제어<br>향상된 배열 조작 기능(forEach, map, filter, reduce, some, every)|
-|**ES6**<br>**ECMAScript 2015**|2015|Module import & export, 디스트럭처링 할당<br>Symbol, Promise, Map/Set, Iterable<br>for ... of, Generator, Proxylet/const, Class<br>Arrow Function, Template Literals, Spread Syntax, rest Parameter|
+|**ES6**<br>**ECMAScript 2015**|2015|Module import & export, 디스트럭처링 할당<br>Symbol, Promise, Map/Set, Iterable<br>for ... of, Generator, Proxy, let/const, Class<br>Arrow Function, Template Literals, Spread Syntax, rest Parameter|
 |ES7<br>ECMAScript 2016|2016|지수(**)연산자<br>Array.prototype.includes, String.prototype.includes|
 |ES8<br>ECMAScript 2017|2017|async/await<br>Object Static Method(Object.value, Object.entries, Object.getOwnPropertyDescriptors)|
 |ES9<br>ECMAScript 2018|2018|async generator, for await ... of<br>Object rest/spread property, Promise.prototype.finally|
@@ -80,6 +80,15 @@ ECMAScript는 자바스크립트 표준 사양인 ECMA-262를 말하며, 프로�
 
 자바스크립트는 기본적으로 개발자가 별도의 컴파일을 하지 않는 **인터프리터 언어**이다. 하지만 대부분의 모던 자바스크립트 엔진은 인터프리터 언어와 컴파일러 언어의 장점을 결합해 비교적 처리 속도가 느린 인터프리터의 단점을 해결하며 인터프리터 언어의 장점인 동적 기능 지원을 그대로 유지하였다. 또한, 자바스크립트는 명령형, 함수형, 프로토타입 기반 객체지향 프로그래밍을 지원하는 **멀티 패러다임 프로그래밍 언어**다.
 
+- **인터프리터 언어 vs. 컴파일러 언어**
+
+> |인터프리터 언어|컴파일러 언어|
+> |-----|-----|
+> |인터프리터 단계와 실행 단계(런타임)가 분리 되어있지 않음|컴파일 단계와 실행 단계가 분리|
+> |한 줄씩 바이트코드로 변환하고 즉시 실행|컴파일 단계에서 명시적으로 소스코드 전체를 머신코드로 변환 후 명시적으로 파일을 실행|
+> |실행 파일을 생성하지 않음|실행 파일을 생성|
+> |코드가 실행될 때마다 인터프리터 과정이 반복 수행, 코드 실행 속도가 비교적 느림|실행에 앞서 컴파일은 단 한번 수행, 코드 실행 속도가 빠름|
+
 <br>
 
 ## 2.6 ES6 브라우저 지원 현황
@@ -90,9 +99,9 @@ ECMAScript는 자바스크립트 표준 사양인 ECMA-262를 말하며, 프로�
 
 ## Summary
 - 자바스크립트의 시작은 웹 페이지의 보조적인 기능을 위해 브라우저에서 동작하는 경량 프로그래밍 언어였다.
-- 초기에 표준화 되지 않은 상황에서 크로스 브라우징 이슈가 존재했었고, 이에 따라 ECMA International에 의해 ECMAScript로 명명되어 관리되고있다. 2015년 ES6로 인해 범용 프로그래밍 언어로서의 역할을 할 수 있게끔 큰 변화를 거쳤다.  
-- 단순 렌더링의 용도 부터 시작하여 Ajax, jQuery를 통해 사용성이 증가하였고, V8엔진을 통해 더 빠른 속도를 지원할 수 있게되었다. Node.js의 등장으로 인해 단순 브라우저에서만 동작하는 언어가 아닌 크로스 플랫폼을 지원하는 언어로 한 단계 발전할 수 있었으며, 웹 페이지에 대한 사용자의 요구 사항이 데스크탑 애플리케이션 만큼 다양하고 커지면서 SPA 프레임워크, 라이브러리가 대중화 되었다. 
-- 자바스크립트는 ECMAScript의 구현체이며 클라리어언트 사이드 Web API가 추가된 것으로 볼수 있다. Web API에 대한 사양은 ECMAScript와 별도로 W3C에서 별도 사양으로 관리하고 있다. 자바스크립트는 기본적으로 인터프리터 언어이지만, 각 브라우저의 자바스크립트 엔진이 컴파일러의 장점을 결합해 실행 시 더 빠르게 작동하게끔 지원한다.
+- 초기에 표준화 되지 않은 상황에서 크로스 브라우징 이슈가 존재했었고, 이에 따라 ECMA International에 의해 ECMAScript로 명명되어 관리되고 있다. 2015년 ES6로 인해 범용 프로그래밍 언어로서의 역할을 할 수 있게끔 큰 변화를 거쳤다.  
+- 단순 렌더링의 용도부터 시작하여 Ajax, jQuery를 통해 사용성이 증가하였고, V8엔진을 통해 더 빠른 속도를 지원할 수 있게 되었다. Node.js의 등장으로 인해 단순 브라우저에서만 동작하는 언어가 아닌 크로스 플랫폼을 지원하는 언어로 한 단계 발전할 수 있었으며, 웹 페이지에 대한 사용자의 요구 사항이 데스크탑 애플리케이션 만큼 다양하고 커지면서 SPA 프레임워크, 라이브러리가 대중화 되었다. 
+- 자바스크립트는 ECMAScript의 구현체이며 클라리어언트 사이드 Web API가 추가된 것으로 볼 수 있다. Web API에 대한 사양은 ECMAScript와 별도로 W3C에서 별도 사양으로 관리하고 있다. 자바스크립트는 기본적으로 인터프리터 언어이지만, 각 브라우저의 자바스크립트 엔진이 컴파일러의 장점을 결합해 실행 시 더 빠르게 작동하게끔 지원한다.
 - 자바스크립트는 여러 패러다임의 프로그래밍이 가능하게끔 지원하는 멀티 패러다임 프로그래밍 언어이다.
 
 <br>
