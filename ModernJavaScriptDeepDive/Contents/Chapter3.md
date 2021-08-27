@@ -1,8 +1,7 @@
 # 03장: 자바스크립트 개발 환경과 실행 방법
 
 ## 3.1 자바스크립트 실행 환경
-기본적으로 **브라우저와 Node.js 모두 자바스크립트 코어인 ECMAScript를 실행**할 수 있다. 다만 주의해야할 것은 **브라우저와 Node.js에서 사용되는 자바스크립트의 용도가 다르다**는 것이다.<br>
-브라우저는 웹 페이지를 브라우저의 화면에 랜더링하는 것이 목적임으로 클라이언트 Web API를 지원하지만, Node.js는 브라우저 외부에서 자바스크립트 실행 환경을 제공하는 것이 목적임으로 Web API대신 Node.js 고유의 API를 지원한다.
+기본적으로 **브라우저와 Node.js 모두 자바스크립트 코어인 ECMAScript를 실행**할 수 있다. 다만 주의해야할 것은 **브라우저와 Node.js에서 사용되는 자바스크립트의 용도가 다르다**는 것이다. 브라우저는 웹 페이지를 브라우저의 화면에 랜더링하는 것이 목적임으로 클라이언트 Web API를 지원하지만, Node.js는 브라우저 외부에서 자바스크립트 실행 환경을 제공하는 것이 목적임으로 Web API대신 Node.js 고유의 API를 지원한다.
 
 <img src="../Image/Chapter3/browser-nodejs.png" width="450" height="100%"><br> - 이미지 출처 : https://curryyou.tistory.com/200
 
@@ -50,8 +49,7 @@ Chrome이 제공하는 개발자 도구는 **웹 애플리케이션 개발에 �
 <br>
 
 ### 3.2.4 디버깅
-개발자 도구 콘솔에서 오류 내용의 오른쪽에 링크를 클릭하면 자바스크립트 코드를 디버깅할 수 있는 Source 패널로 이동하여 오류의 원인을 확인할 수 있다.<br>
-디버깅은 오류 메세지를 확인하고 에러가 발생한 원인을 제거하는 일련의 과정이다. 위의 예제에서 발생한 오류의 원인을 확인하고 직접 수정하여 정상적으로 작동하는 웹페이지를 만들어 보는 것을 추천한다.
+개발자 도구 콘솔에서 오류 내용의 오른쪽에 링크를 클릭하면 자바스크립트 코드를 디버깅할 수 있는 Source 패널로 이동하여 오류의 원인을 확인할 수 있다. **디버깅은 오류 메세지를 확인하고 에러가 발생한 원인을 제거하는 일련의 과정**이다. 위의 예제에서 발생한 오류의 원인을 확인하고 직접 수정하여 정상적으로 작동하는 웹페이지를 만들어 보는 것을 추천한다.
 
 <br>
 
@@ -61,8 +59,7 @@ Chrome이 제공하는 개발자 도구는 **웹 애플리케이션 개발에 �
 <br>
 
 ### 3.3.1 Node.js와 npm 소개
-2009년, 라이언 달(Ryan Dahl)이 발표한 Node.js는 구글의 V8 자바스크립트 엔진을 이용하여 브라우저 이외의 환경에서도 동작할 수 있도록 독립시킨 **자바스크립트 실행(런타임)환경**이다.<br>
-npm(Node Package Manager)은 Node.js에서 사용할 수 있는 모듈들을 패키지화해서 모아둔 저장소 역할과 패키지 설치 및 관리를 위한 CLI를 제공한다.
+2009년, 라이언 달(Ryan Dahl)이 발표한 Node.js는 구글의 V8 자바스크립트 엔진을 이용하여 브라우저 이외의 환경에서도 동작할 수 있도록 독립시킨 **자바스크립트 실행(런타임)환경**이다. npm(Node Package Manager)은 Node.js에서 사용할 수 있는 모듈들을 패키지화해서 모아둔 저장소 역할과 패키지 설치 및 관리를 위한 CLI를 제공한다.
 
 <br>
 
@@ -83,10 +80,9 @@ $ npm -v # npm 버전 확인
 <br>
 
 ### 3.3.3 Node.js REPL
-node.js가 제공하는 REPL(Read Eval Print Loop : 입력 수행 출력 반복)을 사용하면 간단한 자바스크립트 코드를 실행해 결과를 확인할 수 있다.<br>
-자바스크립트 파일을 실행하려면 node 명령어 뒤에 파일 이름을 입력하여 실행하며, .js는 생략 가능하다. _CTRL + C_ 를 두 번 입력하면 Node.js REPL이 종료된다.
+node.js가 제공하는 REPL(Read Eval Print Loop : 입력 수행 출력 반복)을 사용하면 간단한 자바스크립트 코드를 실행해 결과를 확인할 수 있다. 자바스크립트 파일을 실행하려면 node 명령어 뒤에 파일 이름을 입력하여 실행하며, .js는 생략 가능하다. _CTRL + C_ 를 두 번 입력하면 Node.js REPL이 종료된다.
 
-<img src="../Image/Chapter3/nodejs-repl.png" width="350" height="100%"><br>
+<img src="../Image/Chapter3/nodejs-repl.png" width="450" height="100%"><br>
 
 <br>
 
@@ -103,7 +99,7 @@ VSCode는 기본적으로 터미널(윈도우의 경우 명령 프로프트)이 
 - macOS인 경우 _Command + J_ 로 터미널을 끄고 킬 수 있다.
 - 윈도우 OS인 경우 _Ctrl + ` 혹은 Ctrl + J_ 로 터미널을 끄고 킬 수 있다.
 
-<img src="../Image/Chapter3/result-03-02.png" width="350" height="100%"><br>
+<img src="../Image/Chapter3/result-03-02.png" width="500" height="100%"><br>
 
 <br>
 
@@ -113,31 +109,31 @@ VSCode의 내장 터미널에서 단축키를 사용해 자바스크립트를 �
 - macOS인 경우 _Control + Option + N_ 로 현재 표시 중인 자바스크립트 파일을 실행할 수 있다.
 - 윈도우 OS인 경우 _Ctrl + Alt + N_ 로 현재 표시 중인 자바스크립트 파일을 실행할 수 있다.
 
-<img src="../Image/Chapter3/code-runner.png" width="650" height="100%"><br>
+<img src="../Image/Chapter3/code-runner.png" width="550" height="100%"><br>
 
 <br>
 
 [예제 03-03](../PracticeSource/Chapter3/03-03.js)을 작성한 뒤 실행하면 ReferenceError: alert is not defined 오류가 발생한다. 
 소스코드 중 alert 메소드는 클라이언트 Web API, 브라우저에서만 동작하는 함수이기 때문에 발생하는 오류이다.
 
-<img src="../Image/Chapter3/result-03-03.png" width="350" height="100%"><br>
+<img src="../Image/Chapter3/result-03-03.png" width="850"><br>
 
 <br>
 
 ### 3.4.4 Live Server 확장 플러그인
-Web API가 포함된 자바스크립트를 실행하려면 크롬 개발자 도구의 콘솔에서 실행하거나 자바스크립트 코드를 HTML에 삽입해서 HTML 파일을 브라우저에서 실행해야한다. 
-브라우저에서 직접 파일을 열어도 좋지만 파일 경로 문제가 발생할 수도 있고, 소스를 수정할 때마다 매번 새로고침해야 함으로 번거롭다. 
+Web API가 포함된 자바스크립트를 실행하려면 크롬 개발자 도구의 콘솔에서 실행하거나 자바스크립트 코드를 HTML에 삽입해서 HTML 파일을 브라우저에서 실행해야한다. 브라우저에서 직접 파일을 열어도 좋지만 파일 경로 문제가 발생할 수도 있고, 소스를 수정할 때마다 매번 새로고침해야 함으로 번거롭다.
+
 이때 Live Server라는 확장 플러그인을 이용하면 소스가 변경되어 저장될 때마다 브라우저에 반영해줌으로 개발을 좀 더 빠르고 편리하게 개발할 수 있다.
 
 - macOS인 경우 _Command + L, Command + O_ 로 현재 표시 중인 HTML 파일을 가상 서버로 실행할 수 있다.
 
-<img src="../Image/Chapter3/live-server.png" width="650" height="100%"><br>
+<img src="../Image/Chapter3/live-server.png" width="550" height="100%"><br>
 
 <br>
 
 아래 이미지는 [예제 03-04](../PracticeSource/Chapter3/03-04.html)을 Live Server을 통해 실행한 결과다.
 
-<img src="../Image/Chapter3/result-03-04.png" width="650" height="100%"><br>
+<img src="../Image/Chapter3/result-03-04.png" width="550" height="100%"><br>
 
 <br>
 
