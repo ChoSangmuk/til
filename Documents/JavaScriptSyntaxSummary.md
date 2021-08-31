@@ -1,8 +1,11 @@
 # JavaScript Syntax Summary
 
 ## 변수
-- var 를 통해 타입 구분 없이 변수를 선언, 선언과 동시에 초기화 가능
-- typeof(parm)를 통해 타입확인
+- var, let, const 를 통해 타입 구분 없이 변수를 선언, 선언과 동시에 초기화 가능
+- JavaScript는 자동으로 자료형을 변환 
+  - 숫자와 문자열을 더할 때 숫자보다는 문자열이 우선시 됨
+  - 더하기를 제외한 사칙 연산자는 숫자가 우선시 됨
+  - 강제 형 변환
 ```js
 var stringVar = 'string'; // 문자열 ', " 사용
 var numberVar = 10; // 숫자
@@ -10,18 +13,11 @@ var booleanVar = true; // 물리언
 var functionVar = function () {}; // 함수
 var objectVar = {}; // 객체
 
-// 타입 확인 
-typeof(stringVar)
+typeof(stringVar) // 타입 확인
 
 // ===	양 변의 자료형과 값이 일치합니다.
 // !==	양 변의 자료형 또는 값이 다릅니다.
-```
 
-- JavaScript는 자동으로 자료형을 변환 
-  - 숫자와 문자열을 더할 때 숫자보다는 문자열이 우선시 됨
-  - 더하기를 제외한 사칙 연산자는 숫자가 우선시 됨
-  - 강제 형 변환
-```
 Number() : 다른 자료형을 숫자로
 String() : 다른 자료형을 문자열로
 Boolean() : 다른 자료형을 불리언형
@@ -32,6 +28,7 @@ Boolean() : 다른 자료형을 불리언형
   Boolean(null)
   Boolean(undefined)
 ```
+
 ### 문자열 
 - 문자열 관련 함수
   - [참고](https://lktprogrammer.tistory.com/124)
@@ -386,6 +383,20 @@ nodeClass.setMessage('Good to See u!');
 
 // 입력된 값을 출력한다.
 console.log(nodeClass.getMessage());
+```
+
+## 정규 표현식
+```js
+/^A/ // A로 시작하는 문자열
+/A$/ // A로 종료하는 문자열
+* // 0회 이상 반복
++ // 1회 이상 반복
+? // 0회 또는 1회 반복
+. // 모든 단일 문자 1개와 대응
+a{2}  // a가 2번 나타남
+X|Y // X 혹은 Y
+\ // 특수문자 앞에 위치한 백슬래시는 문자그대로 확인
+[] // 문자 셋
 ```
 
 ## 입력
