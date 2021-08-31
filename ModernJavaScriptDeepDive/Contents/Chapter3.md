@@ -65,10 +65,12 @@ Chrome이 제공하는 개발자 도구는 **웹 애플리케이션 개발에 �
 
 ### 3.3.2 Node.js 설치
 Node.js 웹 사이트에 접속하면 LTS, Current 버전이 존재한다. LTS 버전은 장기적으로 안정적인 지원이 보장되며, Current 버전은 최신기능을 제공하지만 덜 안정적이다. 상황에 맞게 버전을 설치하면 npm도 함께 설치된다.
+
 - [Node.js 다운로드 링크](https://nodejs.org/ko/)
 - macOS인 경우 _/usr/local/bin/node_ 에 설치된다.
 - 윈도우 OS인 경우 _C:\Program Files\nodejs\node.exe_ 에 설치된다.
 - 버전에 따라 설치 위치가 변경될 수 있다.
+
 ```sh
 # Shell
 $ node -v # Node.js 버전 확인
