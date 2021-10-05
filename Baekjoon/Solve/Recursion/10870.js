@@ -7,9 +7,9 @@ const rl = readline.createInterface({
 }).on('line', function (line) {
   input = Number(line);
 }).on('close', function () {
-  function soultion(number) {
-    if(number<=1) return number
-    return soultion(number-1)+ soultion(number-2);
+  function solution(number) {
+    if (number <= 1) return number
+    return solution(number - 1) + solution(number - 2);
   }
-  console.log(soultion(input));
+  console.log(solution(input));
 });
