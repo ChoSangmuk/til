@@ -1,5 +1,5 @@
 const input = require('fs').readFileSync("/Users/chosangmuk/Documents/twil/Baekjoon/NodsjsInput/fsstdin").toString().trim().split("\n");
-//const input = require('fs').readFileSync("/dev/stdin").toString().trim().split("\n");
+//const input = require('fs').readFileSync("./dev/stdin").toString().trim().split("\n");
 
 let [V, E] = input.shift().split(" ").map(v => +v); // 정점 V, 간선 E
 let K = +input.shift(); // 시작 정점 K

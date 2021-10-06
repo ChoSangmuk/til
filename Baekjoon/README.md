@@ -19,7 +19,7 @@ require('readline').createInterface({
 ```
 ### 파일 읽기
 ```js
-const input = require('fs').readFileSync("/dev/stdin").toString().trim().split("\n");
+const input = require('fs').readFileSync("./dev/stdin").toString().trim().split("\n");
 
 console.log(input); // [...]
 // Logic
