@@ -1,10 +1,14 @@
 package basic;
 
+// import java.util.Arrays;
+
 public class Basic08Array {
   // 배열 : 동일한 타입의 데이터를 하나의 변수로
   public static void main(String[] args) {
     System.out.println("\nInt Array");
     int[] temps = new int[3];
+    // 배열의 주소를 모두 같은 값으로 초기화
+    // Arrays.fill(temps, 1); // temps의 모든 index값을 1로 초기화
     for (int i = 0; i < temps.length; i++)
       temps[i] = 10 * (i + 1);
     // or int[] temps = new int[] { 10, 20, 30 };
