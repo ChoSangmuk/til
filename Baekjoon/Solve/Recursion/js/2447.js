@@ -1,4 +1,4 @@
-const rl = require('readline').createInterface({
+require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 }).on('line', function (line) {
@@ -23,8 +23,6 @@ function solution(input) {
   return result;
 }
 
-function emptySpace(length) {
-  var result = "";
-  for (var i = 0; i < length; i++) result = result.concat(" ");
-  return result;
+function emptySpace(input) {
+  return Array.from({ length: input }, v => " ").join("");
 }

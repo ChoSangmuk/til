@@ -1,15 +1,13 @@
 let input = [];
 
-const rl = require('readline').createInterface({
+require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 }).on('line', function (line) {
   input.push(line);
 }).on('close', function () {
-  var kinds = [];
-  var target = Number(input[0].split(" ")[1]);
-  for (var i = 0; i < Number(input[0].split(" ")[0]); i++)kinds.push(input[i + 1]);
-  console.log(solution(kinds, target));
+  let target = parseInt(input.shift().split(" ")[1]);
+  console.log(solution(input.map(v => +v), target));
   process.exit();
 });
 

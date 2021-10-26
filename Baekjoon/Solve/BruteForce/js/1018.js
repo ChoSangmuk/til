@@ -1,6 +1,6 @@
 let input = [];
 
-const rl = require('readline').createInterface({
+require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 }).on('line', function (line) {

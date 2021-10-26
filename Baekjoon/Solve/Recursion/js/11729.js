@@ -1,4 +1,4 @@
-const rl = require('readline').createInterface({
+require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 }).on('line', function (line) {
@@ -8,6 +8,7 @@ const rl = require('readline').createInterface({
   console.log(temp + "\n" + solution(input, 1, 2, 3));
   process.exit();
 });
+
 function solution(number, start, middle, target) {
   if (number === 1) return start + " " + target + "\n";
   return solution(number - 1, start, target, middle) + start + " " + target + "\n" + solution(number - 1, middle, start, target);

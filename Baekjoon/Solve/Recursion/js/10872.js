@@ -1,7 +1,5 @@
-const readline = require('readline');
-
 let input = 0;
-const rl = readline.createInterface({
+require('readline').createInterface({
   input: process.stdin,
   output: process.stdout
 }).on('line', function (line) {
