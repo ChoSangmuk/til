@@ -15,6 +15,7 @@ require('readline').createInterface({
       table[i][j] = table[i - 1][j] + table[i][j - 1];
     }
   }
+  console.log(table.join("\n"));
   let T = input.shift();
   for (let i = 0; i < T; i++) {
     let k = input.shift();
