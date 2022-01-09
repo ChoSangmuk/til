@@ -12,6 +12,8 @@
   - Thymeleaf
   - Spring Web
   - Spring Boot DevTools
+  - H2 Database
+  - JDBC API -> Spring Data JPA
 
 ## 프로젝트 실행 & JAR 파일 생성
 ```sh
@@ -22,3 +24,7 @@ java -jar build/libs/hello-spring-member-0.0.1-SNAPSHOT.jar
 ```
 
 ## 프로젝트 구성/ 주요 소스 등 기타 핵심 사항 내용은 주석을 통해 명시 추가 필요
+
+# H2 Database 사용 방법 추가 필요
+- jdbc:h2:~/Documents/twil/SpringBootStudy/hello-spring-member/etc/test
+- jdbc:h2:tcp://localhost/~/Documents/twil/SpringBootStudy/hello-spring-member/etc/test
