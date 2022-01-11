@@ -1,12 +1,12 @@
 # Spring Boot Study
 
 - [Spring Boot 공식 홈페이지](https://spring.io/projects/spring-boot)
-  - [Spring Quick start Guide](/quick-start)
-  - [Building a RESTful Web Service](/basic-rest-service)
+  - [Spring Quick start Guide](quick-start)
+  - [Building a RESTful Web Service](basic-rest-service)
 - 도서
-  - [React.js, 스프링 부트, AWS로 배우는 웹 개발 101 Todo](/todo-101)
+  - [React.js, 스프링 부트, AWS로 배우는 웹 개발 101 Todo](todo-101)
 - [Inflearn (김영한)](https://www.inflearn.com/users/@yh)
-  - [스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](/hello-spring-member)
+  - [스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](hello-spring-member)
 
 ## Docker 개발 환경 사용하기
 ### install OpenJDK 11 on Ubuntu
