@@ -12,7 +12,7 @@
   - 프로젝트에서 사용하는 라이브러리
   - 각 라이브러리에 대한 간략한 설명과 용도는 [강의 자료](etc/스프링%20입문%20-%20코드로%20배우는%20스프링%20부트,%20웹%20MVC,%20DB%20접근%20기술%20v2021-12-01_2.pdf)를 확인
 ```
-- Thymeleaf
+- Thymleaf
 - Spring Web
 - Spring Boot DevTools (선택)
 - H2 Database (추가)
@@ -114,7 +114,6 @@ public class HelloController {
     public String helloString(@RequestParam("name") String name) {
         return "hello " + name; // StringHttpMessageConverter 작동
     }
-
     @GetMapping("hello-api")
     @ResponseBody
     public Hello helloApi(@RequestParam("name") String name) {
@@ -122,7 +121,6 @@ public class HelloController {
         hello.setName(name);
         return hello; // MappingJackson2HttpMessageConverter 작동, Hello 객체를 Json으로 전달
     }
-
     static class Hello { // 사용자에게 전달할 객체
         private String name;
         public String getName() { return name; }
@@ -143,18 +141,52 @@ public class HelloController {
   - 데이터 베이스 선정이 이루어지지않음 -> Repository는 인터페이스(역할)로 구현
 
 ### 회원 도메인과 리포지토리 개발과 테스트 케이스 작성
-- domain
-  - [Member](src/main/java/com/example/introduction/domain/Member.java)
-- repository
-  - [MemberRepository](src/main/java/com/example/introduction/repository/MemberRepository.java)
-  - [MemoryMemberRepository](src/main/java/com/example/introduction/repository/MemoryMemberRepository.java)
-- repository(test)
-  - [MemoryMemberRepositoryTest](src/test/java/com/example/introduction/repository/MemoryMemberRepositoryTest.java)
+- [Member](src/main/java/com/example/introduction/domain/Member.java)
+```
+특이사항 없음
+```
+- [MemberRepository](src/main/java/com/example/introduction/repository/MemberRepository.java)
+```
+MemberRepository의 save(메소드)의 입력 변수 타입은 무엇이 적절할까?
+강의에서는 Member(객체) 타입을 전달받았는데, 기본 타입을 전달받아 내부에서 객체를 생성한 후에 기능을 수행해도 되지 않을까?
+
+안될건 없지만 여러 상황을 고려했을 때, 객체 타입을 입력받는 것이 바람직할 것 같다.
+
+1. 현재는 저장하고자 하는 객체의 구성 요소가 단순함으로 기본 타입으로 입력받아 저장하는 것이 문제가 되지 않을 것이다.
+하지만 구성 요소가 복잡해진다면 메소드 사용 시, 파라미터 입력 순서 고려해야하는 등의 번거로움이 존재한다.
+
+Member save(String name, String email, String address); // Member 객체가 복잡해지기 시작한다면 ...
+
+또한, Member(객체)의 구성 요소가 변경, 삭제, 추가될 때 인터페이스의 변경이 발생할 가능성이 있으며, 
+인터페이스의 구현체 역시 연쇄적인 수정이 불가피하다. 이는 OOP의 SOLID 원칙 중 OCP 원칙을 위반한다.
+
+2. save(메소드)의 역할은 Member(객체)를 저장하는 것이다. 
+Member save (String name)는 문자열 name을 저장한다는 의미로 받아들여 질 수 있으며, 동료 개발자를 혼란에 빠트리기에 충분하다.
+구현에 반드시 문자열 name을 입력 변수로 받아 저장하는 메소드가 필요하다면, 차라리 saveWithName 만드는 것이 그.나.마. 합리적일 것이다.
+
+
+그렇다면 MemberRepository의 save(메소드)의 반환 타입은 무엇이 적절할까? 이에 대한 결과를 Boolean으로 반환해도 되지 않을까?
+
+Hint? 입력 변수 타입을 Member 객체로 받게되면 Call By Reference에 의해 원본의 수정이 발생할 가능성이 있다.
+```
+- [MemoryMemberRepository](src/main/java/com/example/introduction/repository/MemoryMemberRepository.java)
+```
+Java 8 Stream과 Lambda의 개념과 간략한 사용법을 확인하여 정리
+```
+- [MemoryMemberRepositoryTest](src/test/java/com/example/introduction/repository/MemoryMemberRepositoryTest.java)
+```
+JUnit의 개념과 간략한 사용법을 확인하여 정리
+```
+
 ### 회원 서비스 개발과 테스트 케이스 작성
-- service
-  - [MemberService](src/main/java/com/example/introduction/service/MemberService.java)
-- service(test)
-  - [MemberServiceTest](src/test/java/com/example/introduction/service/MemberServiceTest.java)
+- [MemberService](src/main/java/com/example/introduction/service/MemberService.java)
+```
+복습 후 심화학습, 고민 내용 정리
+```
+- [MemberServiceTest](src/test/java/com/example/introduction/service/MemberServiceTest.java)
+```
+복습 후 심화학습, 고민 내용 정리
+```
 
 ## 섹션 4. 스프링 빈과 의존관계
 ### 컴포넌트 스캔과 자동 의존관계 설정
@@ -179,4 +211,12 @@ public class HelloController {
 
 ## 섹션 8. 다음으로
 
-## 추가 학습
+## Reference
+- [Template Engine](https://imgzon.tistory.com/97)
+- [Call By Reference](https://velog.io/@ahnick/Java-Call-by-Value-Call-by-Reference)
+- [Optional](http://www.tcpschool.com/java/java_stream_optional)
+- [ConcurrentHashMap](https://devlog-wjdrbs96.tistory.com/269)
+- [Java stream](http://tcpschool.com/java/java_stream_creation)
+- [Lambda](http://www.tcpschool.com/java/java_lambda_concept)
+- [Spring Dependency Injection](https://baek.dev/post/21/)
+- [H2 Database install path](https://recordsoflife.tistory.com/655)
