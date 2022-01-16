@@ -8,27 +8,54 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
+// MemberRepository 와 Member 도메인을 활용하여 실제 비즈니스 로직을 구현하는 레이어
 public class MemberService {
 
+    /*
+     최초 설계에서는 MemberService 안에서 직접 MemoryMemberRepository를 생성하여 사용
+     private final MemberRepository memberRepository = new MemoryMemberRepository();
+
+     But 테스트 진행 시, serviceTest에서 서로 다른 MemoryMemberRepository를 사용하는 것이 문제가 되었고,
+     이를 해결하기 위해 객체를 직접 생성하는 것이 아니라 MemberService 생성자에서 MemberRepository를 주입받게끔 변경
+    */
     private final MemberRepository memberRepository;
 
+    // MemberRepository를 외부에서 주입받아 사용하게끔 변경
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
+    /**
+     * 회원 가입
+     *
+     * @param member
+     * @return member에 할당된 Id를 반환(임의 설계)
+     */
     public Long join(Member member) {
-        validateDuplicateMember(member);
-        memberRepository.save(member);
-        return member.getId();
+        validateDuplicateMember(member); // 중복 회원 검증
+        memberRepository.save(member); // member 저장
+        return member.getId(); // 시스템으로부터 전달받은 member.id를 반환
     }
 
+    /**
+     * 중복 회원 검증
+     *
+     * @param member
+     * @throws IllegalStateException - member의 name값이 이미 존재하는 경우 발생하는 Exception
+     */
     private void validateDuplicateMember(Member member) {
-        memberRepository.findByName(member.getName())
-                .ifPresent(m -> {
+        memberRepository.findByName(member.getName()) // Optional<Member>를 반환
+                .ifPresent(m -> { // Optional의 값이 존재한다면(null이 아니라면) Exception 발생
                     throw new IllegalStateException("name already exists");
                 });
     }
 
+    /**
+     * 전체 회원 조회
+     * 서비스 레이어는 조금 더 비즈니스에 가까운 네이밍을 사용하는 것이 바랍직함
+     *
+     * @return List<Member> 저장된 모든 Member 정보
+     */
     public List<Member> findMembers() {
         return memberRepository.findAll();
     }

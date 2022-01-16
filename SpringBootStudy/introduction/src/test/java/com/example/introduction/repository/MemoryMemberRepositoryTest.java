@@ -30,7 +30,7 @@ class MemoryMemberRepositoryTest {
     @Test
     /*
      @Test 어노테이션을 사용한 메소드는 독립적으로 실행 가능한 단위 테스트이며, 해당 메소드 안에서 작성한 클래스를 검증(실제로 이용해봄)
-     given - when - then를 분리하여 테스트 코드를 작성
+     given - when - then을 분리하여 테스트 코드를 작성
     */
     void save() {
         // given - Member 객체을 임의로 생성하고 name을 설정

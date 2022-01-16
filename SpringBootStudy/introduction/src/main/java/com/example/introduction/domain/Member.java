@@ -8,11 +8,9 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // 데이터를 구분하기 위해 시스템에서 사용
-    private Long id;
+    private Long id; // 데이터를 구분하기 위해 시스템에서 사용
 
-    // 사용자가 직접 입력한 name
-    private String name;
+    private String name; // 사용자가 직접 입력한 name
 
     public Long getId() {
         return id;

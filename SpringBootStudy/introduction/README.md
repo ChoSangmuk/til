@@ -147,7 +147,7 @@ public class HelloController {
 ```
 - [MemberRepository](src/main/java/com/example/introduction/repository/MemberRepository.java)
 ```
-MemberRepository의 save(메소드)의 입력 변수 타입은 무엇이 적절할까?
+# MemberRepository의 save(메소드)의 입력 변수 타입은 무엇이 적절할까?
 강의에서는 Member(객체) 타입을 전달받았는데, 기본 타입을 전달받아 내부에서 객체를 생성한 후에 기능을 수행해도 되지 않을까?
 
 안될건 없지만 여러 상황을 고려했을 때, 객체 타입을 입력받는 것이 바람직할 것 같다.
@@ -164,8 +164,9 @@ Member save(String name, String email, String address); // Member 객체가 복�
 Member save (String name)는 문자열 name을 저장한다는 의미로 받아들여 질 수 있으며, 동료 개발자를 혼란에 빠트리기에 충분하다.
 구현에 반드시 문자열 name을 입력 변수로 받아 저장하는 메소드가 필요하다면, 차라리 saveWithName 만드는 것이 그.나.마. 합리적일 것이다.
 
+------------------------------------------------------------
 
-그렇다면 MemberRepository의 save(메소드)의 반환 타입은 무엇이 적절할까? 이에 대한 결과를 Boolean으로 반환해도 되지 않을까?
+# 그렇다면 MemberRepository의 save(메소드)의 반환 타입은 무엇이 적절할까? 이에 대한 결과를 Boolean으로 반환해도 되지 않을까? -> 생각해보기
 
 Hint? 입력 변수 타입을 Member 객체로 받게되면 Call By Reference에 의해 원본의 수정이 발생할 가능성이 있다.
 ```
@@ -181,11 +182,39 @@ JUnit의 개념과 간략한 사용법을 확인하여 정리
 ### 회원 서비스 개발과 테스트 케이스 작성
 - [MemberService](src/main/java/com/example/introduction/service/MemberService.java)
 ```
-복습 후 심화학습, 고민 내용 정리
+Java 8 Optional의 개념과 간략한 사용법을 확인하여 정리
 ```
 - [MemberServiceTest](src/test/java/com/example/introduction/service/MemberServiceTest.java)
 ```
-복습 후 심화학습, 고민 내용 정리
+# MemberService와 MemberServiceTest는 코드 작성 중, 객체 간의 의존성에 대한 문제가 발생하고 이를 해결하기 위한 과정이 존재한다.
+따라서, 주석을 통해 코드 작성의 흐름과 문제점 그리고 해결 방법을 고민해 보아야한다.
+
+------------------------------------------------------------
+
+# BeforeEach를 통해 MemberService, MemoryMemberRepository 객체를 매번 생성할 필요가 있을까?
+
+1. @BeforeAll을 사용하여 1회만 객체를 생성해도 되지 않을까?
+가능하다. 단 BeforeAll의 메소드는 static으로 설정해 주어야하며, 이에 따라 MemberService, MemoryMemberRepository의 선언 역시 static으로 해주어야한다. 
+
+static MemberService memberService;
+static MemoryMemberRepository memoryMemberRepository;
+
+@BeforeAll
+static void beforeAll() {
+    memoryMemberRepository = new MemoryMemberRepository();
+    memberService = new MemberService(memoryMemberRepository);
+}
+
+Test 클래스의 라이프 사이클을 변경하면 static으로 설정하지 않고도 진행이 가능하다.
+(Spring에 관한 주제를 다룸으로 별도로 JUnit을 학습할 때 정리하자)
+
+2. 전역변수 선언과 동시에 객체를 생성해도 되지 않을까?
+이 방법 역시 가능하다. 특별한 제약 사항이 없으며, 코드 역시 훨씬 간결해 보인다.
+
+MemoryMemberRepository memoryMemberRepository = new MemoryMemberRepository();
+MemberService memberService = new MemberService(memoryMemberRepository);
+
+3. 그렇다면 3가지의 방법 중 어떠한 방법이 가장 합리적인 테스트 객체 생성 방법일까? -> 생각해보기
 ```
 
 ## 섹션 4. 스프링 빈과 의존관계
