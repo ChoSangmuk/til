@@ -4,7 +4,10 @@ import com.example.introduction.domain.Member;
 
 import java.util.*;
 
-// MemberRepository 인터페이스의 구현체로, 메모리 상에서 Member 객체를 관리할 저장소
+/*
+ MemberRepository 인터페이스의 구현체로, 메모리 상에서 Member 객체를 관리할 저장소
+ 컴포넌트 스캔 방식과 자바 스프링 빈 설정을 비교하기위해 @Repository 사용 후 삭제
+*/
 public class MemoryMemberRepository implements MemberRepository {
 
     /*

@@ -66,12 +66,12 @@ java -jar build/libs/introduction-0.0.1-SNAPSHOT.jar
 ### MVC와 템플릿 엔진
 - 서버에서 정적 html이 아닌 동적으로 생성된 html을 전달하고자 함
 - 스프링에서 Model, View, Controller 패턴 기능을 제공 
-- 템플릿 처리 과정
+- **템플릿 처리 과정**
   1. 사용자로부터 요청을 받은 톰캣은 스프링에게 해당 요청을 전달
   2. 스프링은 해당 요청을 처리할 수 있는 컨트롤러와 메소드를 확인 (@Controller와 @RequestMapping, @GetMapping 등을 사용)
   3. 컨트롤러 안에서 입력 받은 내용(@RequestParam, Model 등)을 바탕으로 해당 요청을 처리. 이때 화면에서 사용될 정보는 Model 객체에, 템플릿으로 활용될 파일의 이름은 리턴 값(문자열)으로 명시
   4. 스프링이 반환된 ViewName(문자열)을 viewResolver에게 전달하면, viewResolver가 화면을 찾아 템플릿 엔진에 연결
-  5. 템플릿 엔진(Thymleaf 등)이 html과 Model을 바탕으로 랜더링을 진행한 후 사용자에게 반환한다.
+  5. 템플릿 엔진(Thymleaf 등)이 html과 Model을 바탕으로 랜더링을 진행한 후 사용자에게 반환
 ```java
 // package com.example.introduction.controller;
 // import something;
@@ -218,8 +218,119 @@ MemberService memberService = new MemberService(memoryMemberRepository);
 ```
 
 ## 섹션 4. 스프링 빈과 의존관계
+- 사용자의 요청을 처리하고 적절한 응답을 반환하는 컨트롤러를 작성하고 스프링 빈의 개념과 의존성 설정에 대해 학습하는 것이 목표
+- 컨트롤러는 이전에 작성한 서비스 레이어를 이용하는데, 이를 **컨트롤러가 서비스 객체에 의존한다** 혹은 **의존성을 가지고 있다**고 표현함
+
 ### 컴포넌트 스캔과 자동 의존관계 설정
+- 스프링을 사용한다는 것은 [MemberController](src/main/java/com/example/introduction/controller/MemberController.java)처럼 서비스에 필요한 클래스를 스프링 컨테이너에 등록하고 이를 받아서 사용하겠다는 의미
+  - **클래스 안에서 사용할 의존성을 외부(스프링)에서 주입 받아 사용하는 것을 DI(Dependency Injection)라 함**
+  - 스프링 컨테이너에 등록되는 객체는 단 하나의 인스턴스(싱글톤 객체)만 생성(Default, 설정 변경 가능하지만 거의 그대로 사용)하여 불필요한 중복을 제거
+  - Why? 하나의 서비스 레이어는 여러 컨트롤러에서 사용될 수 있지만 다른 인스턴스일 필요는 없음
+- 현재의 MemberService는 순수한 형태의 자바 클래스임으로 스프링 컨테이너가 MemberService의 존재를 알 수 없음, 따라서 실행 시 MemberService를 찾을 수 없다는 오류가 발생함
+  - MemberService에 @Service를, MemoryMemberRepository에 @Repository를 각각 추가하면 스프링 컨테이너가 해당 객체를 스프링 빈으로 관리
+```java
+// package com.example.introduction.service;
+// import something;
+
+@Service
+// 클래스에 @Service 을 사용하면 스프링이 시작하는 시점에 스프링 컨테이너를 통해 해당 객체(MemberService)를 생성, 관리 
+public class MemberService {
+  private final MemberRepository memberRepository;
+
+  @Autowired
+  // 생성자에 @Autowired 를 사용하면 객체 생성 시점에 해당 생성자를 실행하며, 실행에 필요한 스프링 빈(여기서는 MemberRepository)을 스프링 컨테이너에서 찾아서 연결(주입)해줌
+  public MemberService(MemberRepository memberRepository) {
+    this.memberRepository = memberRepository;
+  }
+}
+
+// package com.example.introduction.repository;
+// import something;
+
+@Repository
+// 클래스에 @Repository 을 사용하면 스프링이 시작하는 시점에 스프링 컨테이너를 통해 해당 객체(MemoryMemberRepository)를 생성, 관리
+public class MemoryMemberRepository implements MemberRepository { }
+```
+- 스프링 빈을 등록하는 방법에는 2가지 방법이 존재하며 위와 같이 @Controller, @Service, @Repository 를 사용하는 것을 컴포넌트 스캔 방식이라함
+  - @ComponentScan(@SpringBootApplication의 내부 요소) 이 포함된 클래스의 하위 패키지의 @Component를 포함한 클래스들이 스캔 대상
+  - @Controller, @Service, @Repository 내부에는 @Component 가 포함됨
+```
+# 컴포넌트 스캔 방식의 장단점? -> 생각해보기
+```
+
 ### 자바 코드로 직접 스프링 빈 등록하기
+- 컴포넌트 스캔 방식을 사용(추가 설정이 없는 경우)하면 객체의 생성 및 의존성 연결을 **스프링이 자동으로 진행**함
+- 이번에는 개발자가 직접 스프링 빈을 설정할 수 있는 방법을 학습
+  - 같은 환경을 가정하기 위해 Controller 클래스 제외한 나머지 클래스들의 어노테이션을 제거
+  - [MemberService](src\main\java\com\example\introduction\service\MemberService.java)
+  - [MemoryMemberRepository](src\main\java\com\example\introduction\repository\MemoryMemberRepository.java)
+- 개발자가 직접 스프링 빈을 설정하기 위해 XML이나 Java코드를 이용할 수 있음
+  - XML로 설정하는 방식은 최근에는 잘 사용하지 않으므로 생략
+  - Java 코드를 이용하여 스프링 빈을 설정하는 초기 SpringConfig.java 소스
+```java
+// package com.example.introduction;
+// import something;
+
+@Configuration
+/*
+ 스프링이 시작하는 시점에 해당 객체의 @Bean 메소드를 이용하여 스프링 빈을 생성, 등록
+ 어떠한 구현체를 주입할지 개발자가 Java 코드로 설정할 수 있음
+*/
+public class SpringConfig {
+    @Bean
+    // 메소드를 실행하여 반환되는 객체를 스프링 빈에 등록
+    public MemberService memberService() {
+        // MemberService는 생성자는 MemberRepository 구현체를 필요로 함
+        return new MemberService(memberRepository());
+    }
+    @Bean
+    // 메소드를 실행하여 반환되는 객체를 스프링 빈에 등록
+    public MemberRepository memberRepository() {
+      // MemoryMemberRepository 를 주요 구현체로 사용하는 경우
+      return new MemoryMemberRepository();
+    }
+}
+```
+- 컨트롤러의 경우, 스프링 빈으로 등록되는 것 이외에도 사용자 요청의 진입점을 나타내야함으로 @Controller 를 그대로 사용
+  - 컴포넌트 스캔 방식으로 스프링 빈이 됨으로 중간에 @Bean 을 사용하여 설정할 수 없음
+  - 예제에서 컨트롤러가 사용하는 의존성 객체는 @Configuration 에 등록된 내용을 기반으로 연결(주입)되어짐
+- 컴포넌트 스캔과 Java 스프링 빈 설정은 각각 장단점이 존재
+  - 실무에서는 주로 정형화된 컨트롤러, 서비스, 리포지토리 같은 코드는 컴포넌트 스캔을 사용
+  - 컴포넌트 스캔은 코드가 간략하여 편해보이지만 변경 시 여러 코드의 수정이 필요
+  - Java 스프링 빈 설정 파일을 운영하면 매우 쉽게 구현체를 변경할 수 있음
+  - 정형화되지 않거나, 상황에 따라 구현 클래스를 변경해야 하면 Java 스프링 빈 설정 파일을 사용하는 것이 유리
+  - 예제에서는 리포지토리 구현체를 변경할 예정이므로, 컴포넌트 스캔 방식 대신 Java 스프링 빈 설정 파일을 사용
+- 컴포넌트 스캔 시, 의존성 주입 방식은 3가지 방식이 존재
+```java
+/*
+ Field Injection
+ 변경할 수 있는 방법이 아예 없음, 현재는 거의 사용하지 않음
+*/
+@Autowired private MemberRepository memberRepository;
+
+/*
+ Setter Injection
+ final로 설정할 수 없으며, set 메소드가 public으로 노출 되어야함
+ MemberService가 설정된 이후 변경될 이유가 없을 텐데 변경이 가능함
+*/
+private MemberService memberService;
+
+@Autowired
+public void setMemberService(MemberService memberService) {
+    this.memberService = memberService;
+}
+
+/*
+ Constructor Injection
+ 의존 관계가 실행(runtime) 중에 동적으로 변하는 경우는 거의 없으므로 생성자 주입을 권장
+*/
+private final MemberService memberService;
+
+@Autowired
+public MemberController(MemberService memberService) {
+    this.memberService = memberService;
+}
+```
 
 ## 섹션 5. 회원 관리 예제 - 웹 MVC 개발
 ### 회원 웹 기능 - 홈 화면 추가
@@ -248,4 +359,8 @@ MemberService memberService = new MemberService(memoryMemberRepository);
 - [Java stream](http://tcpschool.com/java/java_stream_creation)
 - [Lambda](http://www.tcpschool.com/java/java_lambda_concept)
 - [Spring Dependency Injection](https://baek.dev/post/21/)
+- [Spring Bean](https://choiyeonho903.tistory.com/11)
+- [@Component, @Bean difference](https://ecsimsw.tistory.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88)
+- [Spring Bean 생성 및 사용](https://lazymankook.tistory.com/67)
+- [Annotation과 Bean](https://lazymankook.tistory.com/27)
 - [H2 Database install path](https://recordsoflife.tistory.com/655)

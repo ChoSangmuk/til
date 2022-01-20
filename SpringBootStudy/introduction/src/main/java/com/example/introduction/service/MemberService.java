@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Transactional
-// MemberRepository 와 Member 도메인을 활용하여 실제 비즈니스 로직을 구현하는 레이어
+/*
+ MemberRepository 와 Member 도메인을 활용하여 실제 비즈니스 로직을 구현하는 레이어
+ 컴포넌트 스캔 방식과 자바 스프링 빈 설정을 비교하기위해 @Service 사용 후 삭제
+*/
 public class MemberService {
 
     /*
@@ -20,7 +23,10 @@ public class MemberService {
     */
     private final MemberRepository memberRepository;
 
-    // MemberRepository를 외부에서 주입받아 사용하게끔 변경
+    /*
+     MemberRepository를 외부에서 주입받아 사용하게끔 변경
+     컴포넌트 스캔 방식과 자바 스프링 빈 설정을 비교하기위해 @Autowired 사용 후 삭제
+    */
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
