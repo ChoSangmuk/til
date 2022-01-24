@@ -1,3 +1,5 @@
+package basic;
+
 import java.util.StringTokenizer;
 
 public class SplitToken {

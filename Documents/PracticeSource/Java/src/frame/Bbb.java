@@ -1,4 +1,4 @@
-package method;
+package frame;
 
 public class Bbb {
 

@@ -1,4 +1,4 @@
-package method;
+package frame;
 
 public class methodBasic {
   // 전역변수, 멤버필드, 인스턴스변수, 멤버변수

@@ -1,4 +1,4 @@
-package method;
+package frame;
 
 public class ScoreVO {
   // 번호, 이름, 과목(국,영,수), 총점, 평균, 등급

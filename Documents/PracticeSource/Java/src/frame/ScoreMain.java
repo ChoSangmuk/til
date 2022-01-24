@@ -1,4 +1,4 @@
-package method;
+package frame;
 
 public class ScoreMain {
   public static void main(String[] args) {
