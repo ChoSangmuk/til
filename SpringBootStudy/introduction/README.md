@@ -351,7 +351,7 @@ public MemberController(MemberService memberService) {
 
 ## 섹션 6. 스프링 DB 접근 기술
 1. 메모리에 저장되는 데이터는 애플리케이션이 종료되면 삭제됨
-2. 작고 쉽게 사용이 가능한 [H2 데이터베이스를 설치](#h2-데이터베이스-설치)하고 [순수 JDBC](#순수-jdbc)를 통해 데이터를 저장해보기
+2. 작고 쉽게 사용이 가능한 [H2 데이터베이스를 설치](#h2-데이터베이스-설치)하고 [순수 JDBC API](#순수-jdbc)를 통해 데이터를 저장해보기
 3. 순수 JDBC의 불편한 방식을 개선하고 SQL에 집중하기 위해 [스프링이 제공하는 JdbcTemplate](#스프링-jdbctemplate) 적용
 4. 개발자가 직접 SQL을 작성하지 않고 객체를 DB에 저장, 관리할 수 있게끔 지원하는 [JPA](#jpa) 적용
 5. 스프링에서 JPA를 쉽게 사용할 수 있게 추상화한 기술인 [스프링 데이터 JPA](#스프링-데이터-jpa) 적용
@@ -369,7 +369,7 @@ chmod 755 h2.sh
 # H2 Database 실행
 ./h2.sh
 ``` 
-- 웹 화면(http://localhost:8082/)에서 DataBase 파일 생성 및 접근
+- [웹 화면](http://localhost:8082/)에서 DataBase 파일 생성 및 접근
 ```
 jdbc:h2:~/Documents/twil/SpringBootStudy/introduction/etc/test
 -> .../etc 에 test.mv.db 가 생성됨
@@ -399,51 +399,11 @@ spring.datasource.username=sa
   - 개발자는 스프링이 생성해둔 DataSource 객체의 Connection, PreparedStatement을 통해 SQL을 입력, 실행
   - ResultSet을 통해 반환된 결과를 처리하고 Connection, PreparedStatement, ResultSet을 close
   - 위와 같이 JDBC API로 직접 코딩하는 것은 아주 먼 옛날 이야기, 고대 개발자들이 겪은 어려움을 체험
-- MemberService가 사용하는 MemberRepository를 MemoryMemberRepository 에서 JdbcMemberRepository로 변경해야함
-  - [자바 코드 스프링 빈 등록 방법에서 사용한 SpringConfig.java](#자바-코드로-직접-스프링-빈-등록하기)를 아래와 같이 수정
-```java
-// package com.example.introduction;
-// import something;
-
-@Configuration
-/*
- 스프링이 시작하는 시점에 해당 객체의 @Bean 메소드를 이용하여 스프링 빈을 생성, 등록
- 어떠한 구현체를 주입할지 개발자가 Java 코드로 설정할 수 있음
-*/
-public class SpringConfig {
-    /*
-     @Configuration 에 의해 SpringConfig 클래스도 스프링 빈이 됨
-     빈으로 생성되어질 때 SpringConfig 클래스의 생성자가 호출되는데 이때, 스프링이 미리 설정 파일을 읽고 생성해둔 DataSource 를 주입받아 생성됨
-     즉, SpringConfig는 어떠한 값의 DataSource가 입력되었는지 알 필요가 없으며, 주입된 DataSource를 (JdbcMemberRepository 생성 시에) 사용하면됨
-    */
-    private final DataSource dataSource;
-    
-    // 생성자 주입
-    public SpringConfig(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    @Bean
-    // 메소드를 실행하여 반환되는 객체를 스프링 빈에 등록
-    public MemberService memberService() {
-        // MemberService는 생성자는 MemberRepository 구현체를 필요로 함
-        return new MemberService(memberRepository());
-    }
-    @Bean
-    // 메소드를 실행하여 반환되는 객체를 스프링 빈에 등록
-    public MemberRepository memberRepository() {
-        /*
-         MemoryMemberRepository 를 주요 구현체로 사용하는 경우 (이전)
-         return new MemoryMemberRepository();
-
-         JdbcMemberRepository 를 주요 구현체로 사용하는 경우
-             SpringConfig 생성 시 주입된 DataSource를 주입하여 생성
-        */
-        return new JdbcMemberRepository(dataSource);
-    }
-}
-```
+- JdbcMemberRepository를 사용하게끔 [SpringConfig](src/main/java/com/example/introduction/SpringConfig.java) 수정
 - 잘 설계된 OOP에 스프링의 DI를 사용한다면 기존 코드(MemberService 등)를 전혀 손대지 않고, 설정 소스(SpringConfig)의 변경만으로 구현 클래스를 변경할 수 있음
+```
+JDBC 개념을 확인하여 정리
+```
 
 ### 스프링 통합 테스트
 - 데이터베이스 연결, JDBC 구현 기능을 테스트하고 싶지만 앞서 진행한 방식으로는 테스트를 진행할 수 없음
@@ -452,10 +412,21 @@ public class SpringConfig {
 - [MemberServiceIntegrationTest](src/test/java/com/example/introduction/service/MemberServiceIntegrationTest.java)
   - 실무에서 통합 테스트보다는 단위 테스트를 더 많이 하는 것을 권장
 ```
-JDBC와 단위 테스트, 통합 테스트의 개념을 확인하여 정리
+단위 테스트, 통합 테스트의 개념을 확인하여 정리
 ```
 
 ### 스프링 JdbcTemplate
+- 순수 Jdbc API와 동일한 환경설정
+- [JdbcTemplateMemberRepository](src/main/java/com/example/introduction/repository/JdbcTemplateMemberRepository.java)
+  - JdbcTemplate을 이용하여 MemberRepository 구현
+  - 스프링 JdbcTemplate과 MyBatis 같은 라이브러리는 JDBC API에서 본 반복 코드를 대부분 제거
+  - 템플릿 메소드 패턴과 여러 패턴을 사용하여 코드를 줄인 결과
+- JdbcTemplateMemberRepository를 사용하게끔 [SpringConfig](src/main/java/com/example/introduction/SpringConfig.java) 수정
+- 많이 편해지긴 했지만 여전히 SQL은 직접 작성해야 함
+```
+템플릿 메소드 패턴, 콜백의 개념을 확인하여 정리
+```
+
 ### JPA
 ### 스프링 데이터 JPA
 
