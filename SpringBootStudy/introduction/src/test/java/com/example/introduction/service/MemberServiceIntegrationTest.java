@@ -10,17 +10,45 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
+// 스프링 컨테이너와 테스트를 함께 실행, 스프링 컨테이너가 테스트에 필요한 의존성을 생성 및 주입
 @Transactional
+/*
+ 테스트는 반복 가능하며 각 테스트는 개별적으로 실행이 가능해야함(MemberServiceTest afterEach 의 역할)
+ 실제 DB 연결이 된 이후 부터는 각 테스트 진행 시, 트랜잭션을 시작하고 완료 후 롤백하게끔 설정
+ DB에 데이터가 남지 않으므로 다음 테스트에 영향을 주지 않음
+*/
 class MemberServiceIntegrationTest {
 
+    /*
+     스프링이 필요없던 MemberServiceTest에서의 방식으로, 테스트 내부에서 필요한 객체를 직접 생성해서 사용
+
+     MemberService memberService;
+     MemoryMemberRepository memoryMemberRepository;
+
+     @BeforeEach
+     void beforeEach() {
+         memoryMemberRepository = new MemoryMemberRepository();
+         memberService = new MemberService(memoryMemberRepository);
+     }
+
+     스프링 컨테이너로부터 의존성을 주입받아 사용할 예정임으로 DI(Field, Setter, Constructor Injection)를 사용할 수 있게끔 변경
+     보통의 경우 Constructor Injection을 권장하지만 테스트 코드는 다른 곳에서 사용될 일이 없기 때문에 편하게 만드는 것을 권장(Field Injection 선택)
+    */
     @Autowired
     MemberService memberService;
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepository memberRepository; // SpringConfig 에서 설정한 MemberRepository 구현체가 주입될 예정임으로 인터페이스로 선언
+
+    /*
+     메모리 저장소(MemoryMemberRepository)를 사용하는 경우, 테스트하는 동안 저장소를 일관성 있게 유지하는 역할
+     -> @Transactional 로 대체 가능함으로 해당 코드 필요없음
+
+     @AfterEach
+     void afterEach() { memoryMemberRepository.clearStore(); }
+    */
 
     @Test
     void join() {
@@ -31,14 +59,9 @@ class MemberServiceIntegrationTest {
         // when
         Long saveId = memberService.join(member);
 
-        // then 1
-        assertThat(saveId).isEqualTo(member.getId());
-        // then 2
+        // then
         Member result = memberService.findOne(saveId).get();
         assertThat(result.getName()).isEqualTo(member.getName());
-        // then 3
-        result = memberRepository.findById(saveId).get();
-        assertEquals(member.getName(), result.getName());
     }
 
     @Test

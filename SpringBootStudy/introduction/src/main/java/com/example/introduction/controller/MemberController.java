@@ -28,11 +28,13 @@ public class MemberController {
     }
 
     @GetMapping("members/new")
+    // URL을 입력하는 경우, Get방식이 사용됨
     public String createMemberForm() {
         return "members/createMemberForm";
     }
 
     @PostMapping("members/new")
+    // form에 정의된 action과 method(Post)를 바탕으로 회원가입 기능 구현
     public String create(MemberForm form) {
         Member member = new Member();
         member.setName(form.getName());
@@ -41,6 +43,7 @@ public class MemberController {
     }
 
     @GetMapping("members")
+    // 등록된 사용자 조회, Model을 사용하여 데이터 전달
     public String memberList(Model model) {
         model.addAttribute("members", memberService.findMembers());
         return "members/memberList";
