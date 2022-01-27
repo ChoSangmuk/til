@@ -11,6 +11,10 @@ import java.util.Optional;
 /*
  MemberRepository 와 Member 도메인을 활용하여 실제 비즈니스 로직을 구현하는 레이어
  컴포넌트 스캔 방식과 자바 스프링 빈 설정을 비교하기위해 @Service 사용 후 삭제
+ @Service
+
+ @Transactional 어노테이션을 사용하게 되면 스프링이 해당 클래스의 메소드를 실행할 때 트랜잭션을 시작
+ 메소드가 정상 종료되면 트랜잭션을 커밋, 런타임 예외가 발생하면 롤백
 */
 public class MemberService {
 
@@ -36,6 +40,7 @@ public class MemberService {
      *
      * @param member
      * @return member에 할당된 Id를 반환(임의 설계)
+     * @Transactional 은 클래스 단위뿐만 아니라 특정 메소드에만 사용할 수도 있음
      */
     public Long join(Member member) {
         validateDuplicateMember(member); // 중복 회원 검증

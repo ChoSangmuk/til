@@ -383,16 +383,16 @@ jdbc:h2:tcp://localhost/~/Documents/twil/SpringBootStudy/introduction/etc/test
 - [build.gradle](build.gradle)
   - JDBC, H2 데이터베이스 라이브러리 추가
 ```gradle
-implementation 'org.springframework.boot:spring-boot-starter-jdbc' // Java에서 DB에 접근하기 위한 (필수) JDBC 드라이버
+implementation 'org.springframework.boot:spring-boot-starter-jdbc' // Java에서 DB에 접근하기 위한 (필수) JDBC 라이브러리
 runtimeOnly 'com.h2database:h2' // DB와 연결할 때, 데이터베이스가 제공하는 클라이언트를 사용
 ```
 - [application.properties](src/main/resources/application.properties)
   - DB 접속 시 필요한 정보(spring datasource)를 명시
   - 스프링이 시작하는 시점에 해당 정보를 바탕으로 DB에 연결할 수 있는 DataSource 라는 객체를 생성함
 ```properties
-spring.datasource.url=jdbc:h2:tcp://localhost/~/Documents/twil/SpringBootStudy/introduction/etc/test
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
+spring.datasource.url=jdbc:h2:tcp://localhost/~/Documents/twil/SpringBootStudy/introduction/etc/test // 접근 URL 정보
+spring.datasource.driver-class-name=org.h2.Driver // 드라이버 종류
+spring.datasource.username=sa // DB 사용자 명
 ```
 - [JdbcMemberRepository](src/main/java/com/example/introduction/repository/JdbcMemberRepository.java)
   - JDBC를 이용하여 MemberRepository 구현
@@ -428,6 +428,39 @@ JDBC 개념을 확인하여 정리
 ```
 
 ### JPA
+- Java Persistence API의 약자로 **Java 진영의 ORM 기술에 대한 표준 명세(인터페이스)** 이며 이를 구현하는 여러 구현체가 있음
+  - Hibernate, EclipseLink, DataNucleus 등이 있으며 주로 Hibernate 사용(스프링 Default)
+- [build.gradle](build.gradle)
+  - JPA 라이브러리 추가, JDBC 라이브러리 제거
+  - spring-boot-starter-data-jpa 는 내부에 JDBC 관련 라이브러리를 포함
+```gradle
+// implementation 'org.springframework.boot:spring-boot-starter-jdbc' // Java에서 DB에 접근하기 위한 (필수) JDBC 라이브러리
+implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // JPA 라이브러리 (JDBC 포함)
+runtimeOnly 'com.h2database:h2' // DB와 연결할 때, 데이터베이스가 제공하는 클라이언트를 사용
+```
+- [application.properties](src/main/resources/application.properties)
+  - DB 접속 시 필요한 정보(spring datasource)를 명시 + JPA 관련 설정 추가
+  - 스프링이 시작하는 시점에 해당 정보를 바탕으로 DB에 연결할 수 있는 EntityManager 라는 객체를 생성함
+```properties
+spring.jpa.show-sql=true // JPA가 생성하는 SQL을 출력
+spring.jpa.hibernate.ddl-auto=none // JPA가 제공하는 테이블 자동 생성 기능(none = 해당 기능 미사용, create = 엔티티 정보를 바탕으로 테이블 자동 생성)
+```
+- [Member](src/main/java/com/example/introduction/domain/Member.java) 수정
+  - JPA에서 제공하는 각종 어노테이션을 통해 객체(Member)와 DB 테이블을 연결할 수 있음
+  - SQL과 데이터 중심의 설계에서 객체 중심의 설계로 패러다임을 전환할 수 있음으로 개발 생산성의 증대를 기대할 수 있음
+- [JpaMemberRepository](src/main/java/com/example/introduction/repository/JpaMemberRepository.java)
+  - JPA를 이용하여 MemberRepository 구현
+  - 기존의 중복 코드의 제거뿐만 아니라 Entity 객체의 PK를 기반으로 한 기본적인 CRUD SQL을 대신 생성, 실행
+  - PK 기반이 아닌 SQL의 경우, SQL과 유사한 JPQL(객체 지향 쿼리 언어) 작성을 통해 DB 작업을 진행(SQL로 번역이 이루어짐)
+- [MemberService](src/main/java/com/example/introduction/service/MemberService.java) 수정
+  - JPA를 통한 모든 데이터 조작 과정에는 트랜잭션이 필요함
+  - 하나의 비즈니스 로직은 2개 이상의 데이터 조작으로 이루어질 수 있음으로 서비스 계층에 트랜잭션을 추가
+- JpaMemberRepository를 사용하게끔 [SpringConfig](src/main/java/com/example/introduction/SpringConfig.java) 수정
+- JPA는 스프링만큼 거대한 기술이고, 학습해야 할 분량도 방대함으로 해당 강의에서는 이러한 개념이 있다는 것만 확인
+```
+JPA의 주요 핵심 개념을 확인하여 정리
+```
+
 ### 스프링 데이터 JPA
 
 ## 섹션 7. AOP
@@ -449,3 +482,4 @@ JDBC 개념을 확인하여 정리
 - [Spring Bean 생성 및 사용](https://lazymankook.tistory.com/67)
 - [Annotation과 Bean](https://lazymankook.tistory.com/27)
 - [H2 Database install path](https://recordsoflife.tistory.com/655)
+- [JPA 기본 Annotation 정리](https://www.icatpark.com/entry/JPA-%EA%B8%B0%EB%B3%B8-Annotation-%EC%A0%95%EB%A6%AC)

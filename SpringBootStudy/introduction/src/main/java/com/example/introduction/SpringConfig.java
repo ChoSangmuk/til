@@ -16,7 +16,7 @@ import javax.sql.DataSource;
  @Configuration 을 사용하는 클래스(SpringConfig)도 스프링 빈이 됨
 */
 public class SpringConfig {
-    // JDBC, JDBCTemplate, JPA 을 사용하는 경우
+    // JDBC, JDBCTemplate 을 사용하는 경우
     private final DataSource dataSource;
     // JPA를 사용하는 경우
     private final EntityManager em;
