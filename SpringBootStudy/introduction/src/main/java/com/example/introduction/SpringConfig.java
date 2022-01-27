@@ -20,7 +20,10 @@ public class SpringConfig {
     private final DataSource dataSource;
     // JPA를 사용하는 경우
     private final EntityManager em;
-    // Spring Data JPA 를 사용하는 경우, MemberRepository 자체를 주입받음
+    /*
+     Spring Data JPA 를 사용하는 경우
+     Spring Data JPA 가 생성하고 빈으로 등록해 놓은 SpringDataJpaMemberRepository 의 구현체를 주입받음
+    */
     private final MemberRepository memberRepository;
 
     /*
@@ -40,7 +43,7 @@ public class SpringConfig {
     MemberService memberService() {
 //        // MemberService 는 생성자는 MemberRepository 구현체를 필요로 함
 //        return new MemberService(memberRepository());
-        // SpringDataJpaMemberRepository 를 사용하는 경우, 스프링이 MemberRepository 인스턴스 자체를 주입함으로 함수를 호출할 필요가 없음
+        // SpringDataJpaMemberRepository 를 사용하는 경우, 스프링이 SpringDataJpaMemberRepository 의 구현체를 주입함으로 함수를 호출할 필요가 없음
         return new MemberService(memberRepository);
     }
 

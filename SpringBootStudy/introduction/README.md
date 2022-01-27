@@ -462,12 +462,58 @@ JPA의 주요 핵심 개념을 확인하여 정리
 ```
 
 ### 스프링 데이터 JPA
+- JPA와 동일한 환경설정
+- [SpringDataJpaMemberRepository](src/main/java/com/example/introduction/repository/SpringDataJpaMemberRepository.java)
+  - 스프링 데이터 JPA을 이용하여 MemberRepository 구현
+  - 스프링 데이터 JPA가 프록시라는 기술을 통해 JpaRepository를 상속받는 인터페이스(SpringDataJpaMemberRepository)를 구현체로 만들어 스프링 빈으로 자동 등록
+  - 개발자는 구현 클래스 없이 인터페이스 만으로 개발을 완료하고 스프링 데이터 JPA가 만들어 둔 구현체를 Injection받아 사용, 핵심 비즈니스 로직을 개발하는데 집중
+  - JpaRepository의 내부에는 기본적으로 필요한 CRUD 메소드들과 페이징 기능이 자동 제공됨
+  - 메소드 이름의 규칙을 가지고 메소드 내용을 직접 생성(findByName, findByNameAndEmail)
+- SpringDataJpaMemberRepository를 사용하게끔 [SpringConfig](src/main/java/com/example/introduction/SpringConfig.java) 수정
+- 스프링 데이터 JPA 프레임 워크는 JPA를 편리하게 사용하도록 도와주는 기술, 따라서 JPA를 먼저 학습한 후에 스프링 데이터 JPA를 학습하는 것이 바람직
+  - 실무에서는 JPA와 스프링 데이터 JPA를 기본으로 사용하고 복잡한 동적 쿼리는 Querydsl이라는 라이브러리를 사용
+  - Querydsl로도 해결하기 어려운 쿼리는 JPA가 제공하는 네이티브 쿼리를 사용하거나, 앞서 학습한 스프링 JdbcTemplate, MyBatis를 사용
+```
+프록시 개념을 확인하여 정리
+```
 
 ## 섹션 7. AOP
 ### AOP가 필요한 상황
+- AOP를 **언제, 왜** 써야하는지 아는 것이 중요
+  - 모든 메소드의 호출 시간을 측정하고 싶다면?
+```java
+long start = System.currentTimeMillis();
+try {
+    // 실제 비즈니스 로직
+} finally {
+    long finish = System.currentTimeMillis();
+    long timeMs = finish - start;
+    System.out.println("join " + timeMs + "ms");
+}
+```
+- 시간을 측정하는 로직은 공통 관심 사항(cross-cutting concern)
+- 실제 비즈니스 로직은 핵심 관심 사항(core concern)
+- 공통 관심 사항과 핵심 관심 사항이 섞여서 유지보수가 어려움
+
 ### AOP 적용
+- AOP(Aspect Oriented Programming, 관점 지향 프로그래밍)의 개념이 등장
+  - 공통 관심 사항(cross-cutting concern)과 핵심 관심 사항(core concern)을 분리
+  - 시간을 측정하는 로직을 별도의 공통 로직으로 생성하고 원하는 곳에 적용
+- [TimeTraceAop](src/main/java/com/example/introduction/aop/TimeTraceAop.java)
+  - 공통 관심 내용을 작성하고 적용할 부분을 지정
+  - 핵심 관심 사항에 필요한 내용만을 작성할 수 있음
+  - 변경 및 유지 보수가 용이
+- 스프링 빈 의존성 연결 시 공통 관심 사항을 수행하는 가짜 대상(프록시)를 만들어 내어 진짜 인스턴스 앞에 세워둠
+  - 클라이언트 부분에서 의존성을 호출할 때, 프록시가 수행된 후에 진짜 인스턴스가 실행됨
+  - DI를 하지 않고 의존성을 직접 생성한다면 불가능한 기술
+- 실제 Proxy가 주입되는지 콘솔에 출력해서 확인
+  - [MemberService](src/main/java/com/example/introduction/service/MemberService.java)에서 주입받은 MemberRepository Class 확인
+- 프록시 개념을 사용하는 AOP 말고도 컴파일 타임에 코드를 덮어 씌우는 방식도 있음
 
 ## 섹션 8. 다음으로
+- Web MVC, 아키텍쳐와 테스트 코드, DI와 IoC, DB 접근 기술을 넓고 얕게 배워봄
+- 이제는 각 기술들의 작동 원리에 대해서 상세하게 학습을 진행하면 됨
+- 스프링을 단순히 깊게 이해하는 것보다 실무에서 발생하는 문제들을 잘 해결하는 것이 훨씬 중요
 
 ## Reference
 - [Template Engine](https://imgzon.tistory.com/97)

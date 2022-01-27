@@ -33,6 +33,8 @@ public class MemberService {
     */
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+        // MemberRepository 프록시 여부 확인
+        System.out.println("memberRepository : " + memberRepository.getClass());
     }
 
     /**
