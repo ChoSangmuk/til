@@ -78,14 +78,69 @@ public class MemberService {
 - 클라이언트 코드의 변경 없이 기능 확장
 
 ## 섹션 2. 스프링 핵심 원리 이해1 - 예제 만들기
-### 프로젝트 생성
-### 비즈니스 요구사항과 설계
-### 회원 도메인 설계
-### 회원 도메인 개발
-### 회원 도메인 실행과 테스트
-### 주문과 할인 도메인 설계
-### 주문과 할인 도메인 개발
-### 주문과 할인 도메인 실행과 테스트
+### 프로젝트 생성 및 비즈니스 요구사항과 설계
+- Project 
+  - 라이브러리 로드, 빌드 등을 관리하는 Tool을 명시
+  - Maven, Gradle 등이 있으며, Gradle의 빈도가 증가하는 추세
+  - 라이브러리는 추가적으로 의존성을 가질 수 있으며, 의존관계 역시 빌드 툴에 의해 관리됨
+- no Dependencies 
+  - 프로젝트에서 사용하는 라이브러리
+  - 스프링이 없을 때 불편함을 경험하기 위해 의존성 추가는 하지 않음
+
+<a href="https://start.spring.io/">
+  <img src="../Image/core-basic-start-spring.png" width="600" height="50%">
+</a>
+
+- 배운 내용을 토대로 요구사항을 역할과 구현을 분리하여 순수 자바로 개발하기
+- Spring Web을 포함하지 않음으로 톰캣이 실행되지 않고 종료됨
+- 요구사항 변경 시, 다형성과 SOLID를 잘 지킬수 있는지 검증
+
+<img src="../Image/core-basic-business-requirements.png" width="600" height="50%">
+
+### 회원 도메인 설계, 개발, 실행과 테스트
+- 회원 도메인에 대한 설계
+  - 클라이언트는 회원 서비스를 호출함
+  - 회원 서비스는 회원 가입과 조회 기능을 제공하며, 회원 저장소를 호출하여 데이터에 접근 
+  - 회원 저장소는 아직 미확정 상태임으로 역할(인터페이스)을 정의하고 임시로 메모리를 이용하여 구현
+  - 상황이 변함에 따라 회원 저장소 역할의 구현체를 변경
+```
+도메인 협력 관계 : 기획자도 볼수 있는 그림
+클래스 다이어그램 : 도메인 협력 관계를 바탕으로 구현을 위해 구체화한 정적 그림 
+객체 다이어그램 : 실제 작동 시 객체 인스턴스간의 참조 관계를 나타낸 동적 그림
+```
+- 클래스 다이어그램을 참고, member 패키지에 회원과 관련된 내용을 개발
+  - [Grade](src/main/java/com/example/corebasic/member/Grade.java)와 [Member](src/main/java/com/example/corebasic/member/Member.java)
+  - [MemberRepository](src/main/java/com/example/corebasic/member/MemberRepository.java)
+    - [MemoryMemberRepository](src/main/java/com/example/corebasic/member/MemoryMemberRepository.java)
+    - 인터페이스와 구현체는 패키지를 나누는 것이 좋지만 간단한 예제를 위해 분리하지 않음
+  - [MemberService](src/main/java/com/example/corebasic/member/MemberService.java)
+    - [MemberServiceImpl](src/main/java/com/example/corebasic/member/MemberServiceImpl.java)
+    - 인터페이스의 구현체가 1개인 경우 관례적으로 뒤에 impl 을 붙임
+- 회원 도메인이 정상적으로 동작하는지 확인하는 절차
+  - [MemberApp](src/main/java/com/example/corebasic/MemberApp.java)
+  - [MemberServiceTest](src/test/java/com/example/corebasic/member/MemberServiceTest.java)
+- 인터페이스 뿐만 아니라 구현체까지 의존하기 때문에 **DIP 원칙을 못 지킴**
+- 다른 저장소로 변경할 때 OCP 원칙은 잘 준수할 수 있을까?
+
+### 주문과 할인 도메인 설계, 개발, 실행과 테스트
+- 주문과 할인 도메인에 대한 설계
+  - 주문 생성: 클라이언트는 주문 서비스에 주문 생성을 요청
+  - 회원 조회: 할인을 위해서는 회원 등급이 필요, 주문 서비스는 회원 저장소에서 회원을 조회
+  - 할인 적용: 주문 서비스는 회원 등급에 따른 할인 여부를 할인 정책에 위임
+  - 주문 결과 반환: 주문 서비스는 할인 결과를 포함한 주문 결과를 반환
+  - 주문 데이터를 DB에 저장해야하지만 예제가 너무 복잡해 질 수 있어서 생략, 단순히 주문 결과를 반환
+  - 상품에 대한 도메인이 필요하지만 주문 내역 안에 단순하게 포함시킴
+- 클래스 다이어그램을 참고, discount 패키지에 할인과 관련된 내용을 개발
+  - 할인에 대한 행위 개념을 역할과 구현으로 나눔
+  - [DiscountPolicy](src/main/java/com/example/corebasic/discount/DiscountPolicy.java)
+    - [FixDiscountPolicy](src/main/java/com/example/corebasic/discount/FixDiscountPolicy.java)
+- 클래스 다이어그램을 참고, order 패키지에 주문과 관련된 내용을 개발
+  - [Order](src/main/java/com/example/corebasic/order/Order.java)
+  - [OrderService](src/main/java/com/example/corebasic/order/OrderService.java)
+    - [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java)
+- 주문, 할인 도메인이 정상적으로 동작하는지 확인하는 절차
+  - [OrderApp](src/main/java/com/example/corebasic/OrderApp.java)
+  - [OrderServiceTest](src/test/java/com/example/corebasic/order/OrderServiceTest.java)
 
 ## 섹션 3. 스프링 핵심 원리 이해2 - 객체 지향 원리 적용
 ### 새로운 할인 정책 개발
@@ -151,3 +206,6 @@ public class MemberService {
 
 ## 섹션 10. 다음으로
 ### 다음으로
+
+## Reference
+- [Java Enum](https://honbabzone.com/java/java-enum/)
