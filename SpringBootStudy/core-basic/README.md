@@ -144,7 +144,20 @@ public class MemberService {
 
 ## 섹션 3. 스프링 핵심 원리 이해2 - 객체 지향 원리 적용
 ### 새로운 할인 정책 개발
+- 기존의 할인 정책 역할(인터페이스)를 구현하는 새로운 할인 정책(구현체) 개발
+  - [RateDiscountPolicy](src/main/java/com/example/corebasic/discount/RateDiscountPolicy.java)
+- 새롭게 작성한 할인 정책이 정상적으로 동작하는지 테스트
+  - [RateDiscountPolicyTest](src/test/java/com/example/corebasic/discount/RateDiscountPolicyTest.java)
+
 ### 새로운 할인 정책 적용과 문제점
+- 역할과 구현을 잘 분리하였음, 새로운 할인 정책의 구현은 비교적 쉽게 진행 -> **다형성은 비교적 잘 지킴**
+- 주문서비스 클라이언트([OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java))는 할인 정책 인터페이스뿐만 아니라 할인 정책 구현체에도 의존하고 있음 -> **DIP 원칙 위반**
+- 새로운 할인 정책을 적용하기 위해서는 해당 정책을 사용하는 클라이언트에서 **직접 FixDiscountPolicy에서 RateDiscountPolicy로 변경**해 주어야함 -> **OCP 원칙 위반**
+- 아무리 다형성을 잘 지켜도 DIP 원칙을 위반하면 변경이 발생할 떄, OCP 원칙을 지키기 어려움
+  - DIP 원칙을 지키기 위해 구현체의 생성 부분을 삭제하면 **DIP 원칙 준수**할 수 있음
+  - 그러나 구현체 없이 인터페이스만으로 로직을 실행하면 NullPointerException이 발생
+- 외부에서 클라이언트(OrderServiceImpl)에 필요한 의존성(DiscountPolicy) 구현 객체를 대신 생성하고 주입하면 문제를 해결할 수 있음
+
 ### 관심사의 분리
 ### AppConfig 리팩터링
 ### 새로운 구조와 할인 정책 적용
@@ -209,3 +222,4 @@ public class MemberService {
 
 ## Reference
 - [Java Enum](https://honbabzone.com/java/java-enum/)
+- [Java Static Import](https://offbyone.tistory.com/283)
