@@ -159,6 +159,28 @@ public class MemberService {
 - 외부에서 클라이언트(OrderServiceImpl)에 필요한 의존성(DiscountPolicy) 구현 객체를 대신 생성하고 주입하면 문제를 해결할 수 있음
 
 ### 관심사의 분리
+- 공연의 **배역**과 이를 연기하는 **배우**가 존재
+  - 배우가 직접 상대 배우를 섭외하게 되면 배우 본인의 역할뿐만 아니라 섭외라는 전혀 다른 작업도 해야함
+  - 상대 배우가 변경되어도 공연이 가능해야하지만 그렇지 못함
+  - 별도의 공연 기획자가 배우를 섭외하여 배정하는게 바람직함
+- OOP에서도 마찬가지로 역할을 명시하는 인터페이스와 이를 구현하는 구현체가 존재
+  - 클라이언트가 의존성을 가지는 객체를 직접 선택, 생성하게되면 클라이언트 본인의 역할뿐만 아니라 의존성 객체의 생성에도 신경써야함 
+  - 의존성 객체가 변경되어도 클라이언트는 영향을 받지 않고 자신의 역할을 수행해야하지만 그렇지 못함
+  - 외부에서 의존성을 주입받아서 사용하는 것이 바람직함
+- 애플리케이션의 전체 동작 방식을 구성, 구현 객체를 생성 및 연결하는 책임을 가지는 별도의 설정 클래스([AppConfig](src/main/java/com/example/corebasic/AppConfig.java)) 작성
+  - 클라이언트는 특정 역할(인터페이스)을 사용하겠다고 명시, 생성자 혹은 Setter를 통해 생성이 완료된 구현체를 주입(전달)받음
+  - **AppConfig에서 구현체를 생성하고 클라이언트가 원하는 방식(생성자 혹은 Setter)으로 주입(전달)해줌**
+  - 클라이언트는 어떤 구현체를 사용하게 될지 전혀 모르며, 오로지 외부(AppConfig)에서 결정됨
+  - **클라이언트 입장에서는 의존성을 마치 주입받는 것 같다하여 DI(Dependency Injection), 의존관계 주입, 의존성 주입이라함**
+- 클라이언트 의존성 생성 방식 수정
+  - 의존성 객체 직접 생성 -> 의존성 주입
+  - [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java)
+  - [MemberServiceImpl](src/main/java/com/example/corebasic/member/MemberServiceImpl.java)
+- 예제 코드 실행 방식 수정
+  - 실행 객체 직접 생성 -> AppConfig로 부터 전달
+  - [OrderApp](src/main/java/com/example/corebasic/OrderApp.java)와 [OrderServiceTest](src/test/java/com/example/corebasic/order/OrderServiceTest.java)
+  - [MemberApp](src/main/java/com/example/corebasic/MemberApp.java)와 [MemberServiceTest](src/test/java/com/example/corebasic/member/MemberServiceTest.java)
+
 ### AppConfig 리팩터링
 ### 새로운 구조와 할인 정책 적용
 ### 전체 흐름 정리
