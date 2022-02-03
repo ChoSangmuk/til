@@ -1,7 +1,6 @@
 package com.example.corebasic.member;
 
 public interface MemberRepository {
-
     /**
      * 회원 데이터 저장
      *

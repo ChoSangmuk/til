@@ -1,7 +1,6 @@
 package com.example.corebasic.member;
 
 public interface MemberService {
-
     /**
      * 회원 가입
      *
