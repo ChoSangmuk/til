@@ -35,6 +35,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
+        /*
+         다형성에 의해서 각 인터페이스(MemberRepository, DiscountPolicy) 구현체의 함수(save, discount)가 실행되며,
+         설정 정보 혹은 로그를 확인해야만 실행 시 어떤 구현체가 사용되는지 알수있음
+        */
         Member member = memberRepository.findById(memberId);
         int discountPrice = discountPolicy.discount(member, itemPrice);
 

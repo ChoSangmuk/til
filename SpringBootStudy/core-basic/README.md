@@ -244,6 +244,16 @@ public class MemberService {
   - 또는 어샘블러, 오브젝트 팩토리 등으로 불리기도 함
 
 ### 스프링으로 전환하기
+- 스프링이 없던 순수 자바 DI 코드를 스프링(스프링 컨테이너)이 제공하는 DI 방식으로 변경
+- AppConfig DI 방식 수정
+  - 순수 자바 코드 -> 스프링 기반 DI
+  - [AppConfig](src/main/java/com/example/corebasic/AppConfig.java)
+- 예제 코드 실행 방식 수정
+  - 실행 객체 직접 생성 -> AppConfig로 부터 전달 -> 스프링 컨테이너로 부터 전달
+  - [OrderApp](src/main/java/com/example/corebasic/OrderApp.java)
+  - [MemberApp](src/main/java/com/example/corebasic/MemberApp.java)
+- 스프링 사용을 위해 등록된 빈이 로그에 출력된 것 이외의 결과는 동일
+  - 코드가 약간 더 복잡해진 것 같은데, 스프링 컨테이너를 사용하면 어떤 장점이 있을까? -> 앞으로의 강의 내용
 
 ## 섹션 4. 스프링 컨테이너와 스프링 빈
 ### 스프링 컨테이너 생성

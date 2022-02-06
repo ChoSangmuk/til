@@ -17,7 +17,6 @@ public class MemberServiceImpl implements MemberService {
     // MemberServiceImpl 는 어떤 구현체를 사용하게 될지 알고있을 필요 없이 본인의 역할만 수행하면됨
 
     public void join(Member member) {
-        // 다형성에 의해서 MemberRepository 구현체(MemoryMemberRepository)의 save 가 호출됨
         memberRepository.save(member);
     }
 
