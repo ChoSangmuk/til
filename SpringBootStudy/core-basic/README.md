@@ -257,10 +257,75 @@ public class MemberService {
 
 ## 섹션 4. 스프링 컨테이너와 스프링 빈
 ### 스프링 컨테이너 생성
+```java
+ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+```
+- ApplicationContext 는 인터페이스이며, 스프링 컨테이너라고 이야기함
+  - 개발자의 의도에 따라 여러 형태의 구현체(xml, java)가 존재
+  - 최근에는 대부분 java 어노테이션을 사용
+
+> 정확히는 스프링 컨테이너를 부를 때 BeanFactory, ApplicationContext 로 구분  
+> BeanFactory 를 직접 사용하는 경우는 거의 없으므로 일반적으로 ApplicationContext 를 스프링 컨테이너라 함
+
+**스프링 컨테이너의 생성 과정**
+
+- 스프링 컨테이너 생성 시, 필요한 구성 정보(AppConfig)를 지정하면 Bean 저장소를 만들어 채움
+  - @Bean이 존재하는 모든 메소드를 실행
+  - 메소드 이름과 반환 객체를 key - value 로 매핑하여 저장
+  - 임의로 빈 명칭을 변경할 수도 있음 @Bean(name="memberService2")
+
+> 빈 이름은 항상 다른 이름을 부여해야 함, 같은 이름을 부여하면 다른 빈이 무시되거나 기존 빈을 덮어버리거나 설정에 따라 오류가 발생함  
+> 초기 설계에서 그러한 상황이 발생하지 않게끔 잘 설계하는 것이 중요
+
+- 빈을 생성한 후, 스프링 컨테이너가 설정 정보를 참고해서 동적인 의존관계를 주입(DI)
+  - 단순히 자바 코드를 순서에 맞게 실행하는 것이 아님!
+  - 추가 학습 예정임으로 단순 자바 코드 실행이 아니라는 것만 확인 
+
+> 스프링은 빈을 생성하고, 의존관계를 주입하는 단계가 나누어져 있음  
+> But, 자바 코드로 스프링 빈을 등록하면 생성자를 호출하면서 의존관계 주입도 한번에 처리되지만 이해를 돕기 위해 개념적으로 나누어 설명
+
+- 스프링 컨테이너를 생성하고, 설정(구성) 정보를 참고하여 스프링 빈 등록, 의존관계도 설정함
+  - 의도한 설정 정보대로 등록되었는지 확인 필요
+
 ### 컨테이너에 등록된 모든 빈 조회
+- [ApplicationContextInfoTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextInfoTest.java)
+- 개발자가 작성한 빈(AppConfig 포함) 이외에도 스프링이 기본적으로 사용하는 빈이 자동으로 등록됨
+- 개발자가 작성한 빈과 스프링이 등록한 빈을 구분하기 위해 빈의 정보(BeanDefinition)를 사용
+  - ROLE_APPLICATION: 직접 등록한 애플리케이션 빈
+  - ROLE_INFRASTRUCTURE: 스프링이 내부에서 사용하는 빈
+- JUnit5 부터는 접근자(public)를 지정하지 않아도 됨
+
 ### 스프링 빈 조회 - 기본
+- [ApplicationContextBasicFindTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextBasicFindTest.java)
+- 빈을 조회하는 기본적인 방식
+  - getBean(빈 이름, 타입) : 이름과 타입으로 조회
+  - getBean(타입) : 타입으로만 조회
+- 반환 타입이 아닌 스프링 빈에 등록된 인스턴스 타입으로 검색하기 때문에 구현체 타입으로 적어도됨
+  - But, 인터페이스가 아닌 구현체에 의지하게 되며 변경에 유연성이 떨어짐으로 추천하지 않음
+- 조회 대상 스프링 빈이 없으면 예외 발생
+  - NoSuchBeanDefinitionException: No bean named 'xxxxx' available
+
 ### 스프링 빈 조회 - 동일한 타입이 둘 이상
+- [ApplicationContextSameBeanFindTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextSameBeanFindTest.java)
+- 같은 타입이 2개 이상 인 경우, 오류가 발생 
+  - NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.corebasic.member.MemberRepository' available
+  - 빈 이름을 지정하여 해결
+- **자동의존 관계 주입 시에도 적용됨(no unique)**
+
 ### 스프링 빈 조회 - 상속 관계
+- [ApplicationContextExtendsFindTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextExtendsFindTest.java)
+- 스프링 빈을 타입으로만 조회 시, 상속 관계가 있다면 하위 클래스는 전부 검색됨
+  - 이를 방지하기 위해 빈 이름을 추가하여 검색
+  - 혹은, 구현체 타입을 명확히 지정하여 해결(추천하지 않음)
+  - Object 는 모든 클래스의 상위 클래스임으로 Object 타입으로 조회하면 스프링의 모든 빈이 검색됨
+- 실제 테스트에선 출력은 제외하는 것을 권장
+
+### 중간 정리
+- 스프링 빈을 조회하는 기본적인 방법을 살펴봄
+- 개발자가 ApplicationContext에서 직접 getBean할 일이 별로 없음
+  - 기본 기능이기도 하며, 아주 드물게 순수 자바 애플리케이션에서 스프링 컨테이너를 가져다 쓸때 사용
+  - 그 외에 일반적인 경우 스프링 컨테이너가 자동으로 의존관계 주입을 사용하거나 @Bean을 통해 설정함
+
 ### BeanFactory와 ApplicationContext
 ### 다양한 설정 형식 지원 - 자바 코드, XML
 ### 스프링 빈 설정 메타 정보 - BeanDefinition
@@ -312,3 +377,4 @@ public class MemberService {
 ## Reference
 - [Java Enum](https://honbabzone.com/java/java-enum/)
 - [Java Static Import](https://offbyone.tistory.com/283)
+- [섹션 4. 스프링 컨테이너와 스프링 빈 정리 자료](https://jihyunhillpark.github.io/springframework/spring-fundamental4/) 
