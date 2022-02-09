@@ -327,8 +327,45 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
   - 그 외에 일반적인 경우 스프링 컨테이너가 자동으로 의존관계 주입을 사용하거나 @Bean을 통해 설정함
 
 ### BeanFactory와 ApplicationContext
+- BeanFactory는 스프링 컨테이너의 최상위 인터페이스
+  - 스프링 빈을 관리하고 조회(getBean)하는 역할을 담당
+- ApplicationContext는 BeanFactory을 상속받아 부가 기능을 추가한 인터페이스
+  - 메시지 소스를 활용한 국제화 기능 : 한글, 영어 등의 언어에 관한 설정 지원
+  - 환경변수 : 로컬, 개발, 운영등을 구분 처리
+  - 애플리케이션 이벤트 : 이벤트를 발행하고 구독하는 모델을 편리하게 지원
+  - 편리한 리소스 조회 : 파일, 클래스패스, 외부 등에서 리소스를 편리하게 조회
+- BeanFactory를 직접 사용할 일은 거의 없으며, 부가 기능이 포함된 ApplicationContext를 사용
+- BeanFactory나 ApplicationContext를 스프링 컨테이너라 함
+
 ### 다양한 설정 형식 지원 - 자바 코드, XML
+- 스프링은 Java이외에도 XML과 같은 다양한 형식으로 설정 정보를 지정할 수 있게끔 유연하게 설계
+- XmlAppConfig 사용 자바 코드
+  - [XmlAppContextTest.java](src/test/java/com/example/corebasic/xml/XmlAppContextTest.java)
+- XML 기반의 스프링 빈 설정 정보
+  - [appConfig.xml](src/main/resources/appConfig.xml)
+  - 설정 방법은 어노테이션 기반 자바(AppConfig.java)와 거의 비슷
+  - Java 소스 파일 이외에 나머지 파일은 resources에 생성
+- 많은 레거시 프로젝트에 XML기반 설정이 남아 있으며, 컴파일 없이 빈 설정 정보를 변경할 수 있는 장점도 있으므로 사용법 정도만 익혀두기
+  - [스프링 공식 레퍼런스 문서](https://spring.io/projects/spring-framework) 확인
+
 ### 스프링 빈 설정 메타 정보 - BeanDefinition
+- 스프링 빈의 정보를 나타내는 파일은 형식이 자유로움
+  - 스프링은 설정 파일(XML, Java)에 직접 의존하는 것이 아니라 BeanDefinition이라는 추상화(인터페이스)에만 의존하고 있음
+  - 스프링 컨테이너가는 BeanDefinition의 빈 설정 메타 정보를 기반으로 스프링 빈(인스턴스)을 생성
+  - 설정 파일에 형식에 상관없이 BeanDefinition의 구현체를 만들어 사용하면 됨
+- ApplicationContext 인터페이스를 구현한 구현체(XXXXXApplicationContext) 내부에 XXXBeanDefinitionReader가 설정 파일을 읽고 BeanDefinition을 생성
+  - AnnotationConfigApplicationContext에서는 AnnotatedBeanDefinitionReader가 설정 정보를 읽어 BeanDefinition을 생성
+  - GenericXmlApplicationContext에서는 XmlBeanDefinitionReader가 설정 정보를 읽어 BeanDefinition을 생성
+- BeanDefinition 정보 ([BeanDefinitionTest](src/test/java/com/example/corebasic/beandefinition/BeanDefinitionTest.java))
+  - Scope: 싱글톤(기본값)
+  - lazyInit: 스프링 컨테이너를 생성할 때 빈을 생성하는 것이 아니라, 실제 빈을 사용할 때 까지 최대한 생성을 지연처리 하는지 여부
+  - BeanClassName: 생성할 빈의 클래스 명(자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
+  - factoryBeanName: 팩토리 역할의 빈을 사용할 경우 이름, 예) appConfig
+  - factoryMethodName: 빈을 생성할 팩토리 메서드 지정, 예) memberService
+  - InitMethodName: 빈을 생성하고, 의존관계를 적용한 뒤에 호출되는 초기화 메서드 명
+  - DestroyMethodName: 빈의 생명주기가 끝나서 제거하기 직전에 호출되는 메서드 명
+  - Constructor arguments, Properties: 의존관계 주입에서 사용한다. (자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
+- BeanDefinition을 직접 작성하여 인스턴스를 생성할 수도 있지만 거의 안함
 
 ## 섹션 5. 싱글톤 컨테이너
 ### 웹 애플리케이션과 싱글톤

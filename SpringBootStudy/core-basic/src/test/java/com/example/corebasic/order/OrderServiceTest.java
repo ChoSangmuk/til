@@ -5,6 +5,7 @@ import com.example.corebasic.member.Grade;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +31,7 @@ class OrderServiceTest {
     }
 
     @Test
+    @DisplayName("VIP 주문 생성 테스트")
     void createOrder() {
         // given
         long memberId = 1L;

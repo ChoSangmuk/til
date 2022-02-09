@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- AppConfig.java 의 public MemberService memberService()와 같음-->
+    <bean id="memberService" class="com.example.corebasic.member.MemberServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
+    </bean>
+
+    <!-- AppConfig.java 의 public OrderService orderService()와 같음-->
+    <bean id="orderService" class="com.example.corebasic.order.OrderServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository"/>
+        <constructor-arg name="discountPolicy" ref="discountPolicy"/>
+    </bean>
+
+    <!-- AppConfig.java 의 public MemberRepository memberRepository()와 같음-->
+    <bean id="memberRepository" class="com.example.corebasic.member.MemoryMemberRepository"/>
+
+    <!-- AppConfig.java 의 public DiscountPolicy discountPolicy()와 같음-->
+    <bean id="discountPolicy" class="com.example.corebasic.discount.RateDiscountPolicy"/>
+</beans>
