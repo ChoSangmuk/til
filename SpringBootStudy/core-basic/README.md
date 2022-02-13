@@ -369,9 +369,64 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
 
 ## 섹션 5. 싱글톤 컨테이너
 ### 웹 애플리케이션과 싱글톤
+- 스프링은 태생이 웹 애플리케이션으로 동시에 다수 사용자의 요청을 처리
+- 스프링 컨테이너(ApplicationContext)를 이용하지 않는 순수한 DI 컨테이너(AppConfig) 테스트
+  - [SingletonTest/pureContainer](src/test/java/com/example/corebasic/singleton/SingletonTest.java)
+  - AppConfig는 요청 시 마다 새로운 객체(의존성 객체 포함)를 생성하여 반환함
+  - 동일한 기능을 하는 객체는 1개만 생성하여 공유하는 것이 효율적
+
 ### 싱글톤 패턴
+- 클래스의 인스턴스가 딱 1개만 생성되는 것을 보장하는 디자인 패턴
+  - make constructor to private, so can't new operation
+  - make method Singleton Class getInstance(), so can access of use singleton class
+```java
+public class Single{
+  // Simplest and safest way to pre-create objects
+  private static Single instance = new Single();
+  private Single(){}
+  public static Single getInstance(){
+    return instance;
+  }
+}
+/* or */
+public class Single{
+  // Lazy creation of objects when requested
+  private static Single instance;
+  private Single(){}
+  public static Single getInstance(){
+    if(single == null) this.instance = new Single();
+    return instance;
+  }
+}
+```
+- 싱글톤 객체 클래스 작성
+  - [SingletonService](src/test/java/com/example/corebasic/singleton/SingletonService.java)
+- 싱글톤 패턴 사용 테스트
+  - [SingletonTest/singletonServiceTest](src/test/java/com/example/corebasic/singleton/SingletonTest.java)
+- 싱글톤은 하나의 객체 생성을 보장한다는 장점이 있지만 단점도 매우 많음
+  - 싱글톤 패턴을 구현하는 코드 자체가 필요
+  - 의존관계상 클라이언트가 구체 클래스에 의존 -> DIP 원칙 위반 -> OCP 원칙 위반 가능성 증가
+  - private 생성자로 자식 클래스를 만들기 어려움
+  - 결론적으로 유연성이 감소하며 안티패턴으로 분류되기도 함
+- 스프링 컨테이너(싱글톤 컨테이너)는 싱글톤 패턴이 가지는 단점은 제거하며 객체를 싱글톤으로 관리해줌
+
 ### 싱글톤 컨테이너
+- 스프링 컨테이너는 싱글톤 컨테이너(레지스트리) 역할을 하며 싱글톤 패턴의 문제점을 해결
+  - [SingletonTest/springContainer](src/test/java/com/example/corebasic/singleton/SingletonTest.java)
+  - 싱글톤 패턴을 위한 지저분한 코드가 들어가지 않음
+  - DIP, OCP, 테스트, private 생성자로 부터 자유롭게 싱글톤을 사용
+- 스프링 빈의 기본 동작 방식은 싱글톤이며 싱글톤이 아니어야할 경우, 스코프를 조정하여 변경 가능
+
 ### 싱글톤 방식의 주의점
+- 1개의 객체만 생성되어 모두가 공용으로 사용하기에 **변경 가능한 상태 값을 가지거나 의존적으로 설계해서는 안됨**
+  - **스프링 빈은 항상 무상태(stateless)로 설계**
+  - 특정 클라이언트에 의존적인 필드 혹은 특정 클라이언트가 값을 변경할 수 있는 필드가 있어서는 안됨
+  - 가급적 클래스 필드는 읽기만 가능하게 하며, 자바에서 공유되지 않는, 지역변수, 파라미터, ThreadLocal 등을 사용
+  - 스프링 빈의 필드에 공유 값을 설정하면 정말 큰 장애가 발생할 가능성이 있음
+- 상태(price)를 유지하는 클래스와 문제 발생 테스트
+  - [StatefulService](src/test/java/com/example/corebasic/singleton/StatefulService.java)
+  - [StatefulServiceTest](src/test/java/com/example/corebasic/singleton/StatefulServiceTest.java)
+
 ### @Configuration과 싱글톤
 ### @Configuration과 바이트코드 조작의 마법
 
