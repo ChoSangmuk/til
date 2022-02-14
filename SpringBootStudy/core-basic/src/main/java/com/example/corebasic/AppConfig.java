@@ -16,6 +16,18 @@ import org.springframework.context.annotation.Configuration;
  스프링 컨테이너는 @Configuration 이 붙은 클래스(AppConfig)를 애플리케이션의 설정(구성) 정보로 사용
  @Configuration 이 붙은 클래스(AppConfig)도 스프링 빈으로 등록
  스프링이 내부적으로 필요로 하는 여러 클래스도 빈으로 등록됨
+
+ 예상 함수 호출
+ Call AppConfig.memberService -> Call AppConfig.memberRepository
+ Call AppConfig.orderService -> Call AppConfig.memberRepository, Call AppConfig.discountPolicy
+ Call AppConfig.memberRepository
+ Call AppConfig.discountPolicy
+
+ 실제 함수 호출
+ Call AppConfig.memberService -> Call AppConfig.memberRepository
+ Call AppConfig.orderService -> Call AppConfig.discountPolicy
+
+ Configuration 삭제 시, 싱글톤을 보장할 수 없음
 */
 public class AppConfig {
     @Bean
@@ -30,6 +42,7 @@ public class AppConfig {
 
          리팩터링 후, memberRepository()를 호출한 결과를 주입
         */
+        System.out.println("Call AppConfig.memberService");
         return new MemberServiceImpl(memberRepository());
     }
 
@@ -41,12 +54,14 @@ public class AppConfig {
 
          리팩터링 후, memberRepository()와 discountPolicy()를 호출한 결과를 주입
         */
+        System.out.println("Call AppConfig.orderService");
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
     @Bean
     public MemberRepository memberRepository() {
         // MemberRepository 역할은 MemoryMemberRepository 구현체로 설정
+        System.out.println("Call AppConfig.memberRepository");
         return new MemoryMemberRepository();
     }
 
@@ -59,6 +74,7 @@ public class AppConfig {
          새로운 할인 정책 적용
          DiscountPolicy 역할은 RateDiscountPolicy 구현체로 설정
         */
+        System.out.println("Call AppConfig.discountPolicy");
         return new RateDiscountPolicy();
     }
 }

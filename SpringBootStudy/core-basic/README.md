@@ -428,7 +428,28 @@ public class Single{
   - [StatefulServiceTest](src/test/java/com/example/corebasic/singleton/StatefulServiceTest.java)
 
 ### @Configuration과 싱글톤
+- @Configuration는 싱글톤을 위해 존재한다고 봐도 무방함
+- AppConfig에서 new MemoryMemberRepository()는 3번 호출되는데 과연 싱글톤을 보장할까?
+  - [MemberServiceImpl](src/main/java/com/example/corebasic/member/MemberServiceImpl.java)의 MemberRepository와 [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java)의 MemberRepository를 비교
+  - [ConfigurationSingletonTest/configurationTest](src/test/java/com/example/corebasic/singleton/ConfigurationSingletonTest.java)
+  - 3개 모두 같은 객체 정보, 싱글톤을 보장하고 있음
+- 스프링은 어떻게 싱글톤을 보장하는 것이 가능할까? 함수 자체가 실행되지 않는걸까?
+  - [AppConfig](src/main/java/com/example/corebasic/AppConfig.java) 수정 후 테스트
+  - 자바 코드에서 3번의 Call AppConfig.memberRepository 가 출력되어야 하지만 1번만 출력
+  - 함수 자체가 실행되지 않음을 의미
+
 ### @Configuration과 바이트코드 조작의 마법
+- 스프링은 싱글톤을 보장해야 하지만 자바 코드 자체를 수정할 수는 없음
+- @Configuration 이 사용된 AppConfig를 자세히 확인
+  - [ConfigurationSingletonTest/configurationDeep](src/test/java/com/example/corebasic/singleton/ConfigurationSingletonTest.java)
+  - AppConfig 뒤에 EnhancerBySpringCGLIB 가 더 붙음 
+- 스프링은 클래스의 바이트코드를 조작하는 라이브러리(CGLIB)를 사용하여 싱글톤을 보장
+  - 내가 작성한 클래스가 아닌 이를 상속받는 클래스를 스프링 빈으로 등록
+  - @Bean 메서드를 실행하면서 이미 빈이 존재하면 존재하는 빈을 반환, 빈이 없으면 생성해서 스프링 빈으로 등록하고 반환하는 코드가 동적으로 생성됨
+  - 상속을 받아 생성한 임시 객체임으로 검색이 가능
+- @Configuration이 없이 @Bean만 사용하면
+  - 사용자가 작성한 순수한 클래스가 빈으로 등록됨
+  - 스프링 빈도 다 정상적으로 등록되지만, 싱글톤은 보장하지 않음
 
 ## 섹션 6. 컴포넌트 스캔
 ### 컴포넌트 스캔과 의존관계 자동 주입 시작하기
