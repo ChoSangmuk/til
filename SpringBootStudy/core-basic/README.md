@@ -453,6 +453,56 @@ public class Single{
 
 ## 섹션 6. 컴포넌트 스캔
 ### 컴포넌트 스캔과 의존관계 자동 주입 시작하기
+- 지금까지 자바 코드의 @Bean이나 XML의 \<bean\> 등 설정 정보에 스프링 빈을 직접 명시
+  - 등록해야 할 스프링 빈이 증가하게되면 설정 정보도 커지고, 누락하는 문제도 발생
+  - 개발자가 일일히 설정 정보를 명시하지 않아도 자동으로 스프링 빈을 등록할 수 있게 지원하는 **컴포넌트 스캔**이 존재
+  - **의존관계도 자동으로 주입**(지정)할 수 있게끔 **@Autowired** 라는 기능도 제공
+- 기존 AppConfig는 학습을 위해 유지, 컴포넌트 스캔 학습을 위한 새로운 AutoAppConfig.java 작성
+  - [AutoAppConfig](src/main/java/com/example/corebasic/AutoAppConfig.java)
+  - @ComponentScan 을 설정 정보에 추가하면 스프링이 제공하는 컴포넌트 스캔을 사용할 수 있음
+  - 기존의 AppConfig와는 다르게 @Bean으로 등록한 클래스는 물론이고 아무 내용이 없음
+    - 어떻게 빈이 될 클래스를 지정할 것인가? -> @Component
+    - 어떻게 의존관계를 주입해야 할까? -> @Autowired
+- @Component 를 추가하면 컴포넌트 스캔의 대상이 되어 스프링 빈으로 등록됨
+  - [MemoryMemberRepository](src/main/java/com/example/corebasic/member/MemoryMemberRepository.java)
+  - [RateDiscountPolicy](src/main/java/com/example/corebasic/discount/RateDiscountPolicy.java)
+- @ComponentScan 사용 시 설정 정보(@Bean)가 없기 때문에, 의존관계 주입도 각 클래스 안에서 해결해야 함
+- @Autowired 를 추가하면 스프링이 의존관계를 자동으로 주입해줌
+  - [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java)
+  - [MemberServiceImpl](src/main/java/com/example/corebasic/member/MemberServiceImpl.java)
+- ComponentScan 테스트 코드
+  - [AutoAppConfigTest](src/test/java/com/example/corebasic/scan/AutoAppConfigTest.java)
+  - AnnotationConfigApplicationContext 를 사용하는 것은 기존과 동일하며, 설정 정보로 AutoAppConfig 클래스를 전달
+  - 로그 정보를 통해 컴포넌트 스캔이 잘 동작하는 것을 확인할 수 있음
+```log
+ClassPathBeanDefinitionScanner - Identified candidate component class: file [.. RateDiscountPolicy.class]
+ClassPathBeanDefinitionScanner - Identified candidate component class: file [.. MemberServiceImpl.class]
+ClassPathBeanDefinitionScanner - Identified candidate component class: file [.. MemoryMemberRepository.class]
+ClassPathBeanDefinitionScanner - Identified candidate component class: file [.. OrderServiceImpl.class]
+// ...
+DefaultListableBeanFactory - Creating shared instance of singleton bean 'autoAppConfig'
+DefaultListableBeanFactory - Creating shared instance of singleton bean 'rateDiscountPolicy'
+DefaultListableBeanFactory - Creating shared instance of singleton bean 'memberServiceImpl'
+DefaultListableBeanFactory - Creating shared instance of singleton bean 'memoryMemberRepository'
+DefaultListableBeanFactory - Autowiring by type from bean name 'memberServiceImpl' via constructor to bean named 'memoryMemberRepository'
+DefaultListableBeanFactory - Creating shared instance of singleton bean 'orderServiceImpl'
+DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl' via constructor to bean named 'memoryMemberRepository'
+DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl' via constructor to bean named 'rateDiscountPolicy'
+```
+
+**요약**  
+
+- @ComponentScan 스프링 빈 등록
+  - @Component 가 붙은 클래스를 스프링 빈으로 등록
+  - 스프링 빈의 기본 이름은 클래스명을 사용하되 맨 앞글자만 소문자를 사용
+    - 빈 이름 기본 전략 : MemberServiceImpl 클래스 -> memberServiceImpl
+    - 빈 이름 직접 지정 : 스프링 빈의 이름을 직접 지정하는 경우, @Component("memberService2")로 이름을 부여
+- @Autowired 의존관계 자동 주입
+  - 생성자에 @Autowired 를 지정하면 스프링 컨테이너가 자동으로 해당 스프링 빈을 찾아서 주입
+  - 기본 조회 전략은 **타입이 같은 빈을 찾아서 주입**
+  - getBean(MemberRepository.class) 와 동일하다고 이해하면 편함
+  - 생성자에 파라미터가 많아도 다 찾아서 자동으로 주입
+
 ### 탐색 위치와 기본 스캔 대상
 ### 필터
 ### 중복 등록과 충돌

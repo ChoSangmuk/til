@@ -1,5 +1,10 @@
 package com.example.corebasic.member;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+// ComponentScan 의 대상으로 지정하기 위해 @Component 를 추가
 public class MemberServiceImpl implements MemberService {
     /*
      초기 설계에서는 MemberRepository 인터페이스의 구현체인 MemoryMemberRepository 를 직접 생성하여 사용
@@ -10,6 +15,8 @@ public class MemberServiceImpl implements MemberService {
     */
     private final MemberRepository memberRepository;
 
+    @Autowired
+    // 의존관계 자동 주입 
     public MemberServiceImpl(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }

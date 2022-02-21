@@ -1,7 +1,11 @@
 package com.example.corebasic.member;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
+// ComponentScan 의 대상으로 지정하기 위해 @Component 를 추가
 // MemberRepository 역할을 Memory 를 이용하여 구현
 public class MemoryMemberRepository implements MemberRepository {
     /*
