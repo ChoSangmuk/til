@@ -12,14 +12,16 @@
 - @Linux(@Shell), @DB(@Oracle)
 - Reference https://www.it-note.kr/180
 
-## ELK stack Filebeat 설치
-- @Linux, @ELK(@FileBeat, @Logstash, @Elasticsearch, @Kibana)
-- Reference [https://blog.naver.com/PostView.nhn?blogId=wideeyed ... ](https://blog.naver.com/PostView.nhn?blogId=wideeyed&logNo=221299924317&redirect=Dlog&widgetTypeCall=true&directAccess=false)
-
 ## MongoDB Query
 - @DB(@MongoDB)
 - db.coll_name.find({},{}).sort({}) 형태로 사용
 - Reference https://velopert.com/479
+
+## ELK stack Filebeat 설치
+- @Linux, @ELK(@FileBeat, @Logstash, @Elasticsearch, @Kibana)
+- Reference
+  - [https://blog.naver.com/PostView.nhn?blogId=wideeyed ... ](https://blog.naver.com/PostView.nhn?blogId=wideeyed&logNo=221299924317&redirect=Dlog&widgetTypeCall=true&directAccess=false)
+  - [https://github.com/higee/elastic/wiki/ ... ](https://github.com/higee/elastic/wiki/Elastic-Stack-%EC%84%A4%EC%B9%98-%EB%B0%8F-%ED%99%98%EA%B2%BD-%EC%84%A4%EC%A0%95.#install_logstash)
 
 ## 로그인 쉘(Login shell), 논 로그인 쉘의 실행 절차
 - @Linux(@Shell)
@@ -173,3 +175,42 @@ function getCalendar(callback) {
 </html>
 ```
 - Reference https://mebadong.tistory.com/39
+
+## Jenkins curl 실행
+- @Jenkins, @Linux(@Shell(@curl))
+```sh
+# 1. Job 실행
+curl -X post "http://${JENKINS_ID}:${JENKINS_PW}@${JENKINS_IP}:${JENKINS_PORT}/jenkins/job/${JOB_NAME}/build?token=${JOB_NAME}"
+
+# 2. console log 혹은 결과 확인
+curl "http://${JENKINS_ID}:${JENKINS_PW}@${JENKINS_IP}:${JENKINS_PORT}/jenkins/job/${JOB_NAME}/lastBuild/consoleText"
+```
+- Reference http://confluence.augkorea.org/pages/viewpage.action?pageId=19629608 - discarded
+
+## Telegram Bot API
+- @TelegramAPI, @Linux(@Shell(@curl))
+- 텔레그램 봇 생성 및 설정 필요
+- Jenkins에 연계하여 사용할 경우, 플러그인([Telegram Notification](https://plugins.jenkins.io/telegram-notifications)) 추가
+- Telegram Bot curl Message
+```sh
+curl "https://api.telegram.org/${HTTP_API}/sendMessage?chat_id=${CHAT_ID}&text=Hello"
+```
+- Reference https://krksap.tistory.com/836
+
+## MySQL 상태
+- @DB(@MySQL)
+- Aborted_clients : 클라이언트가 연결을 적절히 닫지않아서 죽었기때문에 끊어진 연결수
+- Aborted_connects : 연결실패된 mysql서버에 연결시도 수.
+- Bytes_received : 모든 클라이언트로 부터 받은 바이트 수
+- Bytes_sent : 모든 클라이언트에게 보낸 바이트수
+- Connections : mysql서버에 연결시도한 수
+- Max_used_connections : 동시사용 연결 최대수
+- Questions : 서버에서 보낸 쿼리수
+- Threads_cached : 스레드 캐시에서 쓰레드 수
+- Threads_connected : 현재 오픈된 연결수
+- Threads_created : 연결을 다루기위해 생성된 쓰레드 수
+- Threads_running : sleeping하지 않는 쓰레드 수
+- Uptime : 서버가 스타트된 후로 지금까지의 시
+- Questions/Uptime = 초당 쿼리수를 나타낸다
+- Connections / Uptime = 초당 연결수를 알 수 있다
+- Questions / Connections = 연결당 쿼리 처리수를 알 수 있다
