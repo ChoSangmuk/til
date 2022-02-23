@@ -20,4 +20,11 @@ import org.springframework.context.annotation.FilterType;
  보통 설정 정보를 컴포넌트 스캔 대상에서 제외하지는 않음
 */
 public class AutoAppConfig {
+    /*
+     // @Bean 수동 빈 등록 vs @Component 자동 빈 등록 테스트
+     @Bean(name = "memoryMemberRepository")
+     public MemberRepository memberRepository() {
+         return new MemoryMemberRepository();
+     }
+    */
 }

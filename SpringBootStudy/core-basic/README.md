@@ -504,8 +504,70 @@ DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl
   - 생성자에 파라미터가 많아도 다 찾아서 자동으로 주입
 
 ### 탐색 위치와 기본 스캔 대상
+- 모든 클래스를 컴포넌트 스캔하면 시간이 오래 걸림으로 컴포넌트 스캔의 시작 위치를 지정하여 필요한 클래스만 스캔할 수 있음
+```java
+@ComponentScan(
+        // basePackages 로 탐색할 패키지의 시작 위치를 지정
+        // 해당 패키지를 포함해서 하위 패키지를 모두 탐색
+        basePackages = "com.example.corebasic",
+
+        // 여러 시작 위치 지정하는 경우
+        basePackages = {"com.example.corebasic.member", "com.example.corebasic.order"},
+
+        // 지정한 클래스의 패키지를 탐색 시작 위치로 지정하는 경우
+        basePackageClasses = AutoAppConfig.class,
+
+        // basePackages 혹은 basePackageClasses 미 지정시,
+        // @ComponentScan 이 붙은 설정 정보 클래스의 패키지를 탐색 시작 위치로 지정
+}
+```
+- 패키지 위치를 지정하지 않고, 설정 정보 클래스의 위치를 프로젝트 최상단에 두는 것을 권장
+  - 프로젝트 메인 설정 정보는 프로젝트를 대표하는 정보이기 때문에 프로젝트 시작 루트 위치에 두는 것을 권장
+  - 최근 스프링 부트도 이 방법을 기본으로 제공
+    - 스프링 부트의 대표 시작 정보인 @SpringBootApplication 를 프로젝트 시작 루트 위치에 두는 것이 관례
+    - 해당 애노테이션 안에 @ComponentScan이 포함 됨
+- 다음 애노테이션들은 내부적으로 @Component 를 포함하기 때문에 컴포넌트 스캔의 대상에 포함되며, 스프링에 의해 부가 기능을 수행
+  - @Component : 컴포넌트 스캔에서 사용
+  - @Controller : 스프링 MVC 컨트롤러에서 사용, 인식 됨
+  - @Service : 스프링 비즈니스 로직에서 사용, 개발자에게 핵심 비즈니스 계층을 인식하는데 도움을 주는 것 이외에 특별한 처리를 하지 않음, 보통의 경우 트랜잭션의 시작과 종료 위치
+  - @Repository : 스프링 데이터 접근 계층에서 사용, 인식되며 데이터 계층의 예외를 스프링 예외로 추상화하여 변환
+  - @Configuration : 스프링 설정 정보에서 사용, 인식되며 스프링 빈이 싱글톤을 유지하도록 추가 처리
+
+> 애노테이션에는 상속관계라는 것이 없음  
+> 애노테이션이 특정 애노테이션을 들고 있는 것을 인식할 수 있는 것은 자바가 아닌 스프링이 지원하는 기능  
+>
+> useDefaultFilters 옵션은 기본으로 켜져있는데, 이 옵션을 끄면 기본 스캔 대상들이 제외됨  
+
 ### 필터
+- ComponentScan의 Filter 설정을 통해 스캔 대상을 지정할 수 있음
+  - includeFilters : 컴포넌트 스캔 대상을 추가로 지정
+  - excludeFilters : 컴포넌트 스캔에서 제외할 대상을 지정
+- 컴포넌트 스캔 대상에 추가할 애노테이션과 클래스
+  - [MyIncludeComponent](src/test/java/com/example/corebasic/scan/filter/MyIncludeComponent.java)
+  - [BeanInclude](src/test/java/com/example/corebasic/scan/filter/BeanInclude.java)
+- 컴포넌트 스캔 대상에서 제외할 애노테이션과 클래스
+  - [MyExcludeComponent](src/test/java/com/example/corebasic/scan/filter/MyExcludeComponent.java)
+  - [BeanExclude](src/test/java/com/example/corebasic/scan/filter/BeanExclude.java)
+- 설정 정보와 전체 테스트 코드
+  - [ComponentFilterAppConfigTest](src/test/java/com/example/corebasic/scan/filter/ComponentFilterAppConfigTest.java)
+  - includeFilters 에 MyIncludeComponent 애노테이션을 추가해서 BeanInclude가 스프링 빈에 등록됨
+  - excludeFilters 에 MyExcludeComponent 애노테이션을 추가해서 BeanExclude가 스프링 빈에 등록되지 않음
+
+> @Component 면 충분하기 때문에 includeFilters 를 사용할 일은 거의 없으며, excludeFilters 는 여러가지 이유로 간혹 사용할 때가 있지만 많지는 않음  
+> 스프링 부트는 컴포넌트 스캔을 기본으로 제공하는데, 옵션을 변경하여 사용하기 보다는 스프링의 기본 설정에 최대한 맞추어 사용하는 것을 권장
+
 ### 중복 등록과 충돌
+- 컴포넌트 스캔 시, 빈 이름을 중복 등록하는 문제
+- @Component 자동 빈 등록 vs @Component 자동 빈 등록
+  - 컴포넌트 스캔에 의해 자동으로 스프링 빈이 등록될 때, 빈 이름이 중복되는 경우 스프링은 오류를 발생시킴
+    - ConflictingBeanDefinitionException
+- @Bean 수동 빈 등록 vs @Component 자동 빈 등록
+  - [AutoAppConfig](src/main/java/com/example/corebasic/AutoAppConfig.java) 수정 후 테스트 시, 작동 가능
+    - Overriding bean definition for bean 'memoryMemberRepository' with a different definition: replacing
+  - 빈 이름 중복 등록 시, 수동 빈 등록이 우선권을 가지며, 수동 빈이 자동 빈을 오버라이딩 해버림
+  - 개발자가 의도적으로 사용한다면 우선권을 주는게 올바른 설계, But 실제로는 여러 설정들이 꼬여서 결과가 우연히 만들어지는 경우가 대부분
+- 최근 스프링 부트에서는 수동 빈 등록과 자동 빈 등록이 충돌나면 오류가 발생하도록 기본 값을 변경
+  - Consider renaming one of the beans or enabling overriding by setting spring.main.allow-bean-definition-overriding=true
 
 ## 섹션 7. 의존관계 자동 주입
 ### 다양한 의존관계 주입 방법
