@@ -2,6 +2,7 @@
 
 ##  O(n²)
 - 2750, 수 정렬하기 ([js](js/2750.js), [java](java/J2750.java))
+- Reference [https://velog.io/@hwamoc/ ... ](https://velog.io/@hwamoc/%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EC%A0%95%EB%A0%AC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-1-%EB%B2%84%EB%B8%94-%EC%A0%95%EB%A0%AC-%EC%84%A0%ED%83%9D-%EC%A0%95%EB%A0%AC-%EC%82%BD%EC%9E%85-%EC%A0%95%EB%A0%AC)
 ### 버블 정렬(Bubble Sort)
 - 인접한 두 원소를 반복하여 비교해가며 자신의 위치를 찾는 정렬
 - https://gmlwjd9405.github.io/2018/05/06/algorithm-bubble-sort.html
@@ -101,7 +102,7 @@ function countingSort(input) {
 - 11651, 좌표 정렬하기 2 ([js](js/11651.js), [java](java/J11651.java))
 - 1181, 단어 정렬 ([js](js/1181.js), [java](java/J1181.java))
 - 10814, 나이순 정렬 ([js](js/10814.js), [java](java/J10814.java))
-- 18870, 좌표 압축 ([js](js/18870.js))
+- 18870, 좌표 압축 ([js](js/18870.js), [java](java/J18870.java))
 
 ### JavaScript
 - 매개변수
