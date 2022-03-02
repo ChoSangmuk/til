@@ -214,3 +214,34 @@ curl "https://api.telegram.org/${HTTP_API}/sendMessage?chat_id=${CHAT_ID}&text=H
 - Questions/Uptime = 초당 쿼리수를 나타낸다
 - Connections / Uptime = 초당 연결수를 알 수 있다
 - Questions / Connections = 연결당 쿼리 처리수를 알 수 있다
+
+## SVN -> Git migration
+- @SVN, @Git
+- SVN -> Git migration command
+```sh
+git svn clone svn://${SVN_IP}/${PROJECT_NAME} --username ${SVN_ID} --no-metadata -A ${USER_PROFILE} ./${PROJECT_NAME}
+```
+- USER_PROFILE
+```txt
+SVN_ID = GIT_NAME <GIT_MAIL>
+```
+- Git clone 명령어는 git svn init 과, git svn fetch를 순서대로 실행하는 것과 같음
+- -r 옵션을 통해서, revision 범위를 설정
+  - git svn clone -s -r1:HEAD [svn repository 주소] ( revision 1 ~ HEAD 까지 복사 )
+- 최초 가져올 때, 특정 revision 을 가져올 경우에는
+  - git init [svn repository 주소]
+  - git fetch -r [시작:끝] 
+- Reference
+  - https://onestepcloser.tistory.com/149
+  - https://gist.github.com/ikaruce/9c8dc57849e003df6fdc
+
+## Git 설정 정보 변경
+- @Git
+```sh
+git remote -v # 외부 저장소 목록 확인
+git remote remove origin # 외부 저장소 연결 해제
+git remote add origin ${GIT_REMOTE_REPOSITORY_URL} # 외부 저장소 추가
+git config -l --global | grep user # 사용자 정보 확인
+git config --global user.name "ChoSangmuk" # 사용자 이름 변경
+git config --global user.email "tkdanr612@gmail.com" # 사용자 메일 변경
+```
