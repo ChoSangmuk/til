@@ -1,54 +1,51 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Scanner;
 import java.io.IOException;
 
 public class J2580 {
+  static int[] row = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+  static int[] col = new int[] { 0, 9, 18, 27, 36, 45, 54, 63, 72 };
+  static int[] sqr = new int[] { 0, 1, 2, 9, 10, 11, 18, 19, 20 };
+  static int[] input = new int[81];
+  static int[] empty = new int[81];
+  static int count = 0;
+
   public static void main(String[] args) throws IOException {
-    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-    String inputString = "";
-    for (int i = 0; i < 9; i++) inputString += " " + br.readLine();
-    int[] input = Arrays.asList(inputString.trim().split(" ")).stream().mapToInt(Integer::parseInt).toArray();
-
-    ArrayList<Integer> empty = new ArrayList<>();
-    for (int i = 0; i < input.length; i++) if (input[i] == 0) empty.add(i);
-    
-    solution(input, empty);
+    Scanner sc = new Scanner(System.in);
+    for (int i = 0; i < input.length; i++) {
+      input[i] = sc.nextInt();
+      if (input[i] == 0) empty[count++] = i;
+    }
+    solution(0);
   }
 
-  static void solution(int[] input, ArrayList<Integer> empty) {
-    if (empty.size() == 0) {
-      String answer = "";
+  static void solution(int position) {
+    if (position == count) {
+      StringBuilder sb = new StringBuilder();
       for (int i = 0; i < 81; i++) {
-        if (i != 0 && i % 9 == 0) answer = answer.trim() + "\n";
-        answer += input[i] + " ";
+        if (i != 0 && i % 9 == 0) sb.append("\n");
+        sb.append(input[i] + " ");
       }
-      System.out.println(answer.trim());
+      System.out.println(sb);
       System.exit(0);
     } else {
-      int index = (int) empty.remove(0);
-
-      List<Integer> row = new ArrayList<>();
-      for (int i = ((int) Math.floor(index / 9)) * 9; i < ((int) Math.floor(index / 9) + 1) * 9; i++) row.add(input[i]);
-      List<Integer> row_possible = new ArrayList<>();
-      for (int i : new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }) if (!row.contains(i)) row_possible.add(i);
-
-      List<Integer> col = new ArrayList<>();
-      for (int i : new int[] { 0, 9, 18, 27, 36, 45, 54, 63, 72 }) col.add(input[i + (index % 9)]);
-
+      int index = (int) empty[position];
+      int x = (int) Math.floor(index / 9);
+      int y = index % 9;
       int sqr_start = ((int) Math.floor(index / 27) * 27) + (((int) Math.floor(index / 3) % 3) * 3);
-      List<Integer> sqr = new ArrayList<>();
-      for (int i : new int[] { 0, 1, 2, 9, 10, 11, 18, 19, 20 }) sqr.add(input[i + sqr_start]);
 
-      for (int i = 0; i < row_possible.size(); i++) {
-        if (col.contains(row_possible.get(i)) || sqr.contains(row_possible.get(i))) continue;
-        input[index] = row_possible.get(i);
-        solution(input, new ArrayList<>(empty));
+      for (int i = 1; i <= 9; i++) {
+        if (!(check(x, y, sqr_start, i))) continue;
+        input[index] = i;
+        solution(position + 1);
         input[index] = 0;
       }
     }
+  }
+
+  static boolean check(int x, int y, int sqr_start, int i) {
+    for (int j : row) if (input[j + x * 9] == i) return false;
+    for (int j : col) if (input[j + y] == i) return false;
+    for (int j : sqr) if (input[j + sqr_start] == i) return false;
+    return true;
   }
 }
