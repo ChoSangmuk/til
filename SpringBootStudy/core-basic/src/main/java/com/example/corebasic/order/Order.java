@@ -1,5 +1,12 @@
 package com.example.corebasic.order;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+// Lombok @Getter 로 Getter 메소드 대체
+@Setter
+// Lombok @Setter 로 Setter 메소드 대체
 public class Order {
     private Long memberId; // 주문 회원 id
     private String itemName; // item 이름
@@ -10,38 +17,6 @@ public class Order {
         this.memberId = memberId;
         this.itemName = itemName;
         this.itemPrice = itemPrice;
-        this.discountPrice = discountPrice;
-    }
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public int getItemPrice() {
-        return itemPrice;
-    }
-
-    public void setItemPrice(int itemPrice) {
-        this.itemPrice = itemPrice;
-    }
-
-    public int getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public void setDiscountPrice(int discountPrice) {
         this.discountPrice = discountPrice;
     }
 

@@ -7,7 +7,7 @@
   - [React.js, 스프링 부트, AWS로 배우는 웹 개발 101 Todo](todo-101)
 - [Inflearn (김영한)](https://www.inflearn.com/users/@yh)
   - [스프링 입문 - 코드로 배우는 스프링 부트, 웹 MVC, DB 접근 기술](introduction)
-  - [스프링 핵심 원리 - 기본편(69.2%)](core-basic)
+  - [스프링 핵심 원리 - 기본편(72.3%)](core-basic)
 
 ## Docker 개발 환경 사용하기
 ### install OpenJDK 11 on Ubuntu

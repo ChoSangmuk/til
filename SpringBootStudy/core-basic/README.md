@@ -660,7 +660,39 @@ public class OrderServiceImpl implements OrderService {
 > @Nullable, Optional은 스프링 전반에 걸쳐서 지원됨, 따라서 생성자 자동 주입에서 특정 필드에만 사용할 수 있음
 
 ### 생성자 주입을 선택해라!
+#### 불변
+- 의존관계는 한번 결정되면 애플리케이션 종료 시점까지 변경할 일이 거의 없으며, 변경해서는 안되는 경우가 더 많음
+- 수정자 주입은 setXxx 메서드를 public으로 설정함으로 누군가 실수로 변경할 가능성이 있음
+  - 변경하면 안되는 메서드를 열어두는 것은 좋은 설계가 아님
+- 생성자 주입은 객체를 생성할 때 1번만 호출하는 것을 보장함으로 불변하게 설계할 수 있음
+
+#### 누락
+- [OrderServiceImplTest](src/test/java/com/example/corebasic/order/OrderServiceImplTest.java)
+- 수정자 주입의 경우 의존관계(memberRepository, discountPolicy) 주입이 누락되었기 때문에 실행 시, Null Point Exception이 발생
+- 생성자 주입을 사용하면 주입 데이터를 누락했을 때 IDE에서 바로 어떤 값을 필수로 주입해야 하는지 확인할 수 있으며 실행 시, 컴파일 오류가 발생
+
+#### final 키워드
+- final 멤버 변수는 선언 시 값을 지정하거나 생성자를 통해서만 값을 할당할 수 있음
+- 생성자 주입 방식만이 필드에 final 키워드를 사용할 수 있으며, 생성자에서 혹시라도 값이 할당되지 않는 경우 컴파일 오류가 발생
+  - 생성자 주입을 제외한 나머지 주입 방식은 모두 생성자 이후에 호출되므로, 필드에 final 키워드를 사용할 수 없음
+
+#### 정리
+- 생성자 주입 방식은 프레임워크에 의존하지 않고, 순수한 자바 언어의 특징을 잘 살리는 방법
+- 기본으로 생성자 주입을 사용하고, 필수 값이 아닌 경우에는 수정자 주입 방식을 옵션으로 부여
+- 필드 주입은 프레임워크가 없이는 테스트를 할 수 없음으로 사용하지 않는게 좋음
+
 ### 롬복과 최신 트랜드
+- 생성자 주입, Setter, Getter 작성은 무엇을 해야할지 명확한 단순 반복
+- Lombok 라이브러리가 제공하는 @RequiredArgsConstructor 기능을 사용하면 final이 붙은 필드를 모아서 생성자를 자동으로 작성해줌
+  - 자바의 애노테이션 프로세서라는 기능을 이용해서 컴파일 시점에 생성자 코드를 자동으로 생성
+  - class 파일 확인하면 실제 코드가 추가된 것을 확인할 수 있음
+- @RequiredArgsConstructor
+  - [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java)
+  - [MemberServiceImpl](src/main/java/com/example/corebasic/member/MemberServiceImpl.java)
+- @Getter, @Setter
+  - [Order](src/main/java/com/example/corebasic/order/Order.java)
+  - [Member](src/main/java/com/example/corebasic/member/Member.java)
+
 ### 조회 빈이 2개 이상 - 문제
 ### @Autowired 필드 명, @Qualifier, @Primary
 ### 애노테이션 직접 만들기

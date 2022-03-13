@@ -1,5 +1,12 @@
 package com.example.corebasic.member;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+// Lombok @Getter 로 Getter 메소드 대체
+@Setter
+// Lombok @Setter 로 Setter 메소드 대체
 public class Member {
     private Long id; // ID
     private String name; // 이름
@@ -8,30 +15,6 @@ public class Member {
     public Member(Long id, String name, Grade grade) {
         this.id = id;
         this.name = name;
-        this.grade = grade;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Grade getGrade() {
-        return grade;
-    }
-
-    public void setGrade(Grade grade) {
         this.grade = grade;
     }
 }

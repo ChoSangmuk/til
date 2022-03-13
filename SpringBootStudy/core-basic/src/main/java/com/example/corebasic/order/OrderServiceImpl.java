@@ -3,11 +3,13 @@ package com.example.corebasic.order;
 import com.example.corebasic.discount.DiscountPolicy;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 // ComponentScan 의 대상으로 지정하기 위해 @Component 를 추가
+@RequiredArgsConstructor
+// final (필수 값) 필드를 기반으로 한 생성자를 대신 작성해줌
 public class OrderServiceImpl implements OrderService {
     /*
      초기 설계에서는 MemberRepository, DiscountPolicy 인터페이스의 구현체인 MemoryMemberRepository, FixDiscountPolicy 를 직접 생성하여 사용
@@ -37,12 +39,14 @@ public class OrderServiceImpl implements OrderService {
      ApplicationContext.getBean(MemberRepository.class)와 유사하게 동작한다고 생각하면 편함
      @Autowired 를 사용하면 생성자에서 여러 의존관계도 한번에 주입받을 수 있음
      생성자가 유일한 경우, 생략 가능
+
+     Lombok 의 @RequiredArgsConstructor 를 사용하면 final (필수 값) 필드를 기반으로 한 생성자를 만들어 줌으로 생성자가 필요 없음
+     @Autowired
+     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+         this.memberRepository = memberRepository;
+         this.discountPolicy = discountPolicy;
+     }
     */
-    @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository;
-        this.discountPolicy = discountPolicy;
-    }
 
     // OrderServiceImpl 는 어떤 구현체를 사용하게 될지 알고있을 필요 없이 본인의 역할만 수행하면됨
 
