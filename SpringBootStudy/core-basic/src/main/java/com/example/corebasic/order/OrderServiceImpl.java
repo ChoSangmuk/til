@@ -1,14 +1,15 @@
 package com.example.corebasic.order;
 
+import com.example.corebasic.annotation.MainDiscountPolicy;
 import com.example.corebasic.discount.DiscountPolicy;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 // ComponentScan 의 대상으로 지정하기 위해 @Component 를 추가
-@RequiredArgsConstructor
+// @RequiredArgsConstructor
 // final (필수 값) 필드를 기반으로 한 생성자를 대신 작성해줌
 public class OrderServiceImpl implements OrderService {
     /*
@@ -41,12 +42,13 @@ public class OrderServiceImpl implements OrderService {
      생성자가 유일한 경우, 생략 가능
 
      Lombok 의 @RequiredArgsConstructor 를 사용하면 final (필수 값) 필드를 기반으로 한 생성자를 만들어 줌으로 생성자가 필요 없음
-     @Autowired
-     public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-         this.memberRepository = memberRepository;
-         this.discountPolicy = discountPolicy;
-     }
+     조회 빈이 2개 이상인 경우, @Qualifier, @Primary 학습을 위해 Lombok 없이 진행
     */
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     // OrderServiceImpl 는 어떤 구현체를 사용하게 될지 알고있을 필요 없이 본인의 역할만 수행하면됨
 
@@ -62,8 +64,13 @@ public class OrderServiceImpl implements OrderService {
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
 
-    // 테스트 용도
+    // 테스트 확인 용도
     public MemberRepository getMemberRepository() {
         return memberRepository;
+    }
+
+    // 테스트 확인 용도
+    public DiscountPolicy getDiscountPolicy() {
+        return discountPolicy;
     }
 }

@@ -340,7 +340,7 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
 ### 다양한 설정 형식 지원 - 자바 코드, XML
 - 스프링은 Java이외에도 XML과 같은 다양한 형식으로 설정 정보를 지정할 수 있게끔 유연하게 설계
 - XmlAppConfig 사용 자바 코드
-  - [XmlAppContextTest.java](src/test/java/com/example/corebasic/xml/XmlAppContextTest.java)
+  - [XmlAppContextTest](src/test/java/com/example/corebasic/xml/XmlAppContextTest.java)
 - XML 기반의 스프링 빈 설정 정보
   - [appConfig.xml](src/main/resources/appConfig.xml)
   - 설정 방법은 어노테이션 기반 자바(AppConfig.java)와 거의 비슷
@@ -694,9 +694,126 @@ public class OrderServiceImpl implements OrderService {
   - [Member](src/main/java/com/example/corebasic/member/Member.java)
 
 ### 조회 빈이 2개 이상 - 문제
+- 기본적으로 @Autowired 는 타입(Type)으로 빈을 조회
+```java
+@Autowired // ac.getBean(DiscountPolicy.class)과 유사하게 동작
+private DiscountPolicy discountPolicy
+```
+- [스프링 빈 조회](#스프링-빈-조회---동일한-타입이-둘-이상)에서 같은 타입의 빈이 2개 이상일 때 타입으로만 빈을 조회하면 오류가 발생
+- 의존관계 자동 주입(@Component, @Autowired)에서도 같은 타입의 빈이 2개 이상일 때 같은 오류가 발생
+  - [FixDiscountPolicy](src/main/java/com/example/corebasic/discount/FixDiscountPolicy.java)
+```log
+NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.corebasic.discount.DiscountPolicy' available: expected single matching bean but found 2: fixDiscountPolicy,rateDiscountPolicy
+```
+- 문제를 해결하는 방법
+  - 구현체를 직접 지정 -> DIP 원칙 위반(유연성 감소), 빈 이름이 다르고 완전히 같은 타입의 스프링 빈이 2개 있을 때 해결이 안됨
+  - 스프링 빈 수동 등록(AppConfig) 작성을 통해 문제를 해결
+  - 의존관계 자동 주입(@Autowired)에서 문제를 해결하는 방법도 존재
+
 ### @Autowired 필드 명, @Qualifier, @Primary
+- 조회 빈이 2개 이상 - 문제 해결 방법
+
+#### @Autowired 필드 명 매칭
+- @Autowired 는 기본적으로 타입 매칭을 시도, 여러 빈이 조회되면 필드 혹은 파라미터 이름으로 추가 매칭
+```java
+// 필드 주입
+@Autowired private DiscountPolicy rateDiscountPolicy;
+
+// 생성자 주입
+@Autowired
+public OrderServiceImpl(DiscountPolicy rateDiscountPolicy) {
+    this.discountPolicy = rateDiscountPolicy;
+}
+
+// 수정자 주입
+@Autowired
+public void setDiscountPolicy(DiscountPolicy rateDiscountPolicy){
+    this.discountPolicy = rateDiscountPolicy;
+}
+```
+
+#### @Qualifier -> @Qualifier끼리 매칭 -> 빈 이름 매칭
+- @Qualifier 는 추가 구분자를 붙여주는 방법으로 빈 이름을 변경하는 것은 아님
+- 빈 등록시 @Qualifier를 사용하며, 해당 빈을 주입받을 소스에도 @Qualifier를 추가
+```java
+// ComponentScan에 의한 자동 빈 등록
+@Component
+@Qualifier("mainDiscountPolicy")
+public class RateDiscountPolicy implements DiscountPolicy {}
+
+// 자바 애노테이션 활용한 수동 빈 등록
+@Bean
+@Qualifier("mainDiscountPolicy")
+public DiscountPolicy discountPolicy() {
+  return new ...
+}
+
+// 생성자 자동 주입 예시
+@Autowired
+public OrderServiceImpl(@Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    this.discountPolicy = discountPolicy;
+}
+
+// 수정자 자동 주입 예시
+@Autowired
+public DiscountPolicy setDiscountPolicy(@Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    this.discountPolicy = discountPolicy;
+}
+```
+- @Qualifier 주입 시,  @Qualifier("mainDiscountPolicy") 를 못찾으면 @Autowired와 마찬가지로 mainDiscountPolicy라는 이름의 스프링 빈을 추가로 찾음
+  - 즉, @Qualifier끼리 매칭 -> 빈 이름 매칭 -> NoSuchBeanDefinitionException 예외 발생 순서로 진행
+  - But, @Qualifier 는 @Qualifier 를 찾는 용도로만 사용하는게 명확하고 좋은 코드
+
+#### @Primary 사용
+- @Primary 는 우선 순위를 정하는 방법, @Autowired 시에 여러 빈이 매칭되면 @Primary 가 우선권을 가짐
+```java
+// 우선 순위 부여
+@Component
+@Primary
+public class RateDiscountPolicy implements DiscountPolicy {}
+
+// 생성자 자동 주입 예시
+@Autowired
+public OrderServiceImpl(DiscountPolicy discountPolicy) {
+    this.discountPolicy = discountPolicy;
+}
+
+// 수정자 자동 주입 예시
+@Autowired
+public DiscountPolicy setDiscountPolicy(DiscountPolicy discountPolicy) {
+    this.discountPolicy = discountPolicy;
+}
+```
+- 같은 타입의 2개 이상의 빈 모두에 @Primary가 존재하면 오류가 발생
+```log
+NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.corebasic.discount.DiscountPolicy' available: more than one 'primary' bean found among candidates: [fixDiscountPolicy, rateDiscountPolicy]
+```
+
+#### 정리
+- @Qualifier 의 단점은 주입 받을 때, 모든 코드에 @Qualifier 를 붙여주어야 한다는 점
+- @Primary 를 사용하면 주입받는 소스에서 @Qualifier 를 붙일 필요가 없음
+- @Primary, @Qualifier 우선 순위
+  - [AutoAppConfigTest/noUniqueBeanTest](src/test/java/com/example/corebasic/scan/AutoAppConfigTest.java)
+  - 스프링은 자동보다는 수동이, 넒은 범위의 선택권 보다는 좁은 범위의 선택권이 우선 순위가 높음
+  - @Qualifier의 우선 순위가 더 높음 (중요! @Qualifier를 사용한 빈들에만 해당!) 
+  - @Qualifier 사용하지 않고 빈을 주입받을 경우, @Primary 빈이 주입됨
+
 ### 애노테이션 직접 만들기
+- @Qualifier("MainDiscountPolicy")은 컴파일시 타입 체크가 안됨 
+- [MainDiscountPolicy](src/main/java/com/example/corebasic/annotation/MainDiscountPolicy.java) 애노테이션을 직접 정의하여 문제를 해결할 수 있음
+  - [RateDiscountPolicy](src/main/java/com/example/corebasic/discount/RateDiscountPolicy.java) 애노테이션 변경
+  - [OrderServiceImpl](src/main/java/com/example/corebasic/order/OrderServiceImpl.java) 애노테이션 변경
+- 애노테이션에는 상속이라는 개념이 없으며, 여러 애노테이션을 모아서 사용하는 기능은 스프링이 지원하는 기능
+- 스프링이 제공하는 기능을 뚜렷한 목적없이 무분별하게 재정의하는 것은 유지보수에 더 혼란만 가중할 수 있음
+
 ### 조회한 빈이 모두 필요할 때, List, Map
+- 의도적으로 해당 타입의 스프링 빈이 다 필요한 경우가 존재
+  - ex) 2개의 할인(rate, fix)이 모두 필요할 때
+- 스프링을 사용하면 소위 말하는 전략 패턴을 매우 간단하게 구현할 수 있음
+- [AllBeanTest](src/test/java/com/example/corebasic/autowired/AllBeanTest.java)
+  - DiscountService는 Map으로 모든 DiscountPolicy(fixDiscountPolicy, rateDiscountPolicy) 를 주입받음
+  - discount(..., discountCode) 메서드는 discountCode로 Map에서 스프링 빈(DiscountPolicy)을 찾아서 실행
+
 ### 자동, 수동의 올바른 실무 운영 기준
 
 ## 섹션 8. 빈 생명주기 콜백
@@ -721,4 +838,5 @@ public class OrderServiceImpl implements OrderService {
 ## Reference
 - [Java Enum](https://honbabzone.com/java/java-enum/)
 - [Java Static Import](https://offbyone.tistory.com/283)
-- [섹션 4. 스프링 컨테이너와 스프링 빈 정리 자료](https://jihyunhillpark.github.io/springframework/spring-fundamental4/) 
+- [섹션 4. 스프링 컨테이너와 스프링 빈 정리 자료](https://jihyunhillpark.github.io/springframework/spring-fundamental4/)
+- [Java Strategy Pattern(전략패턴) (feat. Interface)](https://jackjeong.tistory.com/108)
