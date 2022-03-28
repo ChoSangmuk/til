@@ -44,10 +44,10 @@
 - 스프링의 제어의 역전(IoC), 의존관계 주입(DI)은 다형성을 활용해서 역할과 구현을 편리하게 다룰 수 있도록 지원 
 
 ### **좋은 객체 지향 설계의 5가지 원칙(SOLID)**
-- **SRP: 단일 책임 원칙(single responsibility principle)**
+- **SRP : 단일 책임 원칙(single responsibility principle)**
   - **한 클래스는 하나의 책임만**
   - 중요한 기준은 변경, 변경이 있을 때 파급 효과가 적으면 단일 책임 원칙을 잘 따른 것
-- **OCP: 개방-폐쇄 원칙 (Open/closed principle)**
+- **OCP : 개방-폐쇄 원칙 (Open/closed principle)**
   - 소프트웨어 요소는 **확장에는 열려 있으나 변경에는 닫혀 있어야 한다**
   - 객체를 생성하고, 연관관계를 맺어주는 별도의 조립, 설정자가 필요 -> 스프링 DI 컨테이너의 역할
 ```java
@@ -60,12 +60,12 @@ public class MemberService {
     private MemberRepository memberRepository = new JdbcMemberRepository();
 }
 ```
-- **LSP: 리스코프 치환 원칙 (Liskov substitution principle)**
+- **LSP : 리스코프 치환 원칙 (Liskov substitution principle)**
   - 다형성에서 하위 클래스는 인터페이스 규약을 지켜야 함
   - 다형성을 지원하기 위한 원칙으로 **인터페이스 구현체의 신뢰성을 보장**
-- **ISP: 인터페이스 분리 원칙 (Interface segregation principle)**
+- **ISP : 인터페이스 분리 원칙 (Interface segregation principle)**
   - 특정 클라이언트를 위한 인터페이스 여러 개가 범용 인터페이스 하나보다 좋음
-- **DIP: 의존관계 역전 원칙 (Dependency inversion principle)**
+- **DIP : 의존관계 역전 원칙 (Dependency inversion principle)**
   - **추상화(인터페이스)에 의존해야지, 구체화(구현 클래스)에 의존하면 안된다.**
   - 클라이언트가 구현체에 의존하게 되면 변경이 아주 어려워짐
   - OCP에서 설명한 MemberService는 인터페이스에 의존하지만, 구현 클래스도 동시에 의존 ->  DIP 위반
@@ -73,7 +73,7 @@ public class MemberService {
 
 ### 객체 지향 설계와 스프링
 - 스프링은 다음 기술로 다형성 + OCP, DIP를 가능하게 지원
-  - DI(Dependency Injection): 의존관계, 의존성 주입
+  - DI(Dependency Injection) : 의존관계, 의존성 주입
   - DI 컨테이너 제공
 - 클라이언트 코드의 변경 없이 기능 확장
 
@@ -231,7 +231,7 @@ public class MemberService {
   - 정적인 클래스 의존관계 : 클래스 다이어그램
     - 클래스가 사용하는 import 코드만 보고 의존관계를 쉽게 판단할 수 있음
     - 애플리케이션을 실행하지 않아도 분석할 수 있지만 실제 어떤 객체 인스턴스가 주입될지 알 수 없음
-  - 동적인 객체 인스턴스 의존 관계 : 객체 다이어그램
+  - 동적인 객체 인스턴스 의존관계 : 객체 다이어그램
     - 애플리케이션 실행 시점(런타임)에 생성되는 객체 인스턴스들간의 관계
 - **의존관계 주입 DI(Dependency Injection)**
   - 외부에서 의존성 객체를 생성하고 필요한 객체에 전달(주입)해서 의존관계를 연결하는 것
@@ -291,8 +291,8 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
 - [ApplicationContextInfoTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextInfoTest.java)
 - 개발자가 작성한 빈(AppConfig 포함) 이외에도 스프링이 기본적으로 사용하는 빈이 자동으로 등록됨
 - 개발자가 작성한 빈과 스프링이 등록한 빈을 구분하기 위해 빈의 정보(BeanDefinition)를 사용
-  - ROLE_APPLICATION: 직접 등록한 애플리케이션 빈
-  - ROLE_INFRASTRUCTURE: 스프링이 내부에서 사용하는 빈
+  - ROLE_APPLICATION : 직접 등록한 애플리케이션 빈
+  - ROLE_INFRASTRUCTURE : 스프링이 내부에서 사용하는 빈
 - JUnit5 부터는 접근자(public)를 지정하지 않아도 됨
 
 ### 스프링 빈 조회 - 기본
@@ -310,7 +310,7 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
 - 같은 타입이 2개 이상 인 경우, 오류가 발생 
   - NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.corebasic.member.MemberRepository' available
   - 빈 이름을 지정하여 해결
-- **자동의존 관계 주입 시에도 적용됨(no unique)**
+- **자동의존관계 주입 시에도 적용됨(no unique)**
 
 ### 스프링 빈 조회 - 상속 관계
 - [ApplicationContextExtendsFindTest](src/test/java/com/example/corebasic/beanfind/ApplicationContextExtendsFindTest.java)
@@ -357,14 +357,14 @@ ApplicationContext applicationContext = new AnnotationConfigApplicationContext(A
   - AnnotationConfigApplicationContext에서는 AnnotatedBeanDefinitionReader가 설정 정보를 읽어 BeanDefinition을 생성
   - GenericXmlApplicationContext에서는 XmlBeanDefinitionReader가 설정 정보를 읽어 BeanDefinition을 생성
 - BeanDefinition 정보 ([BeanDefinitionTest](src/test/java/com/example/corebasic/beandefinition/BeanDefinitionTest.java))
-  - Scope: 싱글톤(기본값)
-  - lazyInit: 스프링 컨테이너를 생성할 때 빈을 생성하는 것이 아니라, 실제 빈을 사용할 때 까지 최대한 생성을 지연처리 하는지 여부
-  - BeanClassName: 생성할 빈의 클래스 명(자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
-  - factoryBeanName: 팩토리 역할의 빈을 사용할 경우 이름, 예) appConfig
-  - factoryMethodName: 빈을 생성할 팩토리 메서드 지정, 예) memberService
-  - InitMethodName: 빈을 생성하고, 의존관계를 적용한 뒤에 호출되는 초기화 메서드 명
-  - DestroyMethodName: 빈의 생명주기가 끝나서 제거하기 직전에 호출되는 메서드 명
-  - Constructor arguments, Properties: 의존관계 주입에서 사용한다. (자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
+  - Scope : 싱글톤(기본값)
+  - lazyInit : 스프링 컨테이너를 생성할 때 빈을 생성하는 것이 아니라, 실제 빈을 사용할 때 까지 최대한 생성을 지연처리 하는지 여부
+  - BeanClassName : 생성할 빈의 클래스 명(자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
+  - factoryBeanName : 팩토리 역할의 빈을 사용할 경우 이름, 예) appConfig
+  - factoryMethodName : 빈을 생성할 팩토리 메서드 지정, 예) memberService
+  - InitMethodName : 빈을 생성하고, 의존관계를 적용한 뒤에 호출되는 초기화 메서드 명
+  - DestroyMethodName : 빈의 생명주기가 끝나서 제거하기 직전에 호출되는 메서드 명
+  - Constructor arguments, Properties : 의존관계 주입에서 사용한다. (자바 설정 처럼 팩토리 역할의 빈을 사용하면 null)
 - BeanDefinition을 직접 작성하여 인스턴스를 생성할 수도 있지만 거의 안함
 
 ## 섹션 5. 싱글톤 컨테이너
@@ -572,7 +572,7 @@ DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl
 ## 섹션 7. 의존관계 자동 주입
 ### 다양한 의존관계 주입 방법
 #### 생성자 주입
-- 생성자를 통해서 의존 관계를 주입받는 방법
+- 생성자를 통해서 의존관계를 주입받는 방법
 - 생성자 호출 시점에 딱 1번만 호출되는 것을 보장함으로 **불변, 필수 의존관계에 사용**
 - 생성자가 딱 1개만 있으면 @Autowired를 생략해도 자동 주입됨
 ```java
@@ -591,7 +591,7 @@ public class OrderServiceImpl implements OrderService {
 
 #### 수정자 주입(setter 주입)
 - setter라 불리는 자바빈 프로퍼티 규약의 수정자 메서드를 통해 필드의 값을 변경하여 의존관계를 주입하는 방법
-- 의존 관계의 변경이 가능함으로 **선택, 변경 가능성이 있는 의존관계에 사용**
+- 의존관계의 변경이 가능함으로 **선택, 변경 가능성이 있는 의존관계에 사용**
 ```java
 @Component
 public class OrderServiceImpl implements OrderService {
@@ -809,21 +809,174 @@ NoUniqueBeanDefinitionException: No qualifying bean of type 'com.example.corebas
 ### 조회한 빈이 모두 필요할 때, List, Map
 - 의도적으로 해당 타입의 스프링 빈이 다 필요한 경우가 존재
   - ex) 2개의 할인(rate, fix)이 모두 필요할 때
-- 스프링을 사용하면 소위 말하는 전략 패턴을 매우 간단하게 구현할 수 있음
+- 스프링을 사용하면 전략 패턴을 매우 간단하게 구현할 수 있음
 - [AllBeanTest](src/test/java/com/example/corebasic/autowired/AllBeanTest.java)
   - DiscountService는 Map으로 모든 DiscountPolicy(fixDiscountPolicy, rateDiscountPolicy) 를 주입받음
   - discount(..., discountCode) 메서드는 discountCode로 Map에서 스프링 빈(DiscountPolicy)을 찾아서 실행
 
 ### 자동, 수동의 올바른 실무 운영 기준
+- 설정 정보를 통한 빈 등록과 의존관계 수동 주입 VS 컴포넌트 스캔과 의존관계 자동 주입
+
+#### 편리한 자동 기능을 기본으로 사용하자
+- 스프링이 나오고 시간이 갈수록 점점 컴포넌트 스캔과 의존관계 자동 주입을 선호하는 추세
+  - @Component 뿐만 아니라 @Controller, @Service, @Repository 처럼 계층에 맞추어 일반적인 애플리케이션 로직을 자동으로 스캔할 수 있도록 지원
+  - 스프링 부트는 컴포넌트 스캔을 기본으로 사용하고, 스프링 부트의 다양한 스프링 빈들도 조건이 맞으면 자동으로 등록하도록 설계
+- 설정 정보를 기반으로 애플리케이션을 구성하는 부분과 실제 동작하는 부분을 명확하게 나누는 것이 이상적, But!
+  - @Configuration 설정 정보에 @Bean 을 작성하여 객체를 생성하고 주입할 대상을 일일이 적어주는 과정은 상당히 번거로움
+  - 개발자 입장에서 @Component 만 추가하여 스프링 빈 등록을 끝내는 것이 훨씬 편하고 간결함
+  - 관리할 빈이 많아서 설정 정보가 커지면 설정 정보를 관리하는 것 자체가 부담
+  - 결정적으로 자동 빈 등록을 사용해도 OCP, DIP를 지킬 수 있음
+
+#### 그러면 수동 빈 등록은 언제 사용하면 좋을까?
+- 애플리케이션은 크게 업무 로직과 기술 지원 로직으로 구분
+- 업무 로직 빈
+  - 웹을 지원하는 컨트롤러, 핵심 비즈니스 로직이 있는 서비스, 데이터 계층의 로직을 처리하는 리포지토리 등, 비즈니스 요구사항을 개발할 때 추가되거나 변경되는 빈
+  - 업무 로직은 숫자도 매우 많고, 어느정도 정해진 패턴이 존재하며, 문제가 발생해도 명확하게 파악이 가능  
+  - 따라서, 업무 로직은 자동 등록과 주입 기능을 적극 사용하는 것이 좋음
+- 기술 지원 빈
+  - 기술적인 문제나 공통 관심사(AOP) 처리, 데이터베이스 연결, 공통 로그 처리 처럼 업무 로직을 지원하기 위한 하부 기술이나 공통 기술이 구현된 빈
+  - 업무 로직과 비교해서 그 수가 매우 적고, 애플리케이션 전반에 걸쳐서 광범위하게 영향을 미침
+  - 기술 지원 로직은 적용이 잘 되고 있는지 아닌지 조차 파악하기 어려운 경우가 많음
+  - 따라서, 기술 지원 로직들은 가급적 수동 빈 등록을 사용해서 명확하게 들어내는 것이 유지보수 측면에서도 좋음
+
+#### 비즈니스 로직 중에서 다형성을 적극 활용할 때
+- [AllBeanTest](src/test/java/com/example/corebasic/autowired/AllBeanTest.java)의 DiscountService는 의존관계 자동 주입으로 Map\<String, DiscountPolicy\> policyMap 을 주입 받음
+  - 어떤 빈들이 주입될 지, 각 빈들의 이름은 무엇일지 코드만 보고 한번에 쉽게 파악할 수 없으며, 여러 코드를 확인해야함
+- 이러한 경우 수동으로 빈을 등록하거나 컴포넌트 스캔 사용 시, 특정 패키지(discount)에 같이 묶어두면 한눈에 빈의 이름은 물론이고 어떤 빈들이 주입될지 쉽게 파악이 가능함
+```java
+@Configuration
+public class DiscountPolicyConfig {
+    @Bean
+    public DiscountPolicy rateDiscountPolicy() {
+        return new RateDiscountPolicy();
+    }
+    @Bean
+    public DiscountPolicy fixDiscountPolicy() {
+        return new FixDiscountPolicy();
+    }
+}
+```
+
+#### 스프링과 스프링 부트가 자동으로 등록하는 수 많은 빈들은 예외
+- 스프링 내부 기술 지원 객체들은 메뉴얼 참고하여 스프링 자체를 잘 이해하고 스프링의 의도대로 잘, 편리하게 사용하는게 중요
+  - 스프링 부트의 경우, DataSource 같은 데이터베이스 연결에 사용하는 기술 지원 로직까지 내부에서 자동으로 등록
+- 스프링 부트가 아니라 내가 직접 기술 지원 객체를 스프링 빈으로 등록한다면 수동으로 등록해서 명확하게 들어내는 것이 좋음
+
+#### 정리
+- 편리한 자동 기능을 기본으로 사용하자
+- 직접 등록하는 기술 지원 객체는 수동 등록, 스프링의 기술 지원 로직은 메뉴얼을 통해 파악하고 자동 등록 사용
+- 다형성을 적극 활용하는 비즈니스 로직은 수동 등록을 고민해보자
 
 ## 섹션 8. 빈 생명주기 콜백
 ### 빈 생명주기 콜백 시작
+- 스프링을 통해 객체의 초기화와 종료 작업을 어떻게 진행하는지 학습
+  - 초기화 작업 : 애플리케이션 시작 시점에 데이터베이스 커넥션 풀, 네트워크 소켓처럼 필요한 연결을 미리 해두는 작업
+  - 종료 작업 : 애플리케이션 종료 시점에 연결을 모두 종료하는, 사용한 자원을 해제하는 작업
+
+> **객체의 생성? 초기화? 책임의 분리!**  
+>   
+> 생성자는 필수 정보(파라미터)를 받아 빠르게 메모리를 할당해서 객체를 생성하는 책임  
+> 초기화는 생성된 값들을 활용해서 외부 커넥션을 연결하는 등 무거운 동작을 수행하는 책임  
+> 생성자 안에서 무거운 초기화 작업을 함께하는 것 보다는 객체를 생성하는 부분과 초기화하는 부분을 명확하게 나누는 것이 유지보수와 성능(lazy loading 등) 관점에서 좋음
+
+- 외부 네트워크에 연결을 흉내내는 객체
+  - [NetworkClient](src/test/java/com/example/corebasic/lifecycle/NetworkClient.java) 부모 클래스
+  - 애플리케이션 시작 시점(모든 객체 생성이 완료된 후)에 connect 을 호출해서 연결을 맺어두고(초기화 작업) 애플리케이션이 종료되면 disConnect 를 호출해서 연결을 끊어야 함(종료 작업)
+    - [StartConstructor](src/test/java/com/example/corebasic/lifecycle/StartConstructor.java) 생성자에서 초기화 진행
+    - [StartInBean](src/test/java/com/example/corebasic/lifecycle/StartInBean.java) 빈 생성 중 초기화 진행
+- 스프링 환경설정과 실행 테스트 코드, 결과
+  - [BeanLifeCycleTest](src/test/java/com/example/corebasic/lifecycle/BeanLifeCycleTest.java)
+  - 객체를 생성하는 단계에는 URL이 없고, 객체를 생성한 다음에 외부에서 수정자 주입을 통해서 setURL() 이 호출되어야 URL이 존재할 수 있음
+  - StartConstructorConfig & Test
+    - 생성자에서 초기화를 진행하면 정상적인 초기화를 기대할 수 없음 
+  - StartInBeanConfig & Test
+    - connect 와 call 호출을 생성자가 아닌 빈 생성 과정에 포함시키는 경우 초기화는 정상적으로 진행됨. But, 여전히 객체 생성 과정 중에 초기화가 일어남으로 의도와 맞지 않음 
+- 초기화 작업은 의존관계 주입까지 모두 완료되고 난 다음에 호출해야 하는데, 어떻게 개발자가 의존관계 주입이 모두 완료된 시점을 알 수 있을까?
+  - 스프링은 의존관계 주입이 완료되면 스프링 빈에게 콜백 메서드를 통해서 초기화 시점을 알려주는 다양한 기능을 제공함
+  - 또한 스프링은 스프링 컨테이너가 종료되기 직전에 소멸 콜백을 전달(일반적인 싱글톤 스코프를 가지는 객체의 경우)함으로 안전하게 종료 작업을 진행할 수 있음
+- 스프링 빈의 이벤트 라이프사이클
+  - 초기화 콜백 : 빈이 생성되고, 빈의 의존관계 주입이 완료된 후 호출
+  - 소멸전 콜백 : 빈이 소멸되기 직전에 호출
+  - 생성자 주입은 객체를 생성하면서 재귀적으로 의존성 객체를 생성, 주입 받음으로 생성자 주입은 예외
+```txt
+스프링 컨테이너 생성 -> 스프링 빈 생성 -> 의존관계 주입 -> *초기화 콜백 -> 사용 -> *소멸전 콜백 -> 스프링 종료
+```
+- 스프링은 다양한 방식으로 생명주기 콜백을 지원하며 크게 3가지 방법이 사용됨
+  - 인터페이스(InitializingBean, DisposableBean)
+  - 설정 정보에 초기화 메서드, 종료 메서드 지정
+  - @PostConstruct, @PreDestroy 애노테이션 지원
+
 ### 인터페이스 InitializingBean, DisposableBean
+- InitializingBean 인터페이스는 afterPropertiesSet() 메서드로 초기화를 지원
+- DisposableBean 인터페이스는 destroy() 메서드로 소멸을 지원
+- 테스트 코드
+  - [InterfaceSet](src/test/java/com/example/corebasic/lifecycle/InterfaceSet.java)
+  - [BeanLifeCycleTest](src/test/java/com/example/corebasic/lifecycle/BeanLifeCycleTest.java) InterfaceSetConfig & Test
+- 초기화, 소멸 인터페이스 단점
+  - 스프링 전용 인터페이스이며, 초기화, 소멸 메서드의 이름을 변경할 수 없음
+  - 수정 불가능한 외부 라이브러리에 적용할 수 없음
+
 ### 빈 등록 초기화, 소멸 메서드
+- @Configuration 설정 정보 중 @Bean에 초기화, 소멸 메서드 이름을 기입
+```java
+@Bean(initMethod = "methodName1", destroyMethod = "methodName2")
+```
+- 테스트 코드
+  - [BeanSet](src/test/java/com/example/corebasic/lifecycle/BeanSet.java)
+  - [BeanLifeCycleTest](src/test/java/com/example/corebasic/lifecycle/BeanLifeCycleTest.java) BeanSetConfig & Test
+- 설정 정보 사용 특징
+  - 메서드 이름 변경이 가능하며, 빈이 될 객체가 스프링에 의존하지 않음
+  - 설정 정보를 사용하기 때문에 수정 불가능한 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있음
+  - @Bean의 destroyMethod 는 기본값은 (inferred) (추론), 추론 기능은 close, shutdown 라는 이름의 메서드를 자동으로 호출
+  - 라이브러리는 대부분 close, shutdown 이라는 이름의 종료 메서드를 사용하기 때문에 외부 라이브러리를 스프링 빈으로 등록할 때는 destroyMethod는 따로 적어주지 않아도 동작함
+  - 추론 기능을 사용하기 싫으면 빈 공백을 지정(destroyMethod="")
+
 ### 애노테이션 @PostConstruct, @PreDestroy
+- @PostConstruct, @PreDestroy 편리하게 초기화와 종료를 실행
+- 테스트 코드
+  - [AnnotationSet](src/test/java/com/example/corebasic/lifecycle/AnnotationSet.java)
+  - [BeanLifeCycleTest](src/test/java/com/example/corebasic/lifecycle/BeanLifeCycleTest.java) AnnotationSetConfig & Test
+- @PostConstruct, @PreDestroy 애노테이션 특징
+  - 최신 스프링에서 가장 권장하는 방법으로, 애노테이션 하나만 붙이면 되므로 편리하고, 컴포넌트 스캔과 잘 어울림
+  - 해당 애노테이션은 javax.annotation.PostConstruct 패키지로 스프링에 종속적인 기술이 아니라 JSR-250라는 자바 표준임으로 스프링이 아닌 다른 컨테이너에서도 동작
+  - 단, 외부 라이브러리에는 적용하지 못함으로, 외부 라이브러리의 초기화, 종료 작업이 필요한 경우 @Bean의 기능을 사용
+
+### 정리
+- 생성자 안에서 무거운 초기화 작업을 함께하는 것 보다는 객체를 생성하는 부분과 초기화하는 부분을 명확하게 나누는 것이 바람직
+- 스프링 빈의 이벤트 라이프사이클
+```txt
+스프링 컨테이너 생성 -> 스프링 빈 생성 -> 의존관계 주입 -> 초기화 콜백 -> 사용 -> 소멸전 콜백 -> 스프링 종료
+```
+- 인터페이스 InitializingBean, DisposableBean 은 되도록 사용하지 않는 것이 좋음
+- @PostConstruct, @PreDestroy 애노테이션을 기본으로 사용
+- 코드를 고칠 수 없는 외부 라이브러리를 초기화, 종료 작업이 필요한 경우 @Bean 의 initMethod, destroyMethod를 사용
 
 ## 섹션 9. 빈 스코프
 ### 빈 스코프란?
+- scope는 번역 그대로 범위를 뜻하며, 스프링에서는 **빈이 존재할 수 있는 (시간적) 범위를 의미**
+- 스프링 빈은 기본적으로 싱글톤 스코프를 가지기 떄문에 스프링 컨테이너의 시작과 함께 생성되어서 스프링 컨테이너가 종료될 때 까지 유지됨
+- 스프링은 싱글톤 이외에도 다양한 스코프를 지원
+  - 싱글톤 : 기본 스코프, 스프링 컨테이너의 시작과 종료까지 유지되는 가장 넓은 범위의 스코프
+  - 프로토타입 : 스프링 컨테이너는 프로토타입 빈의 생성과 의존관계 주입, 초기화까지만 관여하고 더는 관리하지 않는 매우 짧은 범위의 스코프
+  - 웹 관련 스코프
+    - request : 웹 요청이 들어오고 나갈때 까지 유지되는 스코프
+    - session : 웹 세션이 생성되고 종료될 때 까지 유지되는 스코프, 로그인 관련
+    - application : 웹의 서블릿 컨텍스트와 같은 범위로 유지되는 스코프
+- 스코프 설정 방법 예시
+```java
+// 컴포넌트 스캔 자동 등록
+@Scope("prototype")
+@Component
+public class HelloBean {}
+
+// 수동 등록
+@Scope("prototype")
+@Bean
+PrototypeBean HelloBean() {
+    return new HelloBean();
+}
+```
+
 ### 프로토타입 스코프
 ### 프로토타입 스코프 - 싱글톤 빈과 함께 사용시 문제점
 ### 프로토타입 스코프 - 싱글톤 빈과 함께 사용시 Provider로 문제 해결
