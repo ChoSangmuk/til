@@ -245,3 +245,15 @@ git config -l --global | grep user # 사용자 정보 확인
 git config --global user.name "ChoSangmuk" # 사용자 이름 변경
 git config --global user.email "tkdanr612@gmail.com" # 사용자 메일 변경
 ```
+
+## 포트 상태 확인과 특정 프로세스 종료
+- @Linux(@Shell), @Windows
+```sh
+# 포트 상태 확인
+netstat -ano
+
+# Pid 로 프로세스 종료
+kill -9 ${PID}
+# or
+taskkill /f /pid ${PID}
+```
