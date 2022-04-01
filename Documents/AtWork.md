@@ -78,6 +78,14 @@ cat sample.txt | grep something | sort -u > output.txt
 ```
 - Reference https://jaynamm.tistory.com/entry/%EB%A6%AC%EB%88%85%EC%8A%A4-sort-%EB%AA%85%EB%A0%B9%EC%96%B4
 
+## 정규식을 통한 파일, 폴더 삭제
+- @Linux(@Shell)
+```sh
+# find [OPTION...] [PATH] [EXPRESSION...]
+$ find . -name "*20200405*" -delete
+```
+- Reference https://goateedev.tistory.com/103
+
 ## window.showModalDialog 변경
 - @Web(@HTML, @JavaScript)
 - 달력 팝업이 IE에서만 작동
@@ -241,10 +249,16 @@ SVN_ID = GIT_NAME <GIT_MAIL>
 git remote -v # 외부 저장소 목록 확인
 git remote remove origin # 외부 저장소 연결 해제
 git remote add origin ${GIT_REMOTE_REPOSITORY_URL} # 외부 저장소 추가
+git remote add ${REMOTE_REPOSITORY_NAME} ${GIT_REMOTE_REPOSITORY_URL} # 외부 저장소 명칭으로 추가
 git config -l --global | grep user # 사용자 정보 확인
 git config --global user.name "ChoSangmuk" # 사용자 이름 변경
 git config --global user.email "tkdanr612@gmail.com" # 사용자 메일 변경
+git push ${REMOTE_REPOSITORY_NAME} master # 특정 외부 저장소 지정 push
+git pull ${REMOTE_REPOSITORY_NAME} master # 특정 외부 저장소 지정 pull
+git remote set-url ${REMOTE_REPOSITORY_NAME} ${GIT_REMOTE_REPOSITORY_URL} # 원격저장소 주소 변경
+git remote rename ${REMOTE_REPOSITORY_NAME} ${REMOTE_REPOSITORY_NEW_NAME} # 원격저장소 이름 변경
 ```
+- Reference https://blog.nobletuna.com/2019/07/02/git1/
 
 ## 포트 상태 확인과 특정 프로세스 종료
 - @Linux(@Shell), @Windows
