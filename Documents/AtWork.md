@@ -223,6 +223,14 @@ curl "https://api.telegram.org/${HTTP_API}/sendMessage?chat_id=${CHAT_ID}&text=H
 - Connections / Uptime = 초당 연결수를 알 수 있다
 - Questions / Connections = 연결당 쿼리 처리수를 알 수 있다
 
+## MySQL Auto Commit
+- @DB(@MySQL)
+```sql
+SELECT @@AUTOCOMMIT;  -- Auto Commit 여부 확인
+SET AUTOCOMMIT = FALSE;  -- Auto Commit 해제, 0
+SET AUTOCOMMIT = TRUE;  -- Auto Commit 설정, 1
+```
+
 ## SVN -> Git migration
 - @SVN, @Git
 - SVN -> Git migration command
@@ -271,3 +279,54 @@ kill -9 ${PID}
 # or
 taskkill /f /pid ${PID}
 ```
+
+## CSS overflow, 선택자 우선순위
+- @Web(@CSS)
+- overflow 
+  - visible : 기본 값, 넘칠 경우 컨텐츠가 상자 밖으로 보여지게됨
+  - hidden : 넘치는 부분은 잘려서 보여지지 않음
+  - scroll : 스크롤바가 추가되어 스크롤할 수 있음(가로, 세로 모두 추가 가능)
+  - auto : 컨텐츠 량에 따라 스크롤바를 추가할지 자동으로 결정( 필요에 따라 가로, 세로 별도로 추가될 수도 있음)
+```css
+overflow-x: scroll;
+overflow-y: hidden;
+```
+- 선택자 우선순위
+```
+!important > 인라인 스타일 > 아이디 선택자 > 클래스/속성/가상 선택자 > 태그 선택자 > 전체 선택자
+```
+- Reference http://www.devdic.com/css/refer/documents/document:1806/%EC%84%A0%ED%83%9D%EC%9E%90(Selector)%EC%9D%98-%EC%9A%B0%EC%84%A0-%EC%88%9C%EC%9C%84
+
+## Spring Tomcat 개발, 운영 환경에 따른 설정
+- @Java, @Spring, @Tomcat
+- 로컬 PC에서 톰캣이 작동하지 않는 오류 발생,  mysqlDataSource를 찾지 못했다는 내용의 로그 확인
+```log
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'mysqlDataSource' is defined
+```
+- 데이터베이스 설정 정보, 파일 시스템 위치 설정 등 환경에 따라 다른 Config를 적용해야하는 경우가 많음
+  - 운영 중인 시스템에서는 XML을 이용한 설정을 사용
+  - 최근에는 Java annotation 을 사용한 자동 설정과 주입 방식을 많이 사용
+```xml
+<beans profile="local,dev">
+  <bean id="mysqlDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="java:comp/env/jdbc/MySQLDS_DEV"/>
+    <property name="resourceRef" value="true"/>
+  </bean>
+
+  <bean ... />
+</beans>
+
+<beans profile="prod">
+  <bean id="mysqlDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName" value="java:comp/env/jdbc/MySQLDS_PROD"/>
+    <property name="resourceRef" value="true"/>
+  </bean>
+
+  <bean ... />
+</beans>
+```
+- Tomcat Arguments의 profile 설정하여 문제 해결
+```sh
+-Dspring.profiles.active="local"
+```
+- Reference https://hhyemi.github.io/2020/10/06/10061148.html
