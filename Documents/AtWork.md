@@ -1,16 +1,17 @@
 # At Work
 
-## SVN Status
-- @SVN
-- Reference [https://www.ict.griffith.edu.au/teaching/2501ICT ... ](https://www.ict.griffith.edu.au/teaching/2501ICT/archive/svn-book-html-chunk/svn.ref.svn.c.status.html)
-
-## MapReduce 개념
-- @MapReduce
-- Reference https://12bme.tistory.com/154
-
-## Shell에서 Oracle SQL문 실행
-- @Linux(@Shell), @DB(@Oracle)
-- Reference https://www.it-note.kr/180
+## Reference
+- @JavaScript ES6 차이점 요약 http://es6-features.org/#BlockScopedVariables
+- @Jeus Config [https://technet.tmaxsoft.com/ ...](https://technet.tmaxsoft.com/upload/download/online/jeus/pver-20140203-000001/server/chapter_server_conf.html)
+- @Jeus Log 정보 [http://www.igloosec.co.kr/ ...](http://www.igloosec.co.kr/BLOG_%20%EB%A1%9C%EA%B7%B8%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81%20%EB%B0%8F%20%EB%B6%84%EC%84%9D%EB%B0%A9%EC%95%88(Webtob,%20JEUS)?searchItem=&searchWord=&bbsCateId=1&gotoPage=1)
+- @Linux 하드 용량 부족 https://blog.1day1.org/493
+- @Linux SSH key Pair 생성 https://thekoguryo.github.io/oci/chapter03/3/
+- @Linux GitLab CE 설치 https://uxgjs.tistory.com/161
+- @Linux CLI 메일 작성 및 전달 [https://www.lesstif.com/ ...](https://www.lesstif.com/lpt/send-mail-from-linux-command-line-24445045.html)
+- @Linux(@Shell), @DB(@Oracle) Shell에서 Oracle 쿼리 실행 https://www.it-note.kr/180
+- @MapReduce 개념 https://12bme.tistory.com/154
+- @SVN Status [https://www.ict.griffith.edu.au/ ... ](https://www.ict.griffith.edu.au/teaching/2501ICT/archive/svn-book-html-chunk/svn.ref.svn.c.status.html)
+- @Webtob SSL 인증서 패스워드 자동 입력 https://javafactory.tistory.com/m/866?category=448871
 
 ## MongoDB Query
 - @DB(@MongoDB)
@@ -34,6 +35,13 @@
 - Reference
   - https://meyouus.tistory.com/266
   - https://dzzienki.tistory.com/64
+
+## HttpOnly 쿠키 옵션
+- @Web, @Security
+- Reference
+  - [https://mingzz1.github.io/ ...](https://mingzz1.github.io/pentesting/web/2020/02/04/Web-httponly_cookie.html/)
+  - https://grooveshark.tistory.com/76
+  - https://sarc.io/index.php/java/271-cookie-httponly
 
 ## Oracle 대용량 데이터 삽입
 - @DB(@Oracle(@insert))
