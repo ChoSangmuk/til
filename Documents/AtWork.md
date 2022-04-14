@@ -303,7 +303,7 @@ overflow-y: hidden;
 ```
 !important > 인라인 스타일 > 아이디 선택자 > 클래스/속성/가상 선택자 > 태그 선택자 > 전체 선택자
 ```
-- Reference http://www.devdic.com/css/refer/documents/document:1806/%EC%84%A0%ED%83%9D%EC%9E%90(Selector)%EC%9D%98-%EC%9A%B0%EC%84%A0-%EC%88%9C%EC%9C%84
+- Reference [http://www.devdic.com](http://www.devdic.com/css/refer/documents/document:1806/%EC%84%A0%ED%83%9D%EC%9E%90(Selector)%EC%9D%98-%EC%9A%B0%EC%84%A0-%EC%88%9C%EC%9C%84)
 
 ## Spring Tomcat 개발, 운영 환경에 따른 설정
 - @Java, @Spring, @Tomcat
@@ -338,3 +338,25 @@ Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No b
 -Dspring.profiles.active="local"
 ```
 - Reference https://hhyemi.github.io/2020/10/06/10061148.html
+
+## 대용량 파일 다운로드 시 오류
+- @Java, @Web
+- 사용자가 업로드한 파일 중 대용량(1000KB이상) 파일을 다시 다운로드 받을 때, 무한 로딩 및 broken pipe 문제 발생 
+- response 헤더 전송 파일 길이 지정
+```java
+HttpServletResponse reResponse = valueOfResponse(response, realfilename, outfilename);
+File file = new File(rootPath + filePath + realfilename);
+try (FileInputStream in = new FileInputStream(file);
+    ServletOutputStream out = reResponse.getOutputStream()) {
+  byte[] b = new byte[in.available()];
+  reResponse.setContentLength(b.length); // 추가
+  in.read(b);
+  out.write(b);
+  out.flush();
+} catch (Exception e) {
+  // ...
+} finally {
+  // ... 
+}
+```
+- Reference https://okky.kr/article/34764
