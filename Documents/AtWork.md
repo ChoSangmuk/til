@@ -2,13 +2,13 @@
 
 ## Reference
 - @JavaScript ES6 차이점 요약 http://es6-features.org/#BlockScopedVariables
-- @Jeus Config [https://technet.tmaxsoft.com/ ...](https://technet.tmaxsoft.com/upload/download/online/jeus/pver-20140203-000001/server/chapter_server_conf.html)
-- @Jeus Log 정보 [http://www.igloosec.co.kr/ ...](http://www.igloosec.co.kr/BLOG_%20%EB%A1%9C%EA%B7%B8%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81%20%EB%B0%8F%20%EB%B6%84%EC%84%9D%EB%B0%A9%EC%95%88(Webtob,%20JEUS)?searchItem=&searchWord=&bbsCateId=1&gotoPage=1)
-- @Linux 하드 용량 부족 https://blog.1day1.org/493
-- @Linux SSH key Pair 생성 https://thekoguryo.github.io/oci/chapter03/3/
+- @Jeus Config [https://technet.tmaxsoft.com/ ... ](https://technet.tmaxsoft.com/upload/download/online/jeus/pver-20140203-000001/server/chapter_server_conf.html)
+- @Jeus Log 정보 [http://www.igloosec.co.kr/ ... ](http://www.igloosec.co.kr/BLOG_%20%EB%A1%9C%EA%B7%B8%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81%20%EB%B0%8F%20%EB%B6%84%EC%84%9D%EB%B0%A9%EC%95%88(Webtob,%20JEUS)?searchItem=&searchWord=&bbsCateId=1&gotoPage=1)
+- @Linux CLI 메일 작성 및 전달 [https://www.lesstif.com/ ... ](https://www.lesstif.com/lpt/send-mail-from-linux-command-line-24445045.html)
 - @Linux GitLab CE 설치 https://uxgjs.tistory.com/161
-- @Linux CLI 메일 작성 및 전달 [https://www.lesstif.com/ ...](https://www.lesstif.com/lpt/send-mail-from-linux-command-line-24445045.html)
+- @Linux SSH key Pair 생성 https://thekoguryo.github.io/oci/chapter03/3/
 - @Linux(@Shell), @DB(@Oracle) Shell에서 Oracle 쿼리 실행 https://www.it-note.kr/180
+- @Linux 하드 용량 부족 https://blog.1day1.org/493
 - @MapReduce 개념 https://12bme.tistory.com/154
 - @SVN Status [https://www.ict.griffith.edu.au/ ... ](https://www.ict.griffith.edu.au/teaching/2501ICT/archive/svn-book-html-chunk/svn.ref.svn.c.status.html)
 - @Webtob SSL 인증서 패스워드 자동 입력 https://javafactory.tistory.com/m/866?category=448871
@@ -39,7 +39,7 @@
 ## HttpOnly 쿠키 옵션
 - @Web, @Security
 - Reference
-  - [https://mingzz1.github.io/ ...](https://mingzz1.github.io/pentesting/web/2020/02/04/Web-httponly_cookie.html/)
+  - [https://mingzz1.github.io/ ... ](https://mingzz1.github.io/pentesting/web/2020/02/04/Web-httponly_cookie.html/)
   - https://grooveshark.tistory.com/76
   - https://sarc.io/index.php/java/271-cookie-httponly
 
@@ -84,7 +84,7 @@ tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp < /etc/tcp.smtp
 ```sh
 cat sample.txt | grep something | sort -u > output.txt
 ```
-- Reference https://jaynamm.tistory.com/entry/%EB%A6%AC%EB%88%85%EC%8A%A4-sort-%EB%AA%85%EB%A0%B9%EC%96%B4
+- Reference [https://jaynamm.tistory.com/ ... ](https://jaynamm.tistory.com/entry/%EB%A6%AC%EB%88%85%EC%8A%A4-sort-%EB%AA%85%EB%A0%B9%EC%96%B4)
 
 ## 정규식을 통한 파일, 폴더 삭제
 - @Linux(@Shell)
@@ -239,6 +239,48 @@ SET AUTOCOMMIT = FALSE;  -- Auto Commit 해제, 0
 SET AUTOCOMMIT = TRUE;  -- Auto Commit 설정, 1
 ```
 
+## SVN 설치 오류 해결 및 저장소 생성, 이관
+- @SVN
+- 의존성 패키지(apr-util-1.6.1.tar) 설치 중 의존성 오류 발생
+```log
+오류: Failed dependencies: expat = 2.1.0-12.el7 is needed by expat-devel-2.1.0-12.el7.x86_64
+```
+- expat-2.2.10 의존성 추가 후 재설치
+```sh
+# expat-2.2.10 추가
+./configure --prefix=/{PATH}/expat2.2.10
+make && make install
+
+# apr-util 재설치
+./configure --prefix=/{PATH}/apr-util1.6.1 --with-apr=/{PATH}/apr1.6.5 --with-expat=/{PATH}/expat2.2.10
+make && make insatll
+```
+- SVN 저장소 생성
+```sh
+svnadmin create --fs-type fsfs [저장소 이름]
+```
+- SVN dump 생설 및 설정 백업
+  - /{PATH}/[저장소 이름]/conf/authz
+  - /{PATH}/[저장소 이름]/conf/passwd
+  - /{PATH}/[저장소 이름]/conf/svnserve.conf
+```sh
+# 기존 SVN
+svnadmin dump /{PATH}/[저장소 이름] > [백업 파일 이름].dump
+```
+- SVN 백업 반영
+```sh
+# 저장소 생성
+svnadmin create /{NEW_PATH}/[새로운 저장소 이름]
+
+# 덤프 복원
+svnadmin load /{NEW_PATH}/[새로운 저장소 이름] < [백업 파일 이름].dump
+```
+- Reference
+  - https://hreeman.tistory.com/m/75
+  - https://shonm.tistory.com/614
+    - https://github.com/libexpat/libexpat/releases
+  - https://bigcode.tistory.com/4
+
 ## SVN -> Git migration
 - @SVN, @Git
 - SVN -> Git migration command
@@ -303,7 +345,7 @@ overflow-y: hidden;
 ```
 !important > 인라인 스타일 > 아이디 선택자 > 클래스/속성/가상 선택자 > 태그 선택자 > 전체 선택자
 ```
-- Reference [http://www.devdic.com](http://www.devdic.com/css/refer/documents/document:1806/%EC%84%A0%ED%83%9D%EC%9E%90(Selector)%EC%9D%98-%EC%9A%B0%EC%84%A0-%EC%88%9C%EC%9C%84)
+- Reference [http://www.devdic.com/ ... ](http://www.devdic.com/css/refer/documents/document:1806/%EC%84%A0%ED%83%9D%EC%9E%90(Selector)%EC%9D%98-%EC%9A%B0%EC%84%A0-%EC%88%9C%EC%9C%84)
 
 ## Spring Tomcat 개발, 운영 환경에 따른 설정
 - @Java, @Spring, @Tomcat
@@ -360,3 +402,39 @@ try (FileInputStream in = new FileInputStream(file);
 }
 ```
 - Reference https://okky.kr/article/34764
+
+## Linux 서버 시작 시, Jenkins Tomcat 자동 시작 설정
+- @Linux(@Shell), @Tomcat, @Jenkins
+- /etc/rc.d/init.d/jenkins 스크립트 예시
+  - JENKINS_HOME을 지정하지 않으면 시작계정의 홈디렉터리 하위에 설정파일이 생성됨
+```sh
+#!/bin/sh
+#
+# Jenkins auto-start
+#
+# chkconfig: 2345 90 90
+# description: Auto-starts jenkins
+# processname: jenkins
+
+export JAVA_HOME=/usr
+export CATALINA_HOME=/SW/jenkins/apache-tomcat-8.5.16
+export JENKINS_HOME=/SW/jenkins/config
+export CLASS_PATH=$JAVA_HOME/jre/lib:$JAVA_HOME/lib/tools.jar:$CATALINA_HOME/lib/jsp-api.jar:$CATALINA_HOME/lib/servlet-api.jar:$CATALINA_HOME/conf:$CATALINA_HOME/bin
+
+case $1 in
+start)
+sh /SW/jenkins/apache-tomcat-8.5.16/bin/startup.sh
+;;
+stop)
+sh /SW/jenkins/apache-tomcat-8.5.16/bin/shutdown.sh
+;;
+restart)
+sh /SW/jenkins/apache-tomcat-8.5.16/bin/shutdown.sh
+sh /SW/jenkins/apache-tomcat-8.5.16/bin/startup.sh
+;;
+esac
+exit 0
+```
+- Reference
+  - https://xzio.tistory.com/28
+  - https://lejljs.tistory.com/13
