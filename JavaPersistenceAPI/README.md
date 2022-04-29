@@ -19,12 +19,13 @@ chmod 755 h2.sh
 ``` 
 - [웹 화면](http://localhost:8082/)에서 DataBase 파일 생성 및 접근
 ```
-jdbc:h2:~/Documents/twil/JavaPersistenceAPI/etc/example
--> .../etc 에 example.mv.db 가 생성됨
+jdbc:h2:~/Documents/twil/JavaPersistenceAPI/database/example
+-> .../database 에 example.mv.db 가 생성됨 (스프링 프로젝트의 -를 _로 변경하여 이름으로 사용) 
 
-jdbc:h2:tcp://localhost/~/Documents/twil/JavaPersistenceAPI/etc/example
+jdbc:h2:tcp://localhost/~/Documents/twil/JavaPersistenceAPI/database/example
 -> 파일 시스템이 아닌 tcp 소켓으로 접근, JDBC가 사용해야할 정보
 ```
 
 ## Reference
 - [JPA 요약 자료](https://ultrakain.gitbooks.io/jpa/content/)
+- [Gradle persistence.xml With MySql](https://krksap.tistory.com/806)
