@@ -1,9 +1,13 @@
 # At Work
 
 ## Reference
+- @IDE(@Eclipse) 로그 파일로 출력 https://joyful-pages.tistory.com/10
+- @Java Quartz 개념 및 샘플코드 [https://homoefficio.github.io/2018/08/12/ ... ](https://homoefficio.github.io/2018/08/12/Java-Quartz-Scheduler-Job-Chaining-%EA%B5%AC%ED%98%84/)
+- @Java Lombok 라이브러리 간략한 사용 및 적용 방법 https://dololak.tistory.com/783
 - @JavaScript ES6 차이점 요약 http://es6-features.org/#BlockScopedVariables
 - @Jeus Config [https://technet.tmaxsoft.com/ ... ](https://technet.tmaxsoft.com/upload/download/online/jeus/pver-20140203-000001/server/chapter_server_conf.html)
 - @Jeus Log 정보 [http://www.igloosec.co.kr/ ... ](http://www.igloosec.co.kr/BLOG_%20%EB%A1%9C%EA%B7%B8%20%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81%20%EB%B0%8F%20%EB%B6%84%EC%84%9D%EB%B0%A9%EC%95%88(Webtob,%20JEUS)?searchItem=&searchWord=&bbsCateId=1&gotoPage=1)
+- @JSP 관련 내용 https://keichee.tistory.com/category/%F0%9F%92%BB%20Programming/JSP
 - @Linux CLI 메일 작성 및 전달 [https://www.lesstif.com/ ... ](https://www.lesstif.com/lpt/send-mail-from-linux-command-line-24445045.html)
 - @Linux GitLab CE 설치 https://uxgjs.tistory.com/161
 - @Linux SSH key Pair 생성 https://thekoguryo.github.io/oci/chapter03/3/
@@ -12,6 +16,8 @@
 - @MapReduce 개념 https://12bme.tistory.com/154
 - @SVN Status [https://www.ict.griffith.edu.au/ ... ](https://www.ict.griffith.edu.au/teaching/2501ICT/archive/svn-book-html-chunk/svn.ref.svn.c.status.html)
 - @Webtob SSL 인증서 패스워드 자동 입력 https://javafactory.tistory.com/m/866?category=448871
+- @코드리뷰
+  - Java List for-each https://multifrontgarden.tistory.com/130
 
 ## MongoDB Query
 - @DB(@MongoDB)
@@ -36,6 +42,13 @@
   - https://meyouus.tistory.com/266
   - https://dzzienki.tistory.com/64
 
+## 이클립스 - Git 연동
+- @IDE(@Eclipse), @Git
+- Reference
+  - [https://velog.io/@hyun-jii/ ... ](https://velog.io/@hyun-jii/%EA%B9%83%ED%97%88%EB%B8%8Cgithub-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-import-%ED%95%98%EA%B8%B0)
+  - [https://m.blog.naver.com/PostView.naver? ... ](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=kimnx9006&logNo=220574706346)
+  - https://developer0513.tistory.com/23?category=793605
+
 ## HttpOnly 쿠키 옵션
 - @Web, @Security
 - Reference
@@ -54,6 +67,24 @@
 tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp < /etc/tcp.smtp
 ```
 - Reference https://sysdocu.tistory.com/450?category=486804
+
+## CORS Policy 임시 조치
+- @Web(@JavaScript)
+- 크롬의 경우: chrome://flags/#block-insecure-private-network-requests 에 들어가서 설정 disabled
+- 엣지의 경우: edge://flags/#block-insecure-private-network-requests 에 들어가서 설정 disabled
+- Reference https://nankisu.tistory.com/67
+
+## JavaScript 브라우저(IE) 확인
+- @Web(@JavaScript)
+```js
+var agent = navigator.userAgent.toLowerCase();
+if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+     // ie일 경우
+} else {
+     // ie가 아닐 경우
+}
+```
+- Reference http://lab.naminsik.com/3118
   
 ## label 태그 for 속성
 - @Web(@HTML)
@@ -401,7 +432,9 @@ try (FileInputStream in = new FileInputStream(file);
   // ... 
 }
 ```
-- Reference https://okky.kr/article/34764
+- Reference
+  - https://okky.kr/article/34764
+  - https://m.blog.naver.com/deeperain/221794696492
 
 ## Linux 서버 시작 시, Jenkins Tomcat 자동 시작 설정
 - @Linux(@Shell), @Tomcat, @Jenkins
