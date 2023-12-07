@@ -10,7 +10,7 @@
   - 라이브러리는 추가적으로 의존성을 가질 수 있으며, 의존관계 역시 빌드 툴에 의해 관리됨
 - Dependencies 
   - 프로젝트에서 사용하는 라이브러리
-  - 각 라이브러리에 대한 간략한 설명과 용도는 [강의 자료](etc/스프링%20입문%20-%20코드로%20배우는%20스프링%20부트,%20웹%20MVC,%20DB%20접근%20기술%20v2021-12-01_2.pdf)를 확인
+  - 각 라이브러리에 대한 간략한 설명과 용도는 [강의 자료](etc/스프링%20입문%20-%20코드로%20배우는%20스프링%20부트,%20웹%20MVC,%20DB%20접근%20기술%20v2022-11-28.pdf)를 확인
 ```
 - Thymleaf
 - Spring Web
@@ -518,9 +518,14 @@ try {
 ## Reference
 - [Template Engine](https://imgzon.tistory.com/97)
 - [Call By Reference](https://velog.io/@ahnick/Java-Call-by-Value-Call-by-Reference)
-- [Optional](http://www.tcpschool.com/java/java_stream_optional)
+- Optional
+  - http://www.tcpschool.com/java/java_stream_optional
+  - https://mangkyu.tistory.com/70
 - [ConcurrentHashMap](https://devlog-wjdrbs96.tistory.com/269)
-- [Java stream](http://tcpschool.com/java/java_stream_creation)
+- [AtomicLong](https://velog.io/@donghokim1998/Java-AtomicLong%EC%9D%B4%EB%9E%80)
+- Java stream
+  - http://tcpschool.com/java/java_stream_creation
+  - https://futurecreator.github.io/2018/08/26/java-8-streams/
 - [Lambda](http://www.tcpschool.com/java/java_lambda_concept)
 - [Spring Dependency Injection](https://baek.dev/post/21/)
 - [Spring Bean](https://choiyeonho903.tistory.com/11)
